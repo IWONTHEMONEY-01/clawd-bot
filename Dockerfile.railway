@@ -37,16 +37,21 @@ RUN echo '#!/bin/bash\n\
 set -e\n\
 mkdir -p /root/.clawdbot/agents/main/agent /root/.config/gogcli/keyring\n\
 \n\
-# Clone workspace repo with memory/identity files\n\
+# Set up workspace from local files (already in image)\n\
+mkdir -p /root/clawd\n\
+cp -r /app/AGENTS.md /app/BOOTSTRAP.md /app/HEARTBEAT.md /app/IDENTITY.md /app/SOUL.md /app/TOOLS.md /app/USER.md /root/clawd/ 2>/dev/null || true\n\
+cp -r /app/memory /app/canvas /app/tasks /root/clawd/ 2>/dev/null || true\n\
+echo "Workspace initialized from local files"\n\
+\n\
+# Set up git for memory sync if token available\n\
 if [ -n "$GITHUB_TOKEN" ]; then\n\
-  echo "Cloning workspace repo..."\n\
-  rm -rf /root/clawd\n\
-  git clone https://${GITHUB_TOKEN}@github.com/IWONTHEMONEY-01/clawd-bot.git /root/clawd\n\
-  cd /root/clawd && git config user.email "bot@clawdbot.local" && git config user.name "Clawdbot"\n\
-  echo "Workspace cloned successfully"\n\
-else\n\
-  echo "Warning: GITHUB_TOKEN not set, workspace will not persist"\n\
-  mkdir -p /root/clawd\n\
+  cd /root/clawd\n\
+  git init\n\
+  git remote add origin https://${GITHUB_TOKEN}@github.com/IWONTHEMONEY-01/clawd-bot.git 2>/dev/null || true\n\
+  git config user.email "bot@clawdbot.local"\n\
+  git config user.name "Clawdbot"\n\
+  git fetch origin main 2>/dev/null && git reset --soft origin/main 2>/dev/null || echo "Fresh workspace, no remote history"\n\
+  echo "Git configured for memory sync"\n\
 fi\n\
 \n\
 # Generate clawdbot.json from environment\n\
