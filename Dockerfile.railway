@@ -150,31 +150,35 @@ export GOG_ACCOUNT="${GMAIL_ACCOUNT}"\n\
 \n\
 echo "Config generated, starting gateway..."\n\
 \n\
-# Set up git for memory sync\n\
+# Set up git for memory sync - uses SEPARATE branch to avoid destroying source code\n\
 if [ -n "$GITHUB_TOKEN" ]; then\n\
   cd /root/clawd\n\
-  git init -b main\n\
+  git init -b memory-sync\n\
   git remote add origin https://${GITHUB_TOKEN}@github.com/IWONTHEMONEY-01/clawd-bot.git\n\
   git config user.email "bot@clawdbot.local"\n\
   git config user.name "Clawdbot"\n\
-  # Fetch to get history but keep our local files\n\
-  git fetch origin main 2>/dev/null || true\n\
-  echo "Git configured for memory sync"\n\
+  # Try to fetch existing memory from memory-sync branch\n\
+  if git fetch origin memory-sync 2>/dev/null; then\n\
+    git checkout -f origin/memory-sync -- memory/ 2>/dev/null || true\n\
+    echo "Restored memory from memory-sync branch"\n\
+  fi\n\
+  echo "Git configured for memory sync (branch: memory-sync)"\n\
 fi\n\
 \n\
-# Start memory sync in background (every 5 minutes) - ONLY workspace files\n\
+# Start memory sync in background (every 5 minutes) - pushes to memory-sync branch ONLY\n\
 if [ -n "$GITHUB_TOKEN" ]; then\n\
   (\n\
     while true; do\n\
       sleep 300\n\
       cd /root/clawd 2>/dev/null || continue\n\
-      # ONLY add workspace files - never use git add -A\n\
+      # ONLY add workspace files\n\
       git add memory/*.md memory/**/*.md 2>/dev/null || true\n\
-      git add AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md TOOLS.md USER.md 2>/dev/null || true\n\
+      git add AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md TOOLS.md USER.md canvas/ tasks/ 2>/dev/null || true\n\
       if [ -n "$(git diff --cached --name-only 2>/dev/null)" ]; then\n\
         git commit -m "Auto-sync memory $(date -u +%Y-%m-%dT%H:%M:%SZ)" || true\n\
-        git push origin main:main --force 2>/dev/null || echo "Memory sync push failed"\n\
-        echo "Memory synced to git"\n\
+        # Push to memory-sync branch ONLY - never touch main\n\
+        git push origin memory-sync:memory-sync --force 2>/dev/null || echo "Memory sync push failed"\n\
+        echo "Memory synced to git (memory-sync branch)"\n\
       fi\n\
     done\n\
   ) &\n\
