@@ -46,7 +46,7 @@ echo "Workspace initialized from local files"\n\
 # Set up git for memory sync if token available\n\
 if [ -n "$GITHUB_TOKEN" ]; then\n\
   cd /root/clawd\n\
-  git init\n\
+  git init -b main\n\
   git remote add origin https://${GITHUB_TOKEN}@github.com/IWONTHEMONEY-01/clawd-bot.git 2>/dev/null || true\n\
   git config user.email "bot@clawdbot.local"\n\
   git config user.name "Clawdbot"\n\
