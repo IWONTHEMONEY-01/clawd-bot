@@ -191,11 +191,11 @@ if [ -n "$GITHUB_TOKEN" ]; then\n\
   echo "Git configured for memory sync"\n\
 fi\n\
 \n\
-# Start memory sync in background (every 5 minutes) - pushes to memory-sync branch ONLY\n\
+# Start memory sync in background (every 10 minutes) - pushes to memory-sync branch ONLY\n\
 if [ -n "$GITHUB_TOKEN" ]; then\n\
   (\n\
     while true; do\n\
-      sleep 300\n\
+      sleep 600\n\
       cd /root/clawd 2>/dev/null || continue\n\
       # ONLY add workspace files\n\
       git add memory/*.md memory/**/*.md 2>/dev/null || true\n\

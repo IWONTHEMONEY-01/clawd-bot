@@ -3,3 +3,7 @@ dockerfilePath = "Dockerfile.railway"
 
 [deploy]
 restartPolicyType = "always"
+
+[[mounts]]
+source = "clawdbot-memory"
+destination = "/root/clawd/memory"
