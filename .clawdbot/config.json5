@@ -1,0 +1,11 @@
+{
+  "plugins": {
+    "minimax-usage-tracker": {
+      "enabled": true,
+      "config": {
+        "appName": "clawdbot",
+        "hourlyLimit": 100
+      }
+    }
+  }
+}
