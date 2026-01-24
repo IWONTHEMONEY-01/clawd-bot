@@ -34,8 +34,8 @@ CREATE INDEX idx_minimax_usage_called_at ON minimax_usage(called_at);
 
 2. Set environment variables on Railway:
    ```
-   SUPABASE_URL=https://iqufurtpjbzpitavkets.supabase.co
-   SUPABASE_SERVICE_KEY=your-service-role-key
+   MINIMAX_USAGE_SUPABASE_URL=https://iqufurtpjbzpitavkets.supabase.co
+   MINIMAX_USAGE_SUPABASE_KEY=your-service-role-key
    ```
 
 3. Enable the plugin in your clawdbot config:
@@ -57,8 +57,8 @@ CREATE INDEX idx_minimax_usage_called_at ON minimax_usage(called_at);
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `supabaseUrl` | string | `$SUPABASE_URL` | Supabase project URL |
-| `supabaseKey` | string | `$SUPABASE_SERVICE_KEY` | Service role key |
+| `supabaseUrl` | string | `$MINIMAX_USAGE_SUPABASE_URL` | Supabase project URL |
+| `supabaseKey` | string | `$MINIMAX_USAGE_SUPABASE_KEY` | Service role key |
 | `appName` | string | `"clawdbot"` | App identifier in the database |
 | `hourlyLimit` | number | `100` | Hourly API call limit |
 

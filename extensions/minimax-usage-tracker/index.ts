@@ -179,14 +179,14 @@ const plugin: ClawdbotPluginDefinition = {
       hourlyLimit?: number;
     } | undefined;
 
-    const supabaseUrl = config?.supabaseUrl ?? process.env.SUPABASE_URL;
-    const supabaseKey = config?.supabaseKey ?? process.env.SUPABASE_SERVICE_KEY;
+    const supabaseUrl = config?.supabaseUrl ?? process.env.MINIMAX_USAGE_SUPABASE_URL;
+    const supabaseKey = config?.supabaseKey ?? process.env.MINIMAX_USAGE_SUPABASE_KEY;
     const appName = config?.appName ?? "clawdbot";
     const hourlyLimit = config?.hourlyLimit ?? MINIMAX_HOURLY_LIMIT;
 
     if (!supabaseUrl || !supabaseKey) {
       api.logger.warn(
-        "Supabase not configured. Set SUPABASE_URL and SUPABASE_SERVICE_KEY or configure the plugin."
+        "Supabase not configured. Set MINIMAX_USAGE_SUPABASE_URL and MINIMAX_USAGE_SUPABASE_KEY or configure the plugin."
       );
       return;
     }
