@@ -74,16 +74,41 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
       "model": {\n\
         "primary": "minimax/MiniMax-M2.1"\n\
       },\n\
-      "workspace": "/root/clawd"\n\
+      "workspace": "/root/clawd",\n\
+      "memorySearch": {\n\
+        "enabled": true,\n\
+        "sources": ["memory", "sessions"],\n\
+        "experimental": {\n\
+          "sessionMemory": true\n\
+        },\n\
+        "sync": {\n\
+          "onSessionStart": true,\n\
+          "onSearch": true,\n\
+          "watch": true\n\
+        }\n\
+      }\n\
     }\n\
   },\n\
   "tools": {\n\
     "profile": "coding",\n\
+    "allow": ["group:web", "group:ui", "group:messaging"],\n\
     "media": {\n\
       "audio": {\n\
         "enabled": true,\n\
         "models": [\n\
           { "provider": "groq", "model": "whisper-large-v3" }\n\
+        ]\n\
+      },\n\
+      "image": {\n\
+        "enabled": true,\n\
+        "models": [\n\
+          { "provider": "minimax", "model": "MiniMax-VL-01" }\n\
+        ]\n\
+      },\n\
+      "video": {\n\
+        "enabled": true,\n\
+        "models": [\n\
+          { "provider": "minimax", "model": "MiniMax-VL-01" }\n\
         ]\n\
       }\n\
     }\n\
@@ -95,7 +120,7 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
       "allowFrom": ["${TELEGRAM_ALLOWED_USER_ID:-6632715854}"],\n\
       "botToken": "${TELEGRAM_BOT_TOKEN}",\n\
       "groupPolicy": "allowlist",\n\
-      "streamMode": "partial"\n\
+      "streamMode": "off"\n\
     },\n\
     "nostr": {\n\
       "enabled": true,\n\
