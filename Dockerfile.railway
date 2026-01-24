@@ -201,15 +201,17 @@ if [ -n "$GMAIL_REFRESH_TOKEN" ] && [ -n "$GMAIL_ACCOUNT" ]; then\n\
   "refresh_token": "${GMAIL_REFRESH_TOKEN}"\n\
 }\n\
 EOFTOKEN\n\
-  # Use plaintext keyring backend for automation\n\
+  # Use plaintext keyring backend for automation - set password to avoid TTY prompt\n\
   export GOG_KEYRING_BACKEND=file\n\
-  gog auth tokens import /tmp/gmail_token.json --no-input || echo "Gmail token import failed (may already exist)"\n\
+  export GOG_KEYRING_PASSWORD="${GOG_KEYRING_PASSWORD:-clawdbot123}"\n\
+  gog auth tokens import /tmp/gmail_token.json --no-input 2>/dev/null || true\n\
   rm -f /tmp/gmail_token.json\n\
   echo "Gmail token configured for ${GMAIL_ACCOUNT}"\n\
 fi\n\
 \n\
 # Set gog environment for runtime\n\
 export GOG_KEYRING_BACKEND=file\n\
+export GOG_KEYRING_PASSWORD="${GOG_KEYRING_PASSWORD:-clawdbot123}"\n\
 export GOG_ACCOUNT="${GMAIL_ACCOUNT}"\n\
 \n\
 echo "Config generated, starting gateway..."\n\
@@ -217,8 +219,16 @@ echo "Config generated, starting gateway..."\n\
 # Set up git for memory sync - uses SEPARATE branch to avoid destroying source code\n\
 if [ -n "$GITHUB_TOKEN" ]; then\n\
   cd /root/clawd\n\
-  git init -b memory-sync\n\
-  git remote add origin https://${GITHUB_TOKEN}@github.com/IWONTHEMONEY-01/clawd-bot.git\n\
+  # Only init if not already a git repo\n\
+  if [ ! -d ".git" ]; then\n\
+    git init -b memory-sync\n\
+    echo "Git initialized"\n\
+  fi\n\
+  # Only add remote if it doesnt exist\n\
+  if ! git remote get-url origin >/dev/null 2>&1; then\n\
+    git remote add origin https://${GITHUB_TOKEN}@github.com/IWONTHEMONEY-01/clawd-bot.git\n\
+    echo "Git remote added"\n\
+  fi\n\
   git config user.email "bot@clawdbot.local"\n\
   git config user.name "Clawdbot"\n\
   # Try to fetch existing memory from memory-sync branch\n\
@@ -226,7 +236,7 @@ if [ -n "$GITHUB_TOKEN" ]; then\n\
     git checkout -f origin/memory-sync -- memory/ 2>/dev/null || true\n\
     echo "Restored memory from memory-sync branch"\n\
   fi\n\
-  echo "Git configured for memory sync (branch: memory-sync)"\n\
+  echo "Git configured for memory sync"\n\
 fi\n\
 \n\
 # Start memory sync in background (every 5 minutes) - pushes to memory-sync branch ONLY\n\
