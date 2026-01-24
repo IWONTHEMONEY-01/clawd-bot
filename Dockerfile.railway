@@ -120,7 +120,7 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
       "allowFrom": ["${TELEGRAM_ALLOWED_USER_ID:-6632715854}"],\n\
       "botToken": "${TELEGRAM_BOT_TOKEN}",\n\
       "groupPolicy": "allowlist",\n\
-      "streamMode": "partial"\n\
+      "streamMode": "off"\n\
     },\n\
     "nostr": {\n\
       "enabled": true,\n\

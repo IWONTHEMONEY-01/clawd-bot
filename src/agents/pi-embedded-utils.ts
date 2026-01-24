@@ -23,6 +23,24 @@ function stripMinimaxToolCallXml(text: string): string {
 }
 
 /**
+ * Strip [TOOL_CALL]...[/TOOL_CALL] blocks that leak into text content.
+ * Some models (like MiniMax) sometimes output tool call descriptions as text
+ * instead of proper structured tool calls.
+ */
+function stripToolCallBlocks(text: string): string {
+  if (!text) return text;
+  if (!/\[TOOL_CALL\]/i.test(text)) return text;
+
+  // Remove [TOOL_CALL]...[/TOOL_CALL] blocks (including multiline content)
+  let cleaned = text.replace(/\[TOOL_CALL\][\s\S]*?\[\/TOOL_CALL\]/gi, "");
+
+  // Clean up any extra whitespace that might be left
+  cleaned = cleaned.replace(/\n\n\n+/g, "\n\n").trim();
+
+  return cleaned;
+}
+
+/**
  * Strip downgraded tool call text representations that leak into text content.
  * When replaying history to Gemini, tool calls without `thought_signature` are
  * downgraded to text blocks like `[Tool Call: name (ID: ...)]`. These should
@@ -210,7 +228,9 @@ export function extractAssistantText(msg: AssistantMessage): string {
         .filter(isTextBlock)
         .map((c) =>
           stripThinkingTagsFromText(
-            stripDowngradedToolCallText(stripMinimaxToolCallXml(c.text)),
+            stripToolCallBlocks(
+              stripDowngradedToolCallText(stripMinimaxToolCallXml(c.text)),
+            ),
           ).trim(),
         )
         .filter(Boolean)
