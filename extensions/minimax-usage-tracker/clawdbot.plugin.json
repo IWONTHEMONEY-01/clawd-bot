@@ -1,0 +1,45 @@
+{
+  "id": "minimax-usage-tracker",
+  "uiHints": {
+    "supabaseUrl": {
+      "label": "Supabase URL",
+      "placeholder": "https://xxx.supabase.co",
+      "help": "Your Supabase project URL (or use ${MINIMAX_USAGE_SUPABASE_URL})"
+    },
+    "supabaseKey": {
+      "label": "Supabase Service Key",
+      "sensitive": true,
+      "help": "Service role key from Project Settings → API (or use ${MINIMAX_USAGE_SUPABASE_KEY})"
+    },
+    "appName": {
+      "label": "App Name",
+      "placeholder": "clawdbot",
+      "help": "Identifier for this app in the usage table"
+    },
+    "hourlyLimit": {
+      "label": "Hourly Limit",
+      "placeholder": "100",
+      "help": "Maximum API calls per hour"
+    }
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "supabaseUrl": {
+        "type": "string"
+      },
+      "supabaseKey": {
+        "type": "string"
+      },
+      "appName": {
+        "type": "string",
+        "default": "clawdbot"
+      },
+      "hourlyLimit": {
+        "type": "number",
+        "default": 100
+      }
+    }
+  }
+}
