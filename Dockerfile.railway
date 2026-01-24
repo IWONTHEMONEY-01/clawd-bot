@@ -63,6 +63,17 @@ cat > /root/.clawdbot/clawdbot.json << EOFCONFIG\n\
       "workspace": "/root/clawd"\n\
     }\n\
   },\n\
+  "tools": {\n\
+    "profile": "coding",\n\
+    "media": {\n\
+      "audio": {\n\
+        "enabled": true,\n\
+        "models": [\n\
+          { "provider": "groq", "model": "whisper-large-v3" }\n\
+        ]\n\
+      }\n\
+    }\n\
+  },\n\
   "channels": {\n\
     "telegram": {\n\
       "enabled": true,\n\
@@ -100,10 +111,16 @@ cat > /root/.clawdbot/agents/main/agent/auth-profiles.json << EOFAUTH\n\
       "type": "api_key",\n\
       "provider": "minimax",\n\
       "key": "${MINIMAX_API_KEY}"\n\
+    },\n\
+    "groq:default": {\n\
+      "type": "api_key",\n\
+      "provider": "groq",\n\
+      "key": "${GROQ_API_KEY}"\n\
     }\n\
   },\n\
   "lastGood": {\n\
-    "minimax": "minimax:default"\n\
+    "minimax": "minimax:default",\n\
+    "groq": "groq:default"\n\
   }\n\
 }\n\
 EOFAUTH\n\
