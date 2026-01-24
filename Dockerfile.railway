@@ -26,19 +26,23 @@ RUN pnpm ui:install
 RUN pnpm ui:build
 
 # Create config directories
-RUN mkdir -p /root/.clawdbot/agents/main/agent /root/.config/gogcli/keyring
+RUN mkdir -p /root/.config/gogcli/keyring
 
 ENV NODE_ENV=production
 ENV HOME=/root
 ENV CLAWDBOT_DISABLE_BONJOUR=1
+# Store all state in persistent volume to survive restarts
+ENV CLAWDBOT_STATE_DIR=/root/clawd/.clawdbot
 
 # Create startup script that generates config from environment variables
 RUN echo '#!/bin/bash\n\
 set -e\n\
-mkdir -p /root/.clawdbot/agents/main/agent /root/.config/gogcli/keyring\n\
+\n\
+# Create directories in persistent volume (state + workspace)\n\
+mkdir -p /root/clawd/.clawdbot/agents/main/agent /root/.config/gogcli/keyring\n\
+mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
 \n\
 # Set up workspace from local files (only on first deploy - preserves all customizations)\n\
-mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
 # Check if workspace volume is empty (first deploy)\n\
 if [ -z "$(ls -A /root/clawd 2>/dev/null | grep -v lost+found)" ]; then\n\
   echo "First deploy - initializing workspace from local files"\n\
@@ -54,8 +58,8 @@ else\n\
   echo "Workspace volume exists - preserving all data"\n\
 fi\n\
 \n\
-# Generate clawdbot.json from environment\n\
-cat > /root/.clawdbot/clawdbot.json << EOFCONFIG\n\
+# Generate clawdbot.json from environment (in persistent volume)\n\
+cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
 {\n\
   "auth": {\n\
     "profiles": {\n\
@@ -129,8 +133,10 @@ cat > /root/.clawdbot/clawdbot.json << EOFCONFIG\n\
 }\n\
 EOFCONFIG\n\
 \n\
-# Generate auth-profiles.json from environment\n\
-cat > /root/.clawdbot/agents/main/agent/auth-profiles.json << EOFAUTH\n\
+# Generate auth-profiles.json ONLY if it doesnt exist (preserves updates)\n\
+if [ ! -f /root/clawd/.clawdbot/agents/main/agent/auth-profiles.json ]; then\n\
+  echo "Creating initial auth-profiles.json from environment variables"\n\
+  cat > /root/clawd/.clawdbot/agents/main/agent/auth-profiles.json << EOFAUTH\n\
 {\n\
   "version": 1,\n\
   "profiles": {\n\
@@ -151,6 +157,9 @@ cat > /root/.clawdbot/agents/main/agent/auth-profiles.json << EOFAUTH\n\
   }\n\
 }\n\
 EOFAUTH\n\
+else\n\
+  echo "auth-profiles.json already exists - preserving existing credentials"\n\
+fi\n\
 \n\
 # Set up gog credentials if Gmail env vars are present\n\
 if [ -n "$GMAIL_CLIENT_ID" ] && [ -n "$GMAIL_CLIENT_SECRET" ]; then\n\
