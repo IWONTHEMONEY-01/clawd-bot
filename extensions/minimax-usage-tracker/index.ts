@@ -8,9 +8,13 @@ const configSchema = {
   jsonSchema: {
     type: "object",
     properties: {
-      databaseUrl: {
+      supabaseUrl: {
         type: "string",
-        description: "PostgreSQL connection URL for usage tracking",
+        description: "Supabase project URL (e.g., https://xxx.supabase.co)",
+      },
+      supabaseKey: {
+        type: "string",
+        description: "Supabase service role key",
       },
       appName: {
         type: "string",
@@ -23,12 +27,15 @@ const configSchema = {
         description: "Hourly API call limit",
       },
     },
-    required: ["databaseUrl"],
   },
   uiHints: {
-    databaseUrl: {
-      label: "Database URL",
-      help: "PostgreSQL connection string (e.g., postgres://user:pass@host:5432/db)",
+    supabaseUrl: {
+      label: "Supabase URL",
+      help: "Your Supabase project URL",
+    },
+    supabaseKey: {
+      label: "Supabase Service Key",
+      help: "Service role key from Project Settings → API",
       sensitive: true,
     },
     appName: {
@@ -47,40 +54,68 @@ const CheckUsageSchema = Type.Object({
   showDetails: Type.Optional(Type.Boolean({ description: "Show detailed breakdown" })),
 });
 
-// Helper to get a postgres client
-async function getClient(databaseUrl: string) {
-  // Dynamic import to avoid requiring pg if not used
-  const { default: pg } = await import("pg");
-  const client = new pg.Client({ connectionString: databaseUrl });
-  await client.connect();
-  return client;
+// Types for Supabase client
+type SupabaseClient = {
+  from: (table: string) => {
+    insert: (data: Record<string, unknown>) => Promise<{ error: unknown }>;
+    select: (columns?: string) => {
+      gt: (column: string, value: string) => Promise<{ data: unknown[]; error: unknown }>;
+      gte: (column: string, value: string) => {
+        order: (column: string, opts: { ascending: boolean }) => Promise<{ data: unknown[]; error: unknown }>;
+      };
+    };
+  };
+  rpc: (fn: string, params?: Record<string, unknown>) => Promise<{ data: unknown; error: unknown }>;
+};
+
+// Helper to get a Supabase client
+async function getClient(supabaseUrl: string, supabaseKey: string): Promise<SupabaseClient> {
+  const { createClient } = await import("@supabase/supabase-js");
+  return createClient(supabaseUrl, supabaseKey) as unknown as SupabaseClient;
 }
 
 // Log a MiniMax API call
-async function logUsage(databaseUrl: string, appName: string, model: string) {
-  let client;
+async function logUsage(
+  supabaseUrl: string,
+  supabaseKey: string,
+  appName: string,
+  model: string
+) {
   try {
-    client = await getClient(databaseUrl);
-    await client.query(
-      `INSERT INTO minimax_usage (app_name, model) VALUES ($1, $2)`,
-      [appName, model]
-    );
+    const client = await getClient(supabaseUrl, supabaseKey);
+    const { error } = await client.from("minimax_usage").insert({
+      app_name: appName,
+      model: model,
+    });
+    if (error) {
+      console.error("[minimax-usage-tracker] Failed to log usage:", error);
+    }
   } catch (err) {
     console.error("[minimax-usage-tracker] Failed to log usage:", err);
-  } finally {
-    if (client) await client.end().catch(() => {});
   }
 }
 
 // Check remaining quota
-async function checkRemaining(databaseUrl: string, hourlyLimit: number) {
-  let client;
+async function checkRemaining(
+  supabaseUrl: string,
+  supabaseKey: string,
+  hourlyLimit: number
+) {
   try {
-    client = await getClient(databaseUrl);
-    const result = await client.query(
-      `SELECT COUNT(*) as count FROM minimax_usage WHERE called_at > NOW() - INTERVAL '1 hour'`
-    );
-    const used = parseInt(result.rows[0]?.count ?? "0", 10);
+    const client = await getClient(supabaseUrl, supabaseKey);
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+
+    const { data, error } = await client
+      .from("minimax_usage")
+      .select("id")
+      .gt("called_at", oneHourAgo);
+
+    if (error) {
+      console.error("[minimax-usage-tracker] Failed to check usage:", error);
+      return { error: String(error) };
+    }
+
+    const used = data?.length ?? 0;
     return {
       used,
       remaining: Math.max(0, hourlyLimit - used),
@@ -90,58 +125,68 @@ async function checkRemaining(databaseUrl: string, hourlyLimit: number) {
   } catch (err) {
     console.error("[minimax-usage-tracker] Failed to check usage:", err);
     return { error: String(err) };
-  } finally {
-    if (client) await client.end().catch(() => {});
   }
 }
 
 // Get detailed usage breakdown
-async function getDetailedUsage(databaseUrl: string) {
-  let client;
+async function getDetailedUsage(supabaseUrl: string, supabaseKey: string) {
   try {
-    client = await getClient(databaseUrl);
-    const result = await client.query(`
-      SELECT
-        app_name,
-        model,
-        COUNT(*) as calls,
-        MIN(called_at) as first_call,
-        MAX(called_at) as last_call
-      FROM minimax_usage
-      WHERE called_at > NOW() - INTERVAL '1 hour'
-      GROUP BY app_name, model
-      ORDER BY calls DESC
-    `);
-    return result.rows;
+    const client = await getClient(supabaseUrl, supabaseKey);
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+
+    const { data, error } = await client
+      .from("minimax_usage")
+      .select("app_name, model, called_at")
+      .gte("called_at", oneHourAgo)
+      .order("called_at", { ascending: false });
+
+    if (error) {
+      console.error("[minimax-usage-tracker] Failed to get detailed usage:", error);
+      return [];
+    }
+
+    // Aggregate by app_name and model
+    const aggregated = new Map<string, { app_name: string; model: string; calls: number }>();
+    for (const row of (data ?? []) as Array<{ app_name: string; model: string }>) {
+      const key = `${row.app_name}:${row.model}`;
+      const existing = aggregated.get(key);
+      if (existing) {
+        existing.calls++;
+      } else {
+        aggregated.set(key, { app_name: row.app_name, model: row.model, calls: 1 });
+      }
+    }
+
+    return Array.from(aggregated.values()).sort((a, b) => b.calls - a.calls);
   } catch (err) {
     console.error("[minimax-usage-tracker] Failed to get detailed usage:", err);
     return [];
-  } finally {
-    if (client) await client.end().catch(() => {});
   }
 }
 
 const plugin: ClawdbotPluginDefinition = {
   id: "minimax-usage-tracker",
   name: "MiniMax Usage Tracker",
-  description: "Track MiniMax API usage in PostgreSQL and monitor quota",
-  version: "1.0.0",
+  description: "Track MiniMax API usage in Supabase and monitor quota",
+  version: "1.1.0",
   configSchema,
 
   async register(api) {
     const config = api.pluginConfig as {
-      databaseUrl?: string;
+      supabaseUrl?: string;
+      supabaseKey?: string;
       appName?: string;
       hourlyLimit?: number;
     } | undefined;
 
-    const databaseUrl = config?.databaseUrl ?? process.env.MINIMAX_USAGE_DB_URL;
+    const supabaseUrl = config?.supabaseUrl ?? process.env.SUPABASE_URL;
+    const supabaseKey = config?.supabaseKey ?? process.env.SUPABASE_SERVICE_KEY;
     const appName = config?.appName ?? "clawdbot";
     const hourlyLimit = config?.hourlyLimit ?? MINIMAX_HOURLY_LIMIT;
 
-    if (!databaseUrl) {
+    if (!supabaseUrl || !supabaseKey) {
       api.logger.warn(
-        "No database URL configured. Set MINIMAX_USAGE_DB_URL or configure plugins.minimax-usage-tracker.databaseUrl"
+        "Supabase not configured. Set SUPABASE_URL and SUPABASE_SERVICE_KEY or configure the plugin."
       );
       return;
     }
@@ -149,7 +194,7 @@ const plugin: ClawdbotPluginDefinition = {
     api.logger.info(`MiniMax usage tracker enabled (app: ${appName}, limit: ${hourlyLimit}/hr)`);
 
     // Register agent_end hook to track MiniMax API calls
-    api.on("agent_end", async (event, ctx) => {
+    api.on("agent_end", async (_event, ctx) => {
       // Check if this was a MiniMax call
       const provider = ctx.messageProvider?.toLowerCase() ?? "";
       if (!provider.includes("minimax")) {
@@ -161,11 +206,11 @@ const plugin: ClawdbotPluginDefinition = {
         ? provider.split("/").pop() ?? "unknown"
         : "MiniMax-M2.1";
 
-      await logUsage(databaseUrl, appName, model);
+      await logUsage(supabaseUrl, supabaseKey, appName, model);
       api.logger.info(`Logged MiniMax API call (model: ${model})`);
 
       // Check if approaching limit
-      const usage = await checkRemaining(databaseUrl, hourlyLimit);
+      const usage = await checkRemaining(supabaseUrl, supabaseKey, hourlyLimit);
       if ("remaining" in usage && usage.remaining <= 10) {
         api.logger.warn(
           `MiniMax quota warning: ${usage.remaining} calls remaining this hour (${usage.percentUsed}% used)`
@@ -182,7 +227,7 @@ const plugin: ClawdbotPluginDefinition = {
         parameters: CheckUsageSchema,
         execute: async (_toolCallId, args) => {
           const params = args as { showDetails?: boolean };
-          const usage = await checkRemaining(databaseUrl, hourlyLimit);
+          const usage = await checkRemaining(supabaseUrl, supabaseKey, hourlyLimit);
 
           if ("error" in usage) {
             return { type: "text" as const, text: `Error checking usage: ${usage.error}` };
@@ -194,11 +239,11 @@ const plugin: ClawdbotPluginDefinition = {
           response += `- Usage: ${usage.percentUsed}%`;
 
           if (usage.remaining <= 10) {
-            response += `\n\n WARNING: Approaching rate limit!`;
+            response += `\n\n⚠️ WARNING: Approaching rate limit!`;
           }
 
           if (params.showDetails) {
-            const details = await getDetailedUsage(databaseUrl);
+            const details = await getDetailedUsage(supabaseUrl, supabaseKey);
             if (details.length > 0) {
               response += `\n\nBreakdown by app:\n`;
               for (const row of details) {

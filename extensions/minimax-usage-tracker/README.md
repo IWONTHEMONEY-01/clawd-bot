@@ -1,17 +1,17 @@
 # MiniMax Usage Tracker
 
-Track MiniMax API usage across all your apps in PostgreSQL and monitor quota limits.
+Track MiniMax API usage across all your apps in Supabase and monitor quota limits.
 
 ## Features
 
-- Automatically logs every MiniMax API call to PostgreSQL
+- Automatically logs every MiniMax API call to Supabase
 - Tracks usage by app name and model
 - Warns when approaching the 100 calls/hour limit
 - Provides a `minimax_usage` tool for checking remaining quota
 
 ## Database Setup
 
-Create the usage table in your PostgreSQL database:
+Create the usage table in your Supabase project (SQL Editor):
 
 ```sql
 CREATE TABLE minimax_usage (
@@ -23,27 +23,19 @@ CREATE TABLE minimax_usage (
 
 -- Index for efficient hourly queries
 CREATE INDEX idx_minimax_usage_called_at ON minimax_usage(called_at);
-
--- Optional: Auto-cleanup old records (keeps last 30 days)
--- Run this periodically or set up a cron job
-DELETE FROM minimax_usage WHERE called_at < NOW() - INTERVAL '30 days';
 ```
 
 ## Installation
 
-1. Install the `pg` package:
+1. Install the Supabase JS client:
    ```bash
-   npm install pg
+   npm install @supabase/supabase-js
    ```
 
-2. Set the database URL environment variable:
-   ```bash
-   export MINIMAX_USAGE_DB_URL="postgres://user:password@host:5432/database"
+2. Set environment variables on Railway:
    ```
-
-   Or add to your `.env` file:
-   ```
-   MINIMAX_USAGE_DB_URL=postgres://user:password@host:5432/database
+   SUPABASE_URL=https://iqufurtpjbzpitavkets.supabase.co
+   SUPABASE_SERVICE_KEY=your-service-role-key
    ```
 
 3. Enable the plugin in your clawdbot config:
@@ -65,7 +57,8 @@ DELETE FROM minimax_usage WHERE called_at < NOW() - INTERVAL '30 days';
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `databaseUrl` | string | `$MINIMAX_USAGE_DB_URL` | PostgreSQL connection URL |
+| `supabaseUrl` | string | `$SUPABASE_URL` | Supabase project URL |
+| `supabaseKey` | string | `$SUPABASE_SERVICE_KEY` | Service role key |
 | `appName` | string | `"clawdbot"` | App identifier in the database |
 | `hourlyLimit` | number | `100` | Hourly API call limit |
 
@@ -86,6 +79,8 @@ minimax_usage({ showDetails: true })
 ```
 
 ### Query the Database Directly
+
+In Supabase SQL Editor:
 
 ```sql
 -- Check remaining calls this hour
@@ -115,6 +110,6 @@ ORDER BY day DESC, total_calls DESC;
 
 1. The plugin registers an `agent_end` hook
 2. After each agent turn, it checks if MiniMax was the provider
-3. If yes, it logs the call to PostgreSQL with app name, model, and timestamp
+3. If yes, it logs the call to Supabase with app name, model, and timestamp
 4. If remaining quota is <= 10 calls, it logs a warning
-5. The `minimax_usage` tool queries the database to show current usage
+5. The `minimax_usage` tool queries Supabase to show current usage
