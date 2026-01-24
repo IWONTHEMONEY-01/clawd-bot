@@ -43,7 +43,7 @@ mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
 if [ -z "$(ls -A /root/clawd 2>/dev/null | grep -v lost+found)" ]; then\n\
   echo "First deploy - initializing workspace from local files"\n\
   mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
-  for f in AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md TOOLS.md USER.md; do\n\
+  for f in AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md SOUL_EVIL.md TOOLS.md USER.md BOOT.md; do\n\
     [ -f "/app/$f" ] && cp "/app/$f" "/root/clawd/" 2>/dev/null || true\n\
   done\n\
   cp -r /app/memory/* /root/clawd/memory/ 2>/dev/null || true\n\
@@ -92,6 +92,12 @@ cat > /root/.clawdbot/clawdbot.json << EOFCONFIG\n\
       "botToken": "${TELEGRAM_BOT_TOKEN}",\n\
       "groupPolicy": "allowlist",\n\
       "streamMode": "partial"\n\
+    },\n\
+    "nostr": {\n\
+      "enabled": true,\n\
+      "privateKey": "${NOSTR_PRIVATE_KEY}",\n\
+      "relays": ["wss://relay.damus.io", "wss://nos.lol", "wss://relay.nostr.band"],\n\
+      "dmPolicy": "pairing"\n\
     }\n\
   },\n\
   "gateway": {\n\
@@ -105,7 +111,25 @@ cat > /root/.clawdbot/clawdbot.json << EOFCONFIG\n\
   "plugins": {\n\
     "entries": {\n\
       "telegram": { "enabled": true },\n\
+      "nostr": { "enabled": true },\n\
+      "memory-core": { "enabled": true },\n\
       "diagnostics-otel": { "enabled": true }\n\
+    }\n\
+  },\n\
+  "hooks": {\n\
+    "internal": {\n\
+      "enabled": true,\n\
+      "entries": {\n\
+        "session-memory": { "enabled": true },\n\
+        "command-logger": { "enabled": true },\n\
+        "boot-md": { "enabled": true },\n\
+        "soul-evil": {\n\
+          "enabled": true,\n\
+          "file": "SOUL_EVIL.md",\n\
+          "chance": 0.05,\n\
+          "purge": { "at": "03:00", "duration": "15m" }\n\
+        }\n\
+      }\n\
     }\n\
   }\n\
 }\n\
