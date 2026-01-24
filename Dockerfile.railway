@@ -82,6 +82,47 @@ cat > /root/.clawdbot/clawdbot.json << EOFCONFIG\n\
       "botToken": "${TELEGRAM_BOT_TOKEN}",\n\
       "groupPolicy": "allowlist",\n\
       "streamMode": "partial"\n\
+    },\n\
+    "discord": {\n\
+      "enabled": true,\n\
+      "dmPolicy": "pairing",\n\
+      "guildPolicy": "allowlist",\n\
+      "botToken": "${DISCORD_BOT_TOKEN}"\n\
+    },\n\
+    "slack": {\n\
+      "enabled": true,\n\
+      "mode": "socket",\n\
+      "dmPolicy": "pairing",\n\
+      "groupPolicy": "allowlist",\n\
+      "botToken": "${SLACK_BOT_TOKEN}",\n\
+      "appToken": "${SLACK_APP_TOKEN}"\n\
+    },\n\
+    "whatsapp": {\n\
+      "enabled": true,\n\
+      "dmPolicy": "pairing",\n\
+      "groupPolicy": "allowlist"\n\
+    },\n\
+    "signal": {\n\
+      "enabled": true,\n\
+      "dmPolicy": "pairing",\n\
+      "groupPolicy": "allowlist"\n\
+    },\n\
+    "matrix": {\n\
+      "enabled": true,\n\
+      "dmPolicy": "pairing",\n\
+      "roomPolicy": "allowlist",\n\
+      "homeserverUrl": "${MATRIX_HOMESERVER_URL}",\n\
+      "accessToken": "${MATRIX_ACCESS_TOKEN}"\n\
+    },\n\
+    "msteams": {\n\
+      "enabled": true,\n\
+      "dmPolicy": "pairing"\n\
+    },\n\
+    "nostr": {\n\
+      "enabled": true,\n\
+      "dmPolicy": "pairing",\n\
+      "privateKey": "${NOSTR_PRIVATE_KEY}",\n\
+      "relays": ["wss://relay.damus.io", "wss://nos.lol"]\n\
     }\n\
   },\n\
   "gateway": {\n\
@@ -94,9 +135,15 @@ cat > /root/.clawdbot/clawdbot.json << EOFCONFIG\n\
   },\n\
   "plugins": {\n\
     "entries": {\n\
-      "telegram": {\n\
-        "enabled": true\n\
-      }\n\
+      "telegram": { "enabled": true },\n\
+      "discord": { "enabled": true },\n\
+      "slack": { "enabled": true },\n\
+      "whatsapp": { "enabled": true },\n\
+      "signal": { "enabled": true },\n\
+      "matrix": { "enabled": true },\n\
+      "msteams": { "enabled": true },\n\
+      "nostr": { "enabled": true },\n\
+      "diagnostics-otel": { "enabled": true }\n\
     }\n\
   }\n\
 }\n\
