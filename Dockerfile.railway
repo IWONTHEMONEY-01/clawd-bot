@@ -37,12 +37,22 @@ RUN echo '#!/bin/bash\n\
 set -e\n\
 mkdir -p /root/.clawdbot/agents/main/agent /root/.config/gogcli/keyring\n\
 \n\
-# Set up workspace from local files (already in image)\n\
-mkdir -p /root/clawd/memory\n\
-cp /app/AGENTS.md /app/BOOTSTRAP.md /app/HEARTBEAT.md /app/IDENTITY.md /app/SOUL.md /app/TOOLS.md /app/USER.md /root/clawd/ 2>/dev/null || true\n\
-cp -r /app/memory/* /root/clawd/memory/ 2>/dev/null || true\n\
-cp -r /app/canvas /app/tasks /root/clawd/ 2>/dev/null || true\n\
-echo "Workspace initialized from local files"\n\
+# Set up workspace from local files (only on first deploy - preserves all customizations)\n\
+mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
+# Check if workspace volume is empty (first deploy)\n\
+if [ -z "$(ls -A /root/clawd 2>/dev/null | grep -v lost+found)" ]; then\n\
+  echo "First deploy - initializing workspace from local files"\n\
+  mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
+  for f in AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md TOOLS.md USER.md; do\n\
+    [ -f "/app/$f" ] && cp "/app/$f" "/root/clawd/" 2>/dev/null || true\n\
+  done\n\
+  cp -r /app/memory/* /root/clawd/memory/ 2>/dev/null || true\n\
+  cp -r /app/canvas/* /root/clawd/canvas/ 2>/dev/null || true\n\
+  cp -r /app/tasks/* /root/clawd/tasks/ 2>/dev/null || true\n\
+  echo "Workspace initialized"\n\
+else\n\
+  echo "Workspace volume exists - preserving all data"\n\
+fi\n\
 \n\
 # Generate clawdbot.json from environment\n\
 cat > /root/.clawdbot/clawdbot.json << EOFCONFIG\n\
@@ -230,5 +240,8 @@ const auth = resolveGatewayAuth({ authConfig: cfg.gateway?.auth }); \
 console.log(`Starting gateway on port ${port}...`); \
 const server = await startGatewayServer(port, { auth }); \
 console.log(`Gateway running on ws://0.0.0.0:${port}`);' > /app/railway-gateway.mjs
+
+# Railway uses PORT env var, but EXPOSE documents the default
+EXPOSE 8080
 
 CMD ["/app/start.sh"]

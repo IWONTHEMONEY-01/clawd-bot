@@ -5,5 +5,5 @@ dockerfilePath = "Dockerfile.railway"
 restartPolicyType = "always"
 
 [[mounts]]
-source = "clawdbot-memory"
-destination = "/root/clawd/memory"
+source = "clawdbot-workspace"
+destination = "/root/clawd"
