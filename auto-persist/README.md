@@ -36,7 +36,22 @@ Every 5 minutes, the service:
 
 ## Connecting to GitHub
 
-### Interactive Setup (run once on your main machine)
+### Railway Instances (automatic)
+
+Railway instances already have `GITHUB_TOKEN` set. Just run:
+
+```bash
+bash ~/.clawdbot/auto-persist/setup-github.sh
+# Or for a fresh instance:
+bash ~/.clawdbot/auto-persist/bootstrap-instance.sh
+```
+
+The scripts auto-detect `GITHUB_TOKEN` from the environment - no prompts needed.
+
+**Defaults:** User=`afrad`, Repo=`clawdbot-state`
+Override with: `bash setup-github.sh <username> <repo-name>`
+
+### Local/Other Machines
 
 **Linux:**
 ```bash
@@ -48,31 +63,14 @@ bash ~/.clawdbot/auto-persist/setup-github.sh
 powershell -ExecutionPolicy Bypass -File "C:\Users\afrad\.clawdbot\auto-persist\setup-github.ps1"
 ```
 
-### Bootstrap New Instances (Linux)
-
-Once GitHub is configured, deploy to new instances with:
+### Bootstrap Fresh Instance
 
 ```bash
-# Set credentials as env vars or pass as arguments
-export GITHUB_TOKEN="your-pat-here"
-export GITHUB_USER="your-username"
-export GITHUB_REPO="clawdbot-state"
+# On Railway (uses existing GITHUB_TOKEN):
+bash <(curl -sSL https://raw.githubusercontent.com/afrad/clawdbot-state/master/auto-persist/bootstrap-instance.sh)
 
-# Clone and setup
-bash <(curl -sSL https://raw.githubusercontent.com/$GITHUB_USER/$GITHUB_REPO/master/auto-persist/bootstrap-instance.sh)
-```
-
-Or with arguments:
-```bash
-curl -sSL https://raw.githubusercontent.com/USER/REPO/master/auto-persist/bootstrap-instance.sh | bash -s -- "PAT" "USERNAME" "REPO"
-```
-
-### Manual Setup
-
-```bash
-cd ~/.clawdbot
-git remote add origin https://github.com/YOUR_USERNAME/clawdbot-state.git
-git push -u origin master
+# Elsewhere (provide token):
+GITHUB_TOKEN="ghp_xxx" bash <(curl -sSL https://raw.githubusercontent.com/afrad/clawdbot-state/master/auto-persist/bootstrap-instance.sh)
 ```
 
 ## Files Tracked

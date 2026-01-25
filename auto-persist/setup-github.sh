@@ -1,6 +1,10 @@
 #!/bin/bash
-# Setup GitHub authentication for unattended access
-# Run with: bash setup-github.sh
+# Setup GitHub authentication for unattended access (Railway-compatible)
+#
+# On Railway: Automatically uses GITHUB_TOKEN env var
+# Elsewhere: Prompts for token or offers SSH/gh options
+#
+# Run with: bash setup-github.sh [github-user] [repo-name]
 
 set -e
 
@@ -12,37 +16,49 @@ echo ""
 
 # Check if git is configured
 if [ -z "$(git config --global user.email)" ]; then
-    read -p "Enter your Git email: " GIT_EMAIL
+    GIT_EMAIL="${GIT_EMAIL:-clawdbot@railway.app}"
     git config --global user.email "$GIT_EMAIL"
+    echo "Set git email: $GIT_EMAIL"
 fi
 
 if [ -z "$(git config --global user.name)" ]; then
-    read -p "Enter your Git name: " GIT_NAME
+    GIT_NAME="${GIT_NAME:-Clawdbot}"
     git config --global user.name "$GIT_NAME"
+    echo "Set git name: $GIT_NAME"
 fi
 
-echo ""
-echo "Choose authentication method:"
-echo "1) Personal Access Token (PAT) - Recommended for servers"
-echo "2) SSH Key - If you already have one configured"
-echo "3) GitHub CLI (gh) - Interactive setup"
-echo ""
-read -p "Select option [1-3]: " AUTH_METHOD
+# Auto-detect GITHUB_TOKEN (Railway provides this)
+if [ -n "$GITHUB_TOKEN" ]; then
+    echo "Found GITHUB_TOKEN in environment - using automatic setup"
+    AUTH_METHOD=1
+    GITHUB_USER="${1:-${GITHUB_USER:-afrad}}"
+    REPO_NAME="${2:-${GITHUB_REPO:-clawdbot-state}}"
+else
+    echo ""
+    echo "Choose authentication method:"
+    echo "1) Personal Access Token (PAT) - Recommended for servers"
+    echo "2) SSH Key - If you already have one configured"
+    echo "3) GitHub CLI (gh) - Interactive setup"
+    echo ""
+    read -p "Select option [1-3]: " AUTH_METHOD
+fi
 
 case $AUTH_METHOD in
     1)
-        echo ""
-        echo "Create a PAT at: https://github.com/settings/tokens"
-        echo "Required scopes: repo (full control)"
-        echo ""
-        read -sp "Enter your GitHub Personal Access Token: " GITHUB_TOKEN
-        echo ""
+        # Only prompt if we don't have token from environment
+        if [ -z "$GITHUB_TOKEN" ]; then
+            echo ""
+            echo "Create a PAT at: https://github.com/settings/tokens"
+            echo "Required scopes: repo (full control)"
+            echo ""
+            read -sp "Enter your GitHub Personal Access Token: " GITHUB_TOKEN
+            echo ""
+            read -p "Enter your GitHub username: " GITHUB_USER
+            read -p "Enter your repository name (e.g., clawdbot-state): " REPO_NAME
+        fi
 
         # Store credentials using git credential helper
         git config --global credential.helper store
-
-        read -p "Enter your GitHub username: " GITHUB_USER
-        read -p "Enter your repository name (e.g., clawdbot-state): " REPO_NAME
 
         # Set up the remote with embedded credentials (stored securely)
         REMOTE_URL="https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${REPO_NAME}.git"

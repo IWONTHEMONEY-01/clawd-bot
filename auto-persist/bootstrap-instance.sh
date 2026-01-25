@@ -1,7 +1,11 @@
 #!/bin/bash
-# Bootstrap auto-persist on a new Linux instance
-# Usage: curl -sSL https://raw.githubusercontent.com/YOUR_USER/clawdbot-state/master/auto-persist/bootstrap-instance.sh | bash
-#    Or: bash bootstrap-instance.sh <github-pat> <github-user> <repo-name>
+# Bootstrap auto-persist on a new Linux instance (Railway-compatible)
+#
+# Automatically uses GITHUB_TOKEN env var if available (Railway sets this)
+#
+# Usage on Railway: Just run this script - it uses existing env vars
+# Usage elsewhere:  bash bootstrap-instance.sh <github-user> <repo-name>
+#                   Or set GITHUB_TOKEN, GITHUB_USER, GITHUB_REPO env vars
 
 set -e
 
@@ -17,19 +21,21 @@ for cmd in git node; do
     fi
 done
 
-# Get credentials from args or prompt
-GITHUB_TOKEN="${1:-$GITHUB_TOKEN}"
-GITHUB_USER="${2:-$GITHUB_USER}"
-REPO_NAME="${3:-${GITHUB_REPO:-clawdbot-state}}"
-
+# GITHUB_TOKEN should already be set on Railway instances
 if [ -z "$GITHUB_TOKEN" ]; then
+    echo "Warning: GITHUB_TOKEN not found in environment"
     read -sp "GitHub Personal Access Token: " GITHUB_TOKEN
     echo ""
+else
+    echo "Using GITHUB_TOKEN from environment"
 fi
 
-if [ -z "$GITHUB_USER" ]; then
-    read -p "GitHub Username: " GITHUB_USER
-fi
+# Get user/repo from args, env, or prompt
+GITHUB_USER="${1:-${GITHUB_USER:-afrad}}"
+REPO_NAME="${2:-${GITHUB_REPO:-clawdbot-state}}"
+
+echo "GitHub User: $GITHUB_USER"
+echo "Repository: $REPO_NAME"
 
 # Setup git credentials
 git config --global credential.helper store
