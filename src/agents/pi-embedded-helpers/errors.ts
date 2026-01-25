@@ -44,6 +44,10 @@ export function isCompactionFailureError(errorMessage?: string): boolean {
 const ERROR_PAYLOAD_PREFIX_RE =
   /^(?:error|api\s*error|apierror|openai\s*error|anthropic\s*error|gateway\s*error)[:\s-]+/i;
 const FINAL_TAG_RE = /<\s*\/?\s*final\s*>/gi;
+// Match tool/XML tags that should never be shown to users (invoke, read, write, etc.)
+const TOOL_XML_TAG_RE = /<\s*\/?\s*(?:invoke|read|write|path|parameter|antml:[a-z_]+)\s*(?:[^>]*)>/gi;
+// Match XML-style blocks that look like tool calls (e.g., <invoke>...</invoke>)
+const TOOL_XML_BLOCK_RE = /<invoke[^>]*>[\s\S]*?<\/invoke>/gi;
 const ERROR_PREFIX_RE =
   /^(?:error|api\s*error|openai\s*error|anthropic\s*error|gateway\s*error|request failed|failed|exception)[:\s-]+/i;
 const HTTP_STATUS_PREFIX_RE = /^(?:http\s*)?(\d{3})\s+(.+)$/i;
@@ -68,6 +72,21 @@ const HTTP_ERROR_HINTS = [
 function stripFinalTagsFromText(text: string): string {
   if (!text) return text;
   return text.replace(FINAL_TAG_RE, "");
+}
+
+/**
+ * Strip XML tool syntax that should never be shown to users.
+ * MiniMax and other models sometimes output raw tool calls instead of responses.
+ */
+function stripToolXmlFromText(text: string): string {
+  if (!text) return text;
+  // First remove complete tool blocks (e.g., <invoke>...</invoke>)
+  let result = text.replace(TOOL_XML_BLOCK_RE, "");
+  // Then remove any remaining individual tool tags
+  result = result.replace(TOOL_XML_TAG_RE, "");
+  // Clean up extra whitespace left behind
+  result = result.replace(/\n{3,}/g, "\n\n").trim();
+  return result;
 }
 
 function isLikelyHttpErrorText(raw: string): boolean {
@@ -274,7 +293,9 @@ export function formatAssistantErrorText(
 
 export function sanitizeUserFacingText(text: string): string {
   if (!text) return text;
-  const stripped = stripFinalTagsFromText(text);
+  // Strip final tags and tool XML that should never be shown to users
+  let stripped = stripFinalTagsFromText(text);
+  stripped = stripToolXmlFromText(stripped);
   const trimmed = stripped.trim();
   if (!trimmed) return stripped;
 
