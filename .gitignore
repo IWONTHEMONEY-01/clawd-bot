@@ -106,3 +106,4 @@ NUL
 
 # Persist logs (keep snapshots though)
 auto-persist/persist.log
+SOUL.md.backup.*
