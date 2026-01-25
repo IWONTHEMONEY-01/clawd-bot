@@ -18,11 +18,10 @@ Check for any system events, errors, or alerts that need owner attention:
 If research tasks are defined below, work on the next incomplete one:
 
 ### Active Research Tasks
-<!-- Add research tasks here for autonomous work -->
-<!-- Example:
-- [ ] Research NBA player prop models - find 3 promising statistical approaches
-- [ ] Analyze MLB pitcher performance metrics for betting edge
--->
+- [ ] Research NBA player prop modeling - find statistical approaches that have edge (points, rebounds, assists)
+- [ ] Research MLB pitcher prop modeling - strikeouts, earned runs, innings pitched
+- [ ] Identify free/cheap data sources for historical player stats
+- [ ] Find existing open-source sports betting models to learn from
 
 ### Completed Research
 <!-- Move completed tasks here with dates -->
