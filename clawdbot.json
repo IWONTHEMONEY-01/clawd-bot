@@ -1,10 +1,6 @@
 {
   "auth": {
     "profiles": {
-      "anthropic:default": {
-        "provider": "anthropic",
-        "mode": "api_key"
-      },
       "minimax:default": {
         "provider": "minimax",
         "mode": "api_key"
@@ -14,7 +10,8 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "minimax/MiniMax-M2.1"
+        "primary": "minimax/MiniMax-M2.1",
+        "fallbacks": []
       },
       "workspace": "/home/user/clawd-bot",
       "maxConcurrent": 4,
