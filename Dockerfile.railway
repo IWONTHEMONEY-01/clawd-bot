@@ -1,0 +1,299 @@
+FROM node:22-bookworm
+
+# Install Bun (required for build scripts)
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:${PATH}"
+
+RUN corepack enable
+
+# Install gog CLI for Gmail
+RUN curl -sL https://github.com/steipete/gogcli/releases/download/v0.9.0/gogcli_0.9.0_linux_amd64.tar.gz | tar xz -C /usr/local/bin gog
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY ui/package.json ./ui/
+COPY patches ./patches
+COPY scripts ./scripts
+
+RUN pnpm install --frozen-lockfile
+
+COPY . .
+RUN pnpm build
+ENV CLAWDBOT_PREFER_PNPM=1
+RUN pnpm ui:install
+RUN pnpm ui:build
+
+# Create config directories
+RUN mkdir -p /root/.config/gogcli/keyring
+
+ENV NODE_ENV=production
+ENV HOME=/root
+ENV CLAWDBOT_DISABLE_BONJOUR=1
+# Store all state in persistent volume to survive restarts
+ENV CLAWDBOT_STATE_DIR=/root/clawd/.clawdbot
+
+# Create startup script that generates config from environment variables
+RUN echo '#!/bin/bash\n\
+set -e\n\
+\n\
+# Create directories in persistent volume (state + workspace)\n\
+mkdir -p /root/clawd/.clawdbot/agents/main/agent /root/.config/gogcli/keyring\n\
+mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
+\n\
+# Set up workspace from local files (only on first deploy - preserves all customizations)\n\
+# Check if workspace volume is empty (first deploy)\n\
+if [ -z "$(ls -A /root/clawd 2>/dev/null | grep -v lost+found)" ]; then\n\
+  echo "First deploy - initializing workspace from local files"\n\
+  mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
+  for f in AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md SOUL_EVIL.md TOOLS.md USER.md BOOT.md; do\n\
+    [ -f "/app/$f" ] && cp "/app/$f" "/root/clawd/" 2>/dev/null || true\n\
+  done\n\
+  cp -r /app/memory/* /root/clawd/memory/ 2>/dev/null || true\n\
+  cp -r /app/canvas/* /root/clawd/canvas/ 2>/dev/null || true\n\
+  cp -r /app/tasks/* /root/clawd/tasks/ 2>/dev/null || true\n\
+  echo "Workspace initialized"\n\
+else\n\
+  echo "Workspace volume exists - preserving all data"\n\
+fi\n\
+\n\
+# Generate clawdbot.json from environment (in persistent volume)\n\
+cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
+{\n\
+  "auth": {\n\
+    "profiles": {\n\
+      "minimax:default": {\n\
+        "provider": "minimax",\n\
+        "mode": "api_key"\n\
+      }\n\
+    }\n\
+  },\n\
+  "agents": {\n\
+    "defaults": {\n\
+      "model": {\n\
+        "primary": "minimax/MiniMax-M2.1"\n\
+      },\n\
+      "workspace": "/root/clawd",\n\
+      "memorySearch": {\n\
+        "enabled": true,\n\
+        "sources": ["memory", "sessions"],\n\
+        "experimental": {\n\
+          "sessionMemory": true\n\
+        },\n\
+        "sync": {\n\
+          "onSessionStart": true,\n\
+          "onSearch": true,\n\
+          "watch": true\n\
+        }\n\
+      }\n\
+    }\n\
+  },\n\
+  "tools": {\n\
+    "profile": "coding",\n\
+    "allow": ["group:web", "group:ui", "group:messaging"],\n\
+    "media": {\n\
+      "audio": {\n\
+        "enabled": true,\n\
+        "models": [\n\
+          { "provider": "groq", "model": "whisper-large-v3" }\n\
+        ]\n\
+      },\n\
+      "image": {\n\
+        "enabled": true,\n\
+        "models": [\n\
+          { "provider": "minimax", "model": "MiniMax-VL-01" }\n\
+        ]\n\
+      },\n\
+      "video": {\n\
+        "enabled": true,\n\
+        "models": [\n\
+          { "provider": "minimax", "model": "MiniMax-VL-01" }\n\
+        ]\n\
+      }\n\
+    }\n\
+  },\n\
+  "channels": {\n\
+    "telegram": {\n\
+      "enabled": true,\n\
+      "dmPolicy": "allowlist",\n\
+      "allowFrom": ["${TELEGRAM_ALLOWED_USER_ID:-6632715854}"],\n\
+      "botToken": "${TELEGRAM_BOT_TOKEN}",\n\
+      "groupPolicy": "allowlist",\n\
+      "streamMode": "off"\n\
+    },\n\
+    "nostr": {\n\
+      "enabled": true,\n\
+      "privateKey": "${NOSTR_PRIVATE_KEY}",\n\
+      "relays": ["wss://relay.damus.io", "wss://nos.lol", "wss://relay.nostr.band"],\n\
+      "dmPolicy": "pairing"\n\
+    }\n\
+  },\n\
+  "gateway": {\n\
+    "mode": "local",\n\
+    "bind": "lan",\n\
+    "auth": {\n\
+      "mode": "token",\n\
+      "token": "${GATEWAY_TOKEN:-defaulttoken123}"\n\
+    }\n\
+  },\n\
+  "plugins": {\n\
+    "entries": {\n\
+      "telegram": { "enabled": true },\n\
+      "nostr": { "enabled": true },\n\
+      "memory-core": { "enabled": true },\n\
+      "diagnostics-otel": { "enabled": true }\n\
+    }\n\
+  },\n\
+  "hooks": {\n\
+    "internal": {\n\
+      "enabled": true,\n\
+      "entries": {\n\
+        "session-memory": { "enabled": true },\n\
+        "command-logger": { "enabled": true },\n\
+        "boot-md": { "enabled": true }\n\
+      }\n\
+    }\n\
+  }\n\
+}\n\
+EOFCONFIG\n\
+\n\
+# Generate auth-profiles.json ONLY if it doesnt exist (preserves updates)\n\
+if [ ! -f /root/clawd/.clawdbot/agents/main/agent/auth-profiles.json ]; then\n\
+  echo "Creating initial auth-profiles.json from environment variables"\n\
+  cat > /root/clawd/.clawdbot/agents/main/agent/auth-profiles.json << EOFAUTH\n\
+{\n\
+  "version": 1,\n\
+  "profiles": {\n\
+    "minimax:default": {\n\
+      "type": "api_key",\n\
+      "provider": "minimax",\n\
+      "key": "${MINIMAX_API_KEY}"\n\
+    },\n\
+    "groq:default": {\n\
+      "type": "api_key",\n\
+      "provider": "groq",\n\
+      "key": "${GROQ_API_KEY}"\n\
+    }\n\
+  },\n\
+  "lastGood": {\n\
+    "minimax": "minimax:default",\n\
+    "groq": "groq:default"\n\
+  }\n\
+}\n\
+EOFAUTH\n\
+else\n\
+  echo "auth-profiles.json already exists - preserving existing credentials"\n\
+fi\n\
+\n\
+# Set up gog credentials if Gmail env vars are present\n\
+if [ -n "$GMAIL_CLIENT_ID" ] && [ -n "$GMAIL_CLIENT_SECRET" ]; then\n\
+  cat > /root/.config/gogcli/credentials.json << EOFCREDS\n\
+{\n\
+  "client_id": "${GMAIL_CLIENT_ID}",\n\
+  "client_secret": "${GMAIL_CLIENT_SECRET}"\n\
+}\n\
+EOFCREDS\n\
+  echo "Gmail client credentials configured"\n\
+fi\n\
+\n\
+# Import Gmail token if present\n\
+if [ -n "$GMAIL_REFRESH_TOKEN" ] && [ -n "$GMAIL_ACCOUNT" ]; then\n\
+  cat > /tmp/gmail_token.json << EOFTOKEN\n\
+{\n\
+  "email": "${GMAIL_ACCOUNT}",\n\
+  "client": "default",\n\
+  "services": ["gmail"],\n\
+  "scopes": [\n\
+    "email",\n\
+    "https://www.googleapis.com/auth/gmail.modify",\n\
+    "https://www.googleapis.com/auth/gmail.settings.basic",\n\
+    "https://www.googleapis.com/auth/gmail.settings.sharing",\n\
+    "https://www.googleapis.com/auth/userinfo.email",\n\
+    "openid"\n\
+  ],\n\
+  "refresh_token": "${GMAIL_REFRESH_TOKEN}"\n\
+}\n\
+EOFTOKEN\n\
+  # Use plaintext keyring backend for automation - set password to avoid TTY prompt\n\
+  export GOG_KEYRING_BACKEND=file\n\
+  export GOG_KEYRING_PASSWORD="${GOG_KEYRING_PASSWORD:-clawdbot123}"\n\
+  gog auth tokens import /tmp/gmail_token.json --no-input 2>/dev/null || true\n\
+  rm -f /tmp/gmail_token.json\n\
+  echo "Gmail token configured for ${GMAIL_ACCOUNT}"\n\
+fi\n\
+\n\
+# Set gog environment for runtime\n\
+export GOG_KEYRING_BACKEND=file\n\
+export GOG_KEYRING_PASSWORD="${GOG_KEYRING_PASSWORD:-clawdbot123}"\n\
+export GOG_ACCOUNT="${GMAIL_ACCOUNT}"\n\
+\n\
+echo "Config generated, starting gateway..."\n\
+\n\
+# Set up git for memory sync - uses SEPARATE branch to avoid destroying source code\n\
+if [ -n "$GITHUB_TOKEN" ]; then\n\
+  cd /root/clawd\n\
+  # Only init if not already a git repo\n\
+  if [ ! -d ".git" ]; then\n\
+    git init -b memory-sync\n\
+    echo "Git initialized"\n\
+  fi\n\
+  # Only add remote if it doesnt exist\n\
+  if ! git remote get-url origin >/dev/null 2>&1; then\n\
+    git remote add origin https://${GITHUB_TOKEN}@github.com/IWONTHEMONEY-01/clawd-bot.git\n\
+    echo "Git remote added"\n\
+  fi\n\
+  git config user.email "bot@clawdbot.local"\n\
+  git config user.name "Clawdbot"\n\
+  # Try to fetch existing memory from memory-sync branch\n\
+  if git fetch origin memory-sync 2>/dev/null; then\n\
+    git checkout -f origin/memory-sync -- memory/ 2>/dev/null || true\n\
+    echo "Restored memory from memory-sync branch"\n\
+  fi\n\
+  echo "Git configured for memory sync"\n\
+fi\n\
+\n\
+# Start memory sync in background (every 10 minutes) - pushes to memory-sync branch ONLY\n\
+if [ -n "$GITHUB_TOKEN" ]; then\n\
+  (\n\
+    while true; do\n\
+      sleep 600\n\
+      cd /root/clawd 2>/dev/null || continue\n\
+      # ONLY add workspace files\n\
+      git add memory/*.md memory/**/*.md 2>/dev/null || true\n\
+      git add AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md TOOLS.md USER.md canvas/ tasks/ 2>/dev/null || true\n\
+      if [ -n "$(git diff --cached --name-only 2>/dev/null)" ]; then\n\
+        git commit -m "Auto-sync memory $(date -u +%Y-%m-%dT%H:%M:%SZ)" || true\n\
+        # Push to memory-sync branch ONLY - never touch main\n\
+        git push origin memory-sync:memory-sync --force 2>/dev/null || echo "Memory sync push failed"\n\
+        echo "Memory synced to git (memory-sync branch)"\n\
+      fi\n\
+    done\n\
+  ) &\n\
+  echo "Memory sync daemon started"\n\
+fi\n\
+\n\
+exec node /app/railway-gateway.mjs\n\
+' > /app/start.sh && chmod +x /app/start.sh
+
+# Create direct gateway startup script
+RUN echo 'import { loadConfig, resolveGatewayPort } from "./dist/config/config.js"; \
+import { resolveGatewayAuth } from "./dist/gateway/auth.js"; \
+import { startGatewayServer } from "./dist/gateway/server.js"; \
+import { setConsoleTimestampPrefix } from "./dist/logging/console.js"; \
+import { loadDotEnv } from "./dist/infra/dotenv.js"; \
+import { normalizeEnv } from "./dist/infra/env.js"; \
+loadDotEnv({ quiet: true }); \
+normalizeEnv(); \
+setConsoleTimestampPrefix(true); \
+const cfg = loadConfig(); \
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : resolveGatewayPort(cfg); \
+const auth = resolveGatewayAuth({ authConfig: cfg.gateway?.auth }); \
+console.log(`Starting gateway on port ${port}...`); \
+const server = await startGatewayServer(port, { auth }); \
+console.log(`Gateway running on ws://0.0.0.0:${port}`);' > /app/railway-gateway.mjs
+
+# Railway uses PORT env var, but EXPOSE documents the default
+EXPOSE 8080
+
+CMD ["/app/start.sh"]

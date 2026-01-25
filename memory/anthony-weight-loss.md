@@ -5,9 +5,6 @@
 **Goal Weight:** 210 lbs
 **Timeline:** 5-7 months
 
-## Daily Step Goal
-- **Target:** 8,000 steps/day (Anthony's realistic goal)
-
 ## Key Constraints
 - Exercise-induced anaphylaxis (4 hour post-meal buffer)
 - Allergic to nuts and fruits
@@ -16,33 +13,71 @@
 - Son bedtime: ~9 PM
 - Dinner: 6-7 PM
 
-## The Real Problem (INVERSION IDENTIFIED)
-Anthony's 3 failure modes:
-1. **Late night sweets + overdoing calories** 9 PM - midnight
-2. **Not exercising at all in any given week**
-3. **Not getting daily steps in**
+## Equipment Available
+- Peloton
+- Dumbbells
+- Yoga mats
+- Indoor walking
+- Trying to get an erg
+
+## The Real Problem
+- Late night snacking 9 PM - midnight
+- Triggers: boredom, exhaustion after son goes to bed
+- Snacks: chocolate, chips and dip
+- Tracking deficit on Cal.ai but not seeing results = undertracking snacks
+
+## Current Eating
+- Breakfast: eggs or yogurt + coffee + milk
+- Loves chocolate (keep but control)
+- Mostly cooks (good!)
+- Tracks on Cal.ai
 
 ## The Plan
 
 ### Nutrition (80% of the battle)
-1. Kitchen closes at 9 PM (brush teeth = signal)
+1. Track EVERYTHING - especially late night snacks
 2. Budget 150-200 cal/day for chocolate (portion controlled)
-3. Track EVERYTHING on Cal.ai (including night snacks)
-4. 8K steps daily minimum
+3. Swap chips for: popcorn, veggies + hummus, cheese, jerky
+4. Kitchen closes at 9 PM
+5. Brush teeth at 9 PM (signals done eating)
+
+### Evening Routine (the key fix)
+- Son to bed 9 PM
+- Brush teeth immediately after
+- Tea/water only after 9 PM
+- Bed by 10:30 PM
+- Replace snacking with: sleep, games, shows, reading
 
 ### Exercise (20% of the battle)
-- Realistic: 2 workouts/week minimum
+- Realistic: 2-3x/week
 - Best window: fasted morning (8-8:25 AM before eating)
-- Office days: rest days or 15 min if possible
+- Office days: 15 min fasted if possible, otherwise rest day
+- Options: Peloton, dumbbells, yoga, indoor walks
+
+### Weekly Template
+| Day | Exercise | Notes |
+|-----|----------|-------|
+| Mon | 20-25 min Peloton or dumbbells | Fasted AM |
+| Tue | 20-25 min workout | Fasted AM |
+| Wed | Rest or 15 min AM | Office day |
+| Thu | Rest or 15 min AM | Office day |
+| Fri | 20-25 min workout | Fasted AM |
+| Sat | Longer workout (30-45 min) | If home |
+| Sun | Rest or yoga | Recovery |
 
 ## Progress Log
 
-| Date | Weight | Steps | Notes |
-|------|--------|-------|-------|
-| 2026-01-21 | 239 | | Day 1 - Knicks game |
-| 2026-01-22 | | | Day 2 - Drove Leo, fasted until 12:30 PM, testing kitchen closes at 9 PM tonight |
+| Date | Weight | Notes |
+|------|--------|-------|
+| 2026-01-21 | 239 | Day 1 - Knicks game tonight |
+| 2026-01-23 | | First "no snacking after 9" test |
+
+## Cal.ai Tracking
+- Ask Anthony for Cal.ai screenshots or summaries at check-ins
+- Track: calories, protein, carbs, fat
+- Look for patterns in late night snacking
 
 ## Check-ins
-- **Daily 8 AM:** Action plan
-- **Mon 8:30 AM:** Weigh-in
-- **Fri 10 AM:** Weekly review + Cal.ai screenshots
+- First test: Thursday 1/23 evening routine
+- Follow up: Friday 1/24
+- Remind to send Cal.ai screenshots at each check-in

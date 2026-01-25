@@ -35,8 +35,7 @@ After the user chooses, update:
 - Notes
 
 3) ~/.clawdbot/clawdbot.json
-Run: clawdbot agents set-identity --workspace "<this workspace>" --from-identity
-If multiple agents share a host, add --agent <id>.
+Set identity.name, identity.theme, identity.emoji to match IDENTITY.md.
 
 ## Cleanup
 Delete BOOTSTRAP.md once this is complete.

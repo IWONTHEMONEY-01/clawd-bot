@@ -1,0 +1,7 @@
+{
+  "plugins": {
+    "minimax-usage-tracker": {
+      "enabled": true
+    }
+  }
+}

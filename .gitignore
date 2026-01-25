@@ -1,6 +1,79 @@
-# Sensitive credentials - NEVER commit
+node_modules
+**/node_modules/
 .env
-*.env
+docker-compose.extra.yml
+# dist - NOT ignored because we need it for Railway builds
+*.bun-build
+bun.lock
+bun.lockb
+coverage
+.pnpm-store
+.worktrees/
+.DS_Store
+**/.DS_Store
+ui/src/ui/__screenshots__/
+ui/playwright-report/
+ui/test-results/
+
+# Bun build artifacts
+*.bun-build
+apps/macos/.build/
+apps/shared/ClawdbotKit/.build/
+**/ModuleCache/
+bin/
+bin/clawdbot-mac
+bin/docs-list
+apps/macos/.build-local/
+apps/macos/.swiftpm/
+apps/shared/ClawdbotKit/.swiftpm/
+Core/
+apps/ios/*.xcodeproj/
+apps/ios/*.xcworkspace/
+apps/ios/.swiftpm/
+vendor/
+apps/ios/Clawdbot.xcodeproj/
+apps/ios/Clawdbot.xcodeproj/**
+apps/macos/.build/**
+**/*.bun-build
+apps/ios/*.xcfilelist
+
+# Vendor build artifacts
+vendor/a2ui/renderers/lit/dist/
+.bundle.hash
+
+# fastlane (iOS)
+apps/ios/fastlane/README.md
+apps/ios/fastlane/report.xml
+apps/ios/fastlane/Preview.html
+apps/ios/fastlane/screenshots/
+apps/ios/fastlane/test_output/
+apps/ios/fastlane/logs/
+apps/ios/fastlane/.env
+apps/ios/fastlane/report.xml
+
+# fastlane build artifacts (local)
+apps/ios/*.ipa
+apps/ios/*.dSYM.zip
+
+# provisioning profiles (local)
+apps/ios/*.mobileprovision
+
+# Local untracked files
+.local/
+.vscode/
+.tgz
+
+# local tooling
+.serena/
+
+# Other projects in the workspace
+headline-grabber/
+
+# ============================================
+# Auto-persist additions
+# ============================================
+
+# Sensitive credentials - NEVER commit
 credentials/
 gmail_client_secret.json
 **/oauth.json
@@ -13,7 +86,6 @@ clawdbot-telegram/
 clawd/clawd-bot/
 clawd/clawdbot-telegram/
 clawd/headline-grabber/
-headline-grabber/
 
 # Windows reserved names
 nul
@@ -28,21 +100,9 @@ NUL
 **/*.tmp
 *.bak.*
 
-# Node modules (if any)
-node_modules/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Large binary media (optional - comment out if you want media backed up)
-# media/
-
-# Build artifacts
-dist/
-build/
-*.log
-
 # SQLite WAL/SHM files (transient)
 *.db-wal
 *.db-shm
+
+# Persist logs (keep snapshots though)
+auto-persist/persist.log

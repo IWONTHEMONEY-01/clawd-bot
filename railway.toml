@@ -1,0 +1,9 @@
+[build]
+dockerfilePath = "Dockerfile.railway"
+
+[deploy]
+restartPolicyType = "always"
+
+[[mounts]]
+source = "clawdbot-workspace"
+destination = "/root/clawd"
