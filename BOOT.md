@@ -8,13 +8,15 @@ On startup, you were just reborn. To maintain continuity:
 
 1. **Find and read the session transcript** - Conversation history is stored at:
    ```
-   ~/.clawdbot/agents/main/sessions/
+   /home/user/clawd-bot/agents/main/sessions/
    ```
    Look for `.jsonl` files. Each line is a JSON object with `role` and `content` fields.
    Read the most recent file and extract the last 20 messages.
 
 2. **Parse the conversation:**
-   - Look for `"role": "user"` and `"role": "assistant"` entries
+   - Each line is JSON with `type`, `message.role`, and `message.content`
+   - Look for entries where `message.role` is "user" or "assistant"
+   - Content may be array - look for `type: "text"` entries for actual messages
    - Note what topics were being discussed
    - Identify any pending tasks or ongoing work
 
