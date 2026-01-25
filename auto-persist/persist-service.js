@@ -5,7 +5,7 @@
  * Runs every 5 minutes to:
  * 1. Force-flush all in-memory state to disk
  * 2. Commit any changes to git
- * 3. Push to GitHub
+ * 3. Push to a bot-specific branch (NOT main, to avoid redeploying other bots)
  *
  * Run with: node persist-service.js
  * Or schedule with Windows Task Scheduler
@@ -14,10 +14,15 @@
 import { execSync, spawn } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 
 const CLAWDBOT_DIR = path.resolve(import.meta.dirname, '..');
 const LOG_FILE = path.join(CLAWDBOT_DIR, 'auto-persist', 'persist.log');
 const INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+
+// Use hostname or INSTANCE_ID env var to create unique branch per bot
+const INSTANCE_ID = process.env.INSTANCE_ID || process.env.RAILWAY_SERVICE_NAME || os.hostname().slice(0, 8);
+const MEMORY_BRANCH = `memories/${INSTANCE_ID}`;
 
 function log(message) {
   const timestamp = new Date().toISOString();
@@ -49,15 +54,50 @@ function hasChanges() {
   }
 }
 
+function ensureMemoryBranch() {
+  try {
+    // Check if memory branch exists locally
+    const branches = exec('git branch --list').split('\n').map(b => b.trim().replace('* ', ''));
+
+    if (!branches.includes(MEMORY_BRANCH)) {
+      // Check if it exists on remote
+      try {
+        exec(`git fetch origin ${MEMORY_BRANCH}`);
+        exec(`git checkout -b ${MEMORY_BRANCH} origin/${MEMORY_BRANCH}`);
+        log(`Checked out existing memory branch: ${MEMORY_BRANCH}`);
+      } catch {
+        // Create new orphan branch for memories (no history from main)
+        exec(`git checkout --orphan ${MEMORY_BRANCH}`);
+        exec('git reset --hard');
+        exec('git commit --allow-empty -m "Initialize memory branch"');
+        log(`Created new memory branch: ${MEMORY_BRANCH}`);
+      }
+    } else {
+      exec(`git checkout ${MEMORY_BRANCH}`);
+    }
+    return true;
+  } catch (err) {
+    log(`Failed to setup memory branch: ${err.message}`);
+    return false;
+  }
+}
+
 function commitAndPush() {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const originalBranch = exec('git rev-parse --abbrev-ref HEAD');
 
   try {
+    // Switch to memory branch
+    if (!ensureMemoryBranch()) {
+      return false;
+    }
+
     // Stage all changes (respecting .gitignore)
     exec('git add -A');
 
     if (!hasChanges()) {
       log('No changes to commit');
+      exec(`git checkout ${originalBranch}`);
       return false;
     }
 
@@ -66,12 +106,12 @@ function commitAndPush() {
     exec(`git commit -m "${commitMsg}"`);
     log(`Committed: ${commitMsg}`);
 
-    // Push to remote (if configured)
+    // Push to memory branch (NOT main)
     try {
       const remote = exec('git remote').trim();
       if (remote) {
-        exec('git push');
-        log('Pushed to remote');
+        exec(`git push -u origin ${MEMORY_BRANCH}`);
+        log(`Pushed to ${MEMORY_BRANCH} (main branch unchanged)`);
       } else {
         log('No remote configured - skipping push');
       }
@@ -79,9 +119,13 @@ function commitAndPush() {
       log(`Push failed (will retry next cycle): ${pushErr.message}`);
     }
 
+    // Switch back to original branch
+    exec(`git checkout ${originalBranch}`);
     return true;
   } catch (err) {
     log(`Commit failed: ${err.message}`);
+    // Try to switch back to original branch
+    try { exec(`git checkout ${originalBranch}`); } catch {}
     return false;
   }
 }

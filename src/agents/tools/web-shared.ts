@@ -85,3 +85,53 @@ export async function readResponseText(res: Response): Promise<string> {
     return "";
   }
 }
+
+/**
+ * Simple rate limiter for API calls.
+ * Enforces minimum interval between requests (e.g., 1 req/sec for Brave free tier).
+ */
+export class RateLimiter {
+  private lastRequestTime = 0;
+  private queue: Array<{
+    resolve: () => void;
+    reject: (err: Error) => void;
+  }> = [];
+  private processing = false;
+
+  constructor(
+    /** Minimum milliseconds between requests */
+    private readonly minIntervalMs: number,
+  ) {}
+
+  private async processQueue(): Promise<void> {
+    if (this.processing) return;
+    this.processing = true;
+
+    while (this.queue.length > 0) {
+      const now = Date.now();
+      const elapsed = now - this.lastRequestTime;
+      const waitTime = Math.max(0, this.minIntervalMs - elapsed);
+
+      if (waitTime > 0) {
+        await new Promise((r) => setTimeout(r, waitTime));
+      }
+
+      this.lastRequestTime = Date.now();
+      const next = this.queue.shift();
+      if (next) next.resolve();
+    }
+
+    this.processing = false;
+  }
+
+  /** Wait for rate limit slot before proceeding */
+  async acquire(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.queue.push({ resolve, reject });
+      this.processQueue();
+    });
+  }
+}
+
+/** Brave Search rate limiter: 1 request per second (free tier) */
+export const braveRateLimiter = new RateLimiter(1000);

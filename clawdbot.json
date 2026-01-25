@@ -1,12 +1,12 @@
 {
   "auth": {
     "profiles": {
-      "anthropic:default": {
-        "provider": "anthropic",
-        "mode": "api_key"
-      },
       "minimax:default": {
         "provider": "minimax",
+        "mode": "api_key"
+      },
+      "anthropic:default": {
+        "provider": "anthropic",
         "mode": "api_key"
       }
     }
@@ -14,15 +14,20 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "minimax/MiniMax-M2.1"
+        "primary": "minimax/MiniMax-M2.1",
+        "fallbacks": []
       },
-      "workspace": "C:\\Users\\afrad\\clawd",
+      "workspace": "/home/user/clawd-bot",
       "maxConcurrent": 4,
       "subagents": {
         "maxConcurrent": 8
       },
       "sandbox": {
         "mode": "off"
+      },
+      "heartbeat": {
+        "enabled": true,
+        "every": "10m"
       }
     }
   },
