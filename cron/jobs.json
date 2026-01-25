@@ -1,0 +1,205 @@
+{
+  "version": 1,
+  "jobs": [
+    {
+      "id": "25d75096-dccc-4fa3-88cf-966af22227e7",
+      "name": "munger-mental-models",
+      "description": "Daily Charlie Munger mental model training for Anthony",
+      "enabled": true,
+      "deleteAfterRun": false,
+      "createdAtMs": 1768984773206,
+      "updatedAtMs": 1768984773206,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 9 * * *",
+        "tz": "America/New_York"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "It's time for Anthony's daily Munger mental model lesson! Check memory/munger-mental-models.md for the curriculum and progress. Send the next model in the interactive format: explain the concept, give a real example, then pose a challenge question for Anthony to respond to. Update the progress tracker after sending.",
+        "deliver": true,
+        "channel": "telegram",
+        "to": "6632715854",
+        "bestEffortDeliver": false
+      },
+      "isolation": {
+        "postToMainPrefix": "Cron",
+        "postToMainMode": "summary",
+        "postToMainMaxChars": 8000
+      },
+      "state": {
+        "nextRunAtMs": 1769265000000
+      }
+    },
+    {
+      "id": "cee47b1f-353e-4b3a-8f2d-f44675f85097",
+      "name": "weight-loss-monday-weighin",
+      "description": "Monday morning weigh-in prompt for Anthony",
+      "enabled": true,
+      "deleteAfterRun": false,
+      "createdAtMs": 1768986335502,
+      "updatedAtMs": 1768986335502,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 8 * * 1",
+        "tz": "America/New_York"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Monday morning weigh-in time for Anthony! Check memory/anthony-weight-loss.md for context and previous weights. Ask him: 1) What's the scale say this morning? 2) How was the weekend with eating? Keep it brief and encouraging. Log the weight in the progress table.",
+        "deliver": true,
+        "channel": "telegram",
+        "to": "6632715854",
+        "bestEffortDeliver": false
+      },
+      "isolation": {
+        "postToMainPrefix": "Cron",
+        "postToMainMode": "summary",
+        "postToMainMaxChars": 8000
+      },
+      "state": {
+        "nextRunAtMs": 1769434200000
+      }
+    },
+    {
+      "id": "b1c811c0-4897-4934-8d63-3f6fe770d25a",
+      "name": "weight-loss-daily-plan",
+      "description": "Daily action plan for Anthony's weight loss",
+      "enabled": true,
+      "deleteAfterRun": false,
+      "createdAtMs": 1768986441768,
+      "updatedAtMs": 1769002295489,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * *",
+        "tz": "America/New_York"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Send Anthony his daily weight loss action plan. Check memory/anthony-weight-loss.md for his constraints. Consider: what day of week is it (office days Wed/Thu are harder), his 4-hour post-meal exercise restriction, and his equipment (Peloton, dumbbells, indoor walks). Give ONE specific, actionable recommendation for today - could be exercise (e.g. '20 min fasted Peloton before breakfast'), nutrition (e.g. 'kitchen closes at 9 PM tonight'), or mindset. Keep it short and motivating - 2-3 sentences max. End with an emoji.",
+        "deliver": true,
+        "channel": "telegram",
+        "to": "6632715854",
+        "bestEffortDeliver": false
+      },
+      "isolation": {
+        "postToMainPrefix": "Cron",
+        "postToMainMode": "summary",
+        "postToMainMaxChars": 8000
+      },
+      "state": {
+        "nextRunAtMs": 1769259600000,
+        "lastError": "FailoverError: OAuth token refresh failed for anthropic: Failed to refresh OAuth token for anthropic. Please try again or re-authenticate.",
+        "lastRunAtMs": 1769002295490,
+        "lastStatus": "error",
+        "lastDurationMs": 1898
+      }
+    },
+    {
+      "id": "d127aa3c-6e3c-491a-8139-6caa7866da58",
+      "name": "weight-loss-friday-checkin",
+      "description": "Friday weight loss check-in with Anthony",
+      "enabled": true,
+      "deleteAfterRun": false,
+      "createdAtMs": 1768987098720,
+      "updatedAtMs": 1769180400007,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 5",
+        "tz": "America/New_York"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "It's Friday check-in time for Anthony's weight loss journey! Check memory/anthony-weight-loss.md for context. Ask him: 1) How did the week go with evening snacking? 2) What's his weight today? 3) Any workouts completed? 4) REMIND HIM to send a Cal.ai screenshot or weekly calorie average! Update the progress log. Be encouraging but real.",
+        "deliver": true,
+        "channel": "telegram",
+        "to": "6632715854",
+        "bestEffortDeliver": false
+      },
+      "isolation": {
+        "postToMainPrefix": "Cron",
+        "postToMainMode": "summary",
+        "postToMainMaxChars": 8000
+      },
+      "state": {
+        "nextRunAtMs": 1769785200000,
+        "lastRunAtMs": 1769180400007,
+        "lastStatus": "ok",
+        "lastDurationMs": 11471
+      }
+    },
+    {
+      "id": "ef95b5c0-5631-43f0-afba-4b94250dfce5",
+      "name": "cost-alert",
+      "enabled": true,
+      "deleteAfterRun": false,
+      "createdAtMs": 1769103633465,
+      "updatedAtMs": 1769103633465,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 */6 * * *"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Check ClawdBot API costs. Run: python C:\\Users\\afrad\\.clawdbot\\clawd\\clawdbot-telegram\\skills\\cost-tracker\\scripts\\track_cost.py check --json. If needs_alert is true, tell me costs exceeded the threshold.",
+        "deliver": true,
+        "channel": "telegram",
+        "to": "6632715854",
+        "bestEffortDeliver": false
+      },
+      "isolation": {
+        "postToMainPrefix": "Cron",
+        "postToMainMode": "summary",
+        "postToMainMaxChars": 8000
+      },
+      "state": {
+        "nextRunAtMs": 1769187600000
+      }
+    },
+    {
+      "id": "3df42ca1-30da-4d31-8530-2c7b40cd46cb",
+      "name": "business-todo-daily",
+      "description": "Daily business todo check for Anthony",
+      "enabled": true,
+      "deleteAfterRun": false,
+      "createdAtMs": 1769104186981,
+      "updatedAtMs": 1769119200013,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 17 * * *",
+        "tz": "America/New_York"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "📋 Daily Business Check-in! Check anthony-business-todos.md and briefly ask Anthony: What did you tackle today? Any quick wins completed? What's tomorrow's priority? Keep it short unless he wants to dive deeper.",
+        "deliver": true,
+        "channel": "telegram",
+        "to": "6632715854",
+        "bestEffortDeliver": false
+      },
+      "isolation": {
+        "postToMainPrefix": "Cron",
+        "postToMainMode": "summary",
+        "postToMainMaxChars": 8000
+      },
+      "state": {
+        "nextRunAtMs": 1769205600000,
+        "lastRunAtMs": 1769119200014,
+        "lastStatus": "ok",
+        "lastDurationMs": 9489
+      }
+    }
+  ]
+}

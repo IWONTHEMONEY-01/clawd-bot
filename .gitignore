@@ -1,0 +1,48 @@
+# Sensitive credentials - NEVER commit
+.env
+*.env
+credentials/
+gmail_client_secret.json
+**/oauth.json
+**/*token*.json
+**/*secret*.json
+
+# Embedded git repos (they have their own version control)
+clawd-bot/
+clawdbot-telegram/
+clawd/clawd-bot/
+clawd/clawdbot-telegram/
+clawd/headline-grabber/
+headline-grabber/
+
+# Windows reserved names
+nul
+NUL
+
+# Lock files (transient)
+*.lock
+**/*.lock
+
+# Temp files
+*.tmp
+**/*.tmp
+*.bak.*
+
+# Node modules (if any)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Large binary media (optional - comment out if you want media backed up)
+# media/
+
+# Build artifacts
+dist/
+build/
+*.log
+
+# SQLite WAL/SHM files (transient)
+*.db-wal
+*.db-shm

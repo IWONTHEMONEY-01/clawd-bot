@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "profiles": {
+    "anthropic:default": {
+      "type": "api_key",
+      "provider": "anthropic",
+      "key": "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"
+    },
+    "anthropic:claude-cli": {
+      "type": "oauth",
+      "provider": "anthropic",
+      "access": "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",
+      "refresh": "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",
+      "expires": 1769263118865
+    }
+  },
+  "lastGood": {
+    "anthropic": "anthropic:default"
+  },
+  "usageStats": {
+    "anthropic:default": {
+      "lastUsed": 1769132706658,
+      "errorCount": 0,
+      "lastFailureAt": 1769132706647
+    }
+  }
+}

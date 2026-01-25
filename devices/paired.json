@@ -1,0 +1,34 @@
+{
+  "fb6377809585172fa9da7bc494d455fcd4dc7fb27ae5d27900955afe043c4d1f": {
+    "deviceId": "fb6377809585172fa9da7bc494d455fcd4dc7fb27ae5d27900955afe043c4d1f",
+    "publicKey": "DCU9s3mjDfmjQqyZRswKjL5REN9AlJb1D0BKHbpRJPw",
+    "platform": "win32",
+    "clientId": "cli",
+    "clientMode": "cli",
+    "role": "operator",
+    "roles": [
+      "operator"
+    ],
+    "scopes": [
+      "operator.admin",
+      "operator.approvals",
+      "operator.pairing"
+    ],
+    "remoteIp": "::ffff:127.0.0.1",
+    "tokens": {
+      "operator": {
+        "token": "858d2ec7a225461c8ba64314d7372ee3",
+        "role": "operator",
+        "scopes": [
+          "operator.admin",
+          "operator.approvals",
+          "operator.pairing"
+        ],
+        "createdAtMs": 1769180404974,
+        "lastUsedAtMs": 1769180406696
+      }
+    },
+    "createdAtMs": 1769180404974,
+    "approvedAtMs": 1769180404974
+  }
+}

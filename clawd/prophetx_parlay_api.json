@@ -1,0 +1,945 @@
+﻿{
+    "schemes": ["https"],
+    "swagger": "2.0",
+    "info": {
+        "description": "SP API",
+        "title": "Parlay SP API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "api-ss-sandbox.betprophet.co",
+    "basePath": "/parlay/sp",
+    "paths": {
+        "/orders": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "List Orders by User. Supports filtering by time range, relative time, p id, and status. Orders are sorted by update time in descending order.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "summary": "List Order Details",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 20,
+                        "description": "The maximum number of orders to return. Defaults to 10.",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The pagination token from the previous response to fetch the next page.",
+                        "name": "token",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1678838400,
+                        "description": "The start of the time range (by update time) as a Unix timestamp.",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1679011200,
+                        "description": "The end of the time range (by update time) as a Unix timestamp.",
+                        "name": "to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "\"15m\"",
+                        "description": "A relative time range (e.g., '5m', '1h'). Takes precedence over 'from' and 'to'.",
+                        "name": "relative",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "enum": [
+                                "open",
+                                "confirmed",
+                                "completed",
+                                "canceled",
+                                "settled",
+                                "void",
+                                "finalized",
+                                "rejected",
+                                "inactive"
+                            ],
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "Filter by one or more order statuses.",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A paginated list of orders.",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/contract.ListOrdersResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/common.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/confirmations": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Price Confirmation Callback",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "summary": "Price Confirmation Callback",
+                "parameters": [
+                    {
+                        "description": "Price Confirmation Callback Request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.PriceConfirmationCallbackRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/common.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/offers": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Price Offer Callback",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "summary": "Price Offer Callback",
+                "parameters": [
+                    {
+                        "description": "Price Offer Callback Request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.PriceOfferCallbackRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/common.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/{order_uuid}": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get Order Detail by Order UUID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "parlay"
+                ],
+                "summary": "Get Order Detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Order UUID",
+                        "name": "order_uuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/contract.ParlayOrderConfirmation"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/common.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/supported-lines": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get Supported Lines by SP",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "parlay"
+                ],
+                "summary": "Get Supported Lines by SP",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "token",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/contract.SupportedLinesBySpIDResponse"
+                                        },
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/common.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Add Supported Lines",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "parlay"
+                ],
+                "summary": "Add Supported Lines",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.AddSupportedLinesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/common.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.RevokeSupportedLinesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/common.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/websocket/connection-config": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get Connection Config",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "websocket"
+                ],
+                "summary": "Get Connection Config",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/contract.ConnectionConfigResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/common.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/websocket/register": {
+            "post": {
+                "description": "Register Client, support `application/json`, `application/x-www-form-urlencoded`",
+                "consumes": [
+                    "application/json",
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "websocket"
+                ],
+                "summary": "Register Client",
+                "parameters": [
+                    {
+                        "description": "Register Request, fill in if choose `application/json`",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/model.RegisterRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Socket ID, fill in if choose `application/x-www-form-urlencoded`",
+                        "name": "socket_id",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/contract.RegisterWebsocketResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/common.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "common.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "common.SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "success": {
+                    "type": "boolean"
+                },
+                "warning": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.BetLeg": {
+            "type": "object",
+            "properties": {
+                "line": {
+                    "type": "number"
+                },
+                "line_id": {
+                    "type": "string"
+                },
+                "market_id": {
+                    "type": "integer"
+                },
+                "origin_market_line": {
+                    "type": "number"
+                },
+                "outcome_id": {
+                    "type": "integer"
+                },
+                "settlement_status": {
+                    "$ref": "#/definitions/domain.ParlayMLSettlementStatus"
+                },
+                "sport_event_id": {
+                    "type": "integer"
+                },
+                "tournament_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "contract.ConnectionConfigResponse": {
+            "type": "object",
+            "properties": {
+                "app_id": {
+                    "type": "string"
+                },
+                "cluster": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.ListOrdersResponse": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer"
+                },
+                "orders": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/contract.ParlayOrderConfirmation"
+                    }
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.ParlayOrderConfirmation": {
+            "type": "object",
+            "properties": {
+                "confirmed_odds": {
+                    "type": "number"
+                },
+                "confirmed_stake": {
+                    "type": "number"
+                },
+                "legs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/contract.BetLeg"
+                    }
+                },
+                "order_uuid": {
+                    "type": "string"
+                },
+                "p_id": {
+                    "type": "string"
+                },
+                "profit": {
+                    "type": "number"
+                },
+                "settled_at": {
+                    "type": "integer"
+                },
+                "settled_odds": {
+                    "type": "number"
+                },
+                "settlement_status": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "contract.RegisterWebsocketDataResponse": {
+            "type": "object",
+            "properties": {
+                "authenticated": {
+                    "$ref": "#/definitions/model.AuthenticatedInfo"
+                },
+                "authorized_channel": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.AuthorizedInfo"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "contract.RegisterWebsocketResponse": {
+            "type": "object",
+            "properties": {
+                "auth": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/contract.RegisterWebsocketDataResponse"
+                }
+            }
+        },
+        "contract.SupportedLinesBySpIDResponse": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer"
+                },
+                "supported_lines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.AddSupportedLinesRequest": {
+            "type": "object",
+            "properties": {
+                "supported_lines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "domain.EstimatedPrice": {
+            "type": "object",
+            "properties": {
+                "line_id": {
+                    "type": "string"
+                },
+                "odds": {
+                    "type": "number"
+                }
+            }
+        },
+        "domain.Offer": {
+            "type": "object",
+            "properties": {
+                "estimated_price": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.EstimatedPrice"
+                    }
+                },
+                "max_risk": {
+                    "type": "number",
+                    "minimum": 1
+                },
+                "odds": {
+                    "type": "number"
+                },
+                "valid_until": {
+                    "description": "Unix timestamp in nanoseconds",
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.ParlayMLSettlementStatus": {
+            "type": "string",
+            "enum": [
+                "won",
+                "lost",
+                "tbd",
+                "requested",
+                "push",
+                "void"
+            ],
+            "x-enum-varnames": [
+                "ParlayMLSettlementStatusWon",
+                "ParlayMLSettlementStatusLost",
+                "ParlayMLSettlementStatusTBD",
+                "ParlayMLSettlementStatusRequested",
+                "ParlayMLSettlementStatusPush",
+                "ParlayMLSettlementStatusVoid"
+            ]
+        },
+        "domain.PriceConfirmationAction": {
+            "type": "string",
+            "enum": [
+                "accept",
+                "reject"
+            ],
+            "x-enum-varnames": [
+                "PriceConfirmationActionAccept",
+                "PriceConfirmationActionReject"
+            ]
+        },
+        "domain.PriceConfirmationCallbackRequest": {
+            "type": "object",
+            "required": [
+                "order_uuid"
+            ],
+            "properties": {
+                "action": {
+                    "$ref": "#/definitions/domain.PriceConfirmationAction"
+                },
+                "confirmed_odds": {
+                    "type": "number"
+                },
+                "confirmed_stake": {
+                    "type": "number"
+                },
+                "order_uuid": {
+                    "type": "string"
+                },
+                "price_probability": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.PriceProbability"
+                    }
+                },
+                "signature": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.PriceOfferCallbackRequest": {
+            "type": "object",
+            "required": [
+                "parlay_id"
+            ],
+            "properties": {
+                "offers": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/domain.Offer"
+                    }
+                },
+                "parlay_id": {
+                    "description": "UUID      string  `json:\"uuid\" binding:\"required\"`",
+                    "type": "string"
+                },
+                "signature": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.PriceProbability": {
+            "type": "object",
+            "properties": {
+                "computed_odds": {
+                    "description": "prophet computed odds from lines probability",
+                    "type": "number"
+                },
+                "lines": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.PriceProbabilityLine"
+                    }
+                },
+                "max_risk": {
+                    "type": "number"
+                },
+                "vig": {
+                    "type": "number"
+                }
+            }
+        },
+        "domain.PriceProbabilityLine": {
+            "type": "object",
+            "properties": {
+                "line_id": {
+                    "type": "string"
+                },
+                "probability": {
+                    "type": "number"
+                }
+            }
+        },
+        "domain.RevokeSupportedLinesRequest": {
+            "type": "object",
+            "properties": {
+                "supported_lines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "domain.WebsocketEvent": {
+            "type": "string",
+            "enum": [
+                "price.ask.new",
+                "price.offers.new",
+                "price.confirm.new",
+                "refund.processed",
+                "order.matched",
+                "order.finalized",
+                "order.settled",
+                "parlay.processing",
+                "parlay.finalized",
+                "parlay.settled"
+            ],
+            "x-enum-varnames": [
+                "EventPriceAskNew",
+                "EventPriceOffersNew",
+                "EventSpConfirmationRequest",
+                "EventRefundProcessed",
+                "EventOrderMatched",
+                "EventOrderFinalized",
+                "EventOrderSettled",
+                "EventParlayProcessing",
+                "EventParlayFinalized",
+                "EventParlaySettled"
+            ]
+        },
+        "model.AuthenticatedInfo": {
+            "type": "object",
+            "properties": {
+                "auth": {
+                    "type": "string"
+                },
+                "user_data": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.AuthorizedInfo": {
+            "type": "object",
+            "properties": {
+                "auth": {
+                    "type": "string"
+                },
+                "binding_events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.WebsocketEvent"
+                    }
+                },
+                "channel_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.RegisterRequest": {
+            "type": "object",
+            "required": [
+                "socket_id"
+            ],
+            "properties": {
+                "socket_id": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Token": {
+            "description": "Please use \"access_token\" to fill in, e.g \"Bearer ACCESS_TOKEN\"",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

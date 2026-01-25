@@ -1,0 +1,43 @@
+{
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "C:\\Users\\afrad\\clawd"
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": "d60ff600754da51af6eb87deb0fbcc56e99f4e26d78c1ec6"
+    },
+    "port": 18789,
+    "bind": "loopback",
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    }
+  },
+  "auth": {
+    "profiles": {
+      "anthropic:default": {
+        "provider": "anthropic",
+        "mode": "api_key"
+      }
+    }
+  },
+  "channels": {
+    "slack": {
+      "enabled": true,
+      "botToken": "xoxe.xoxp-1-Mi0yLTM4NTU2NjAzMTQ0MS04MDM2MTUzOTAzNzE0LTEwMzQwNjE5NDI5NTM3LTEwMzI3Njg5MDEwMDgyLWZiNGMzMjc2YWU3ZDE0MmRlMzE3YjBkMGY3YzM1MTBhNDQyNTViY2EyNWYxNjMxZTZjZjI5NzVjNDViNGMwNGU",
+      "appToken": "clawdbot onboard --install-daemon"
+    },
+    "telegram": {
+      "enabled": true,
+      "botToken": "8376642115:AAFdVZ7l8qPqx71VFpeoSGzlI_574tOcb3o",
+      "dmPolicy": "pairing"
+    }
+  }
+}

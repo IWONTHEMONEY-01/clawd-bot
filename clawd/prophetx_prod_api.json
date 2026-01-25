@@ -1,0 +1,3613 @@
+﻿{
+    "schemes": ["https"],
+    "swagger": "2.0",
+    "info": {
+        "description": "Provides data upon sport events, markets for market maker",
+        "title": "External Market Maker API",
+        "contact": {
+            "name": "betprophet",
+            "url": "https://www.prophetx.co/",
+            "email": "support@betprophet.co"
+        },
+        "version": ""
+    },
+    "host": "cash.api.prophetx.co",
+    "basePath": "/partner",
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "description": "Please access to our website, in Settings/Token to get/create a list of tokens to login with this endpoint",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Authenticate session",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.SuccessLogin"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "description": "Please use this endpoint to refresh your \"access_token\" after login, access_token will expire after 10 minutes and can be refresh using \"refresh_token\" given by /auth/login endpoint",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Refresh session",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.RefreshRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.SuccessRefresh"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/cancel_all_wagers": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Cancel all plays",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Cancel all plays",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.CancelWagersByUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Your requested data is not found or no plays available to be cancelled",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/cancel_multiple_wagers": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Cancel multiple plays",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Cancel multiple plays",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wager.cancelMultipleWagersRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.CancelMultipleWagersResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Your requested data is not found or play is cancelled",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/cancel_wager": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "cancel a play",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Cancel play",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wager.cancelWagerRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.CancelWagerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Given Param is not valid, this play does not belong to user id or external id must matches with existing play",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Your requested data is not found or play is cancelled",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/cancel_wagers_by_event": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Cancel all unmatched plays related to an event",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Cancel all unmatched plays related to an event",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wager.cancelWagersByEventRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.CancelWagersByEventResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Your requested data is not found or play is cancelled",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/cancel_wagers_by_market": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Cancel all unmatched plays related to a market",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Cancel all unmatched plays related to a market",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wager.cancelWagersByMarketRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.CancelWagersByMarketResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Your requested data is not found or play is cancelled",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/get_balance": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get user balance",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "wallet"
+                ],
+                "summary": "Get Balance",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.GetBalanceResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/get_markets": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "get the list of market",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "market"
+                ],
+                "summary": "List markets",
+                "deprecated": true,
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "List markets by event ID",
+                        "name": "event_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.ListMMResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/get_matched_bets": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get all matched plays",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Matched plays",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "cursor paging use for fetch next page",
+                        "name": "next_cursor",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "default is 100; max is 100",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "to timestamp. E.g: `1664617512`",
+                        "name": "to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "from timestamp E.g: `1664790312`",
+                        "name": "from",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.GetMatchedBetsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/get_multiple_markets": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "list multiple markets of a list of events",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "market"
+                ],
+                "summary": "List multiple markets",
+                "deprecated": true,
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "name": "event_ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market.MMListWithMultipleEventResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/get_odds_ladder": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Provide a list of valid odds",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Get odds ladder",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wager.GetOddsLadderResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/get_players": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get players by tournament ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "player"
+                ],
+                "summary": "List Players",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "List player by tournament ID",
+                        "name": "tournament_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "List player by competitor ID",
+                        "name": "competitor_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "default is 20",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "cursor paging use for fetch next page",
+                        "name": "next_cursor",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.ListPlayerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/get_players/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get Player by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "player"
+                ],
+                "summary": "Get Player by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "player id. E.g: `25490`",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Player ID will be unique in tournament, use this param to get player by tournament ID",
+                        "name": "tournament_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.GetPlayerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/get_sport_events": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "get the list of all available sport events\n#### The list of tournaments\n\n| Tournament ID   | Name                  |\n|----------       |-------------          |\n| 109             | MLB                   |\n| 2541            | KBO League            |\n| 1036            | Professional Baseball |\n| 233             | NFL Preseason         |\n| 31              | NFL                   |\n| 234             | NHL                   |\n| 132             | NBA                   |\n",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sport_event"
+                ],
+                "summary": "List sport events",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "name": "event_ids",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "tournament_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.SportEventListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/get_tournaments": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "list all available tournaments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tournaments"
+                ],
+                "summary": "List tournaments",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "description": "set it true if want to return tournaments that have active sport_events",
+                        "name": "has_active_events",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.TournamentListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/get_transactions": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get history wallet transactions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "wallet"
+                ],
+                "summary": "Wallet transactions history",
+                "deprecated": true,
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "to timestamp. E.g: `1664617512`",
+                        "name": "to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "from timestamp E.g: `1664790312`",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "default is 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "default is 20",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `market_id`",
+                        "name": "market_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `bet_id`",
+                        "name": "bet_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `event_id`",
+                        "name": "event_id",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "BET",
+                            "DEPOSIT",
+                            "REFUND",
+                            "PAY",
+                            "WITHDRAW",
+                            "COMMISSION",
+                            "ADJUSTMENT_REDUCE",
+                            "ADJUSTMENT_INCREASE",
+                            "VOID",
+                            "REJECT_WITHDRAW",
+                            "APPROVE_WITHDRAW",
+                            "CANCEL",
+                            "PUSH"
+                        ],
+                        "type": "string",
+                        "description": "filter on `transaction_type`",
+                        "name": "transaction_type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.ListTransactionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/get_wager/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get Play by Wager ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Get Play by Wager ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wager id. E.g: `wager_id_123_xyz`",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.GetWagerHistory"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/get_wager_histories": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get play histories",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Play history",
+                "deprecated": true,
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "to timestamp. E.g: `1664617512`",
+                        "name": "to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "from timestamp E.g: `1664790312`",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "default is 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "default is 20",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `market_id`",
+                        "name": "market_id",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "unmatched",
+                            "fully_matched",
+                            "partially_matched"
+                        ],
+                        "type": "string",
+                        "description": "filter on `matching_status`",
+                        "name": "matching_status",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "void",
+                            "closed",
+                            "canceled",
+                            "manually_settled",
+                            "inactive",
+                            "wiped",
+                            "open",
+                            "invalid",
+                            "settled"
+                        ],
+                        "type": "string",
+                        "description": "filter on `status`",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `event_id`",
+                        "name": "event_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.ListWagerHistoryResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/get_wager_matching_detail": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get play matching detail",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Get play matching detail",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "`min items: 1`\n`max items: 20`",
+                        "name": "wager_ids",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.GetWagerMatchingDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/place_multiple_wagers": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "### Note for `failed_wagers`\n\nThe `index` field of `failed_wagers` is the index of wager in request's wager list\n\n```json\n{\n    \"data\": {\n        \"success\": [],\n        \"failed_wagers\": [\n            {\n                \"request\": {\n                    \"odds\": 100,\n                    \"stake\": 1000,\n                    \"line_id\": \"c8151bb0106b4225132e1eed71214e8c\",\n                    \"external_id\": \"wager-fbfd34c6-779a-11ed-a1eb-2242ac000000\"\n                },\n                \"error\": \"wager_external_id_existed\",\n                \"message\": \"event is not available for betting\",\n                \"index\": 0\n            },\n            {\n                \"request\": {\n                    \"odds\": 100,\n                    \"stake\": 1000,\n                    \"line_id\": \"af92eecef365f00657df5da3f2d83d5c\",\n                    \"external_id\": \"wager-fbfd34c6-779a-11ed-a1eb-2242ac000001\"\n                },\n                \"error\": \"wager_external_id_existed\",\n                \"message\": \"event is not available for betting\",\n                \"index\": 1\n            }\n        ]\n    }\n}\n```\n",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Place multiple play",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wager.placeMultipleWagersRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.PlaceMultipleWagersResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Sport event is not booked",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "User is suspended",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Your requested data is not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/place_wager": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "### Place a wager\n`wager_strategy` with value `fillOrKill` that will be auto-canceled if no match is made in 2 seconds\nFor normal wagers, just remove the `wager_strategy` field\n",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Place play",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wager.placeWagerRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.PlaceWagerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Sport event is not booked",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "User is suspended",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Your requested data is not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/pusher": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Please use this endpoint to register pusher",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pusher"
+                ],
+                "summary": "Register pusher",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "request",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/pusher.registerPusherRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.RegisterPusher"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mm/search_markets": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "search the markets",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "market"
+                ],
+                "summary": "Search markets",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "cursor paging use for fetch next page",
+                        "name": "next_cursor",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "max is 1000, default is 20",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `market_id`",
+                        "name": "market_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `event_id`",
+                        "name": "event_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `player_id`",
+                        "name": "player_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `tournament_id`",
+                        "name": "tournament_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.MarketSearchResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v2/mm/get_markets": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "get the list of market, added new fields: category_name, sub_type",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "market"
+                ],
+                "summary": "List markets",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "List markets by event ID",
+                        "name": "event_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.ListMMResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v2/mm/get_multiple_markets": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "list multiple markets of a list of events, added new fields: category_name, sub_type",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "market"
+                ],
+                "summary": "List multiple markets",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "name": "event_ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market.MMListWithMultipleEventResponseV2"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v2/mm/get_transactions": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get history wallet transactions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "wallet"
+                ],
+                "summary": "Wallet transactions history",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "cursor paging use for fetch next page",
+                        "name": "next_cursor",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "to timestamp. E.g: `1664617512`",
+                        "name": "to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "from timestamp E.g: `1664790312`",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "max is 1000, default is 20",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `market_id`",
+                        "name": "market_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `bet_id`",
+                        "name": "bet_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `event_id`",
+                        "name": "event_id",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "BET",
+                            "DEPOSIT",
+                            "REFUND",
+                            "PAY",
+                            "WITHDRAW",
+                            "COMMISSION",
+                            "ADJUSTMENT_REDUCE",
+                            "ADJUSTMENT_INCREASE",
+                            "VOID",
+                            "REJECT_WITHDRAW",
+                            "APPROVE_WITHDRAW",
+                            "CANCEL",
+                            "PUSH"
+                        ],
+                        "type": "string",
+                        "description": "filter on `transaction_type`",
+                        "name": "transaction_type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.ListTransactionResponseV2"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v2/mm/get_wager_histories": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get play histories",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Play history",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "to timestamp. E.g: `1664617512`",
+                        "name": "to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "from timestamp E.g: `1664790312`",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "updated_at_to timestamp. E.g: `1668891212`",
+                        "name": "updated_at_to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "updated_at_from timestamp E.g: `1668790312`",
+                        "name": "updated_at_from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "cursor paging use for fetch next page",
+                        "name": "next_cursor",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "max is 1000, default is 20",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `market_id`",
+                        "name": "market_id",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "unmatched",
+                            "fully_matched",
+                            "partially_matched"
+                        ],
+                        "type": "string",
+                        "description": "filter on `matching_status`",
+                        "name": "matching_status",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "void",
+                            "closed",
+                            "canceled",
+                            "manually_settled",
+                            "inactive",
+                            "wiped",
+                            "open",
+                            "invalid",
+                            "settled"
+                        ],
+                        "type": "string",
+                        "description": "filter on `status`",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter on `event_id`",
+                        "name": "event_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.ListWagerHistoryResponseV2"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v2/mm/get_wager_matching_detail": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get play matching detail v2",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "play"
+                ],
+                "summary": "Get play matching detail v2",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "`max: 100`\n`default: 100`",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "next_cursor",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "wager_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.GetWagerMatchingDetailResponseV2"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/websocket/connection-config": {
+            "get": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "Get connection config for websocket client",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "websocket"
+                ],
+                "summary": "Websocket connection config",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/market_maker.ConnectionConfig"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "contract.CancelWagerItemError": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "wager_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.CancelWagerItemResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/contract.CancelWagerItemError"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "wager": {
+                    "$ref": "#/definitions/contract.Wager"
+                }
+            }
+        },
+        "contract.Category": {
+            "type": "object",
+            "properties": {
+                "countryCode": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.Competitor": {
+            "type": "object",
+            "properties": {
+                "abbreviation": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "display_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "side": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.FailedCancelWager": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "index": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "request": {
+                    "$ref": "#/definitions/contract.PlaceWagerRequest"
+                }
+            }
+        },
+        "contract.GetMatchedBetsResponse": {
+            "type": "object",
+            "properties": {
+                "matched_bets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/contract.MatchedBet"
+                    }
+                },
+                "next_cursor": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.GetWagerMatchingDetailV2Response": {
+            "type": "object",
+            "properties": {
+                "matching_details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/contract.WagerMatchingDetail"
+                    }
+                },
+                "next_cursor": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.MMMarket": {
+            "type": "object",
+            "properties": {
+                "favourite": {
+                    "type": "boolean"
+                },
+                "group_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "line": {
+                    "type": "number"
+                },
+                "market_lines": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/contract.MMMarket"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "selections": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/contract.Selection"
+                        }
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "total_matched": {
+                    "type": "number"
+                },
+                "total_stake": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "moneyline",
+                        "spread",
+                        "total",
+                        "sup_moneyline"
+                    ]
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "contract.MatchedBet": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "line": {
+                    "type": "number"
+                },
+                "matched_at": {
+                    "type": "string"
+                },
+                "odd": {
+                    "type": "number"
+                },
+                "profit": {
+                    "type": "number"
+                },
+                "stake": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "wager_id": {
+                    "type": "string"
+                },
+                "winning_status": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.PlaceWagerRequest": {
+            "type": "object",
+            "properties": {
+                "external_id": {
+                    "type": "string"
+                },
+                "line_id": {
+                    "type": "string"
+                },
+                "odds": {
+                    "type": "number"
+                },
+                "stake": {
+                    "type": "number"
+                }
+            }
+        },
+        "contract.Player": {
+            "type": "object",
+            "properties": {
+                "competitor_id": {
+                    "type": "integer"
+                },
+                "competitor_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "description": "represent for external_id in db",
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "tournament_id": {
+                    "type": "integer"
+                },
+                "tournament_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.Selection": {
+            "type": "object",
+            "properties": {
+                "adjusted_odds": {
+                    "type": "number"
+                },
+                "competitor_id": {
+                    "type": "integer"
+                },
+                "display_line": {
+                    "type": "string"
+                },
+                "display_name": {
+                    "type": "string"
+                },
+                "display_odds": {
+                    "type": "string"
+                },
+                "line": {
+                    "type": "number"
+                },
+                "line_id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "odds": {
+                    "type": "number"
+                },
+                "outcome_id": {
+                    "type": "integer"
+                },
+                "stake": {
+                    "type": "number"
+                },
+                "updated_at": {
+                    "type": "integer"
+                },
+                "value": {
+                    "type": "number"
+                }
+            }
+        },
+        "contract.Sport": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.SportEvent": {
+            "type": "object",
+            "properties": {
+                "competitors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/contract.Competitor"
+                    }
+                },
+                "display_name": {
+                    "type": "string"
+                },
+                "event_id": {
+                    "type": "integer"
+                },
+                "live_disabled": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "scheduled": {
+                    "type": "string"
+                },
+                "sport_name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "sub_type": {
+                    "type": "string"
+                },
+                "tournament_id": {
+                    "type": "integer"
+                },
+                "tournament_name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "contract.Tournament": {
+            "type": "object",
+            "properties": {
+                "banner": {
+                    "type": "string"
+                },
+                "category": {
+                    "$ref": "#/definitions/contract.Category"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "sport": {
+                    "$ref": "#/definitions/contract.Sport"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "contract.Transaction": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "balance": {
+                    "type": "number"
+                },
+                "balance_before": {
+                    "type": "number"
+                },
+                "bet_id": {
+                    "type": "string"
+                },
+                "change": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "details": {
+                    "type": "string"
+                },
+                "event_id": {
+                    "type": "string"
+                },
+                "market_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "transaction_sub_type": {
+                    "type": "string",
+                    "enum": [
+                        "PROMOTION",
+                        "OTHER",
+                        "VOID_COMMISSION",
+                        "RESETTLEMENT_COMMISSION",
+                        "COMMISSION",
+                        "RESETTLEMENT",
+                        "DEPOSIT",
+                        "DEPOSIT_CHARGEBACK",
+                        "WITHDRAW",
+                        "WITHDRAW_FAILED"
+                    ]
+                },
+                "transaction_type": {
+                    "type": "string",
+                    "enum": [
+                        "BET",
+                        "DEPOSIT",
+                        "REFUND",
+                        "PAY",
+                        "WITHDRAW",
+                        "COMMISSION",
+                        "ADJUSTMENT_REDUCE",
+                        "ADJUSTMENT_INCREASE",
+                        "VOID",
+                        "REJECT_WITHDRAW",
+                        "APPROVE_WITHDRAW",
+                        "CANCEL",
+                        "PUSH"
+                    ]
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.Wager": {
+            "type": "object",
+            "properties": {
+                "external_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID should be ref_id in database",
+                    "type": "string"
+                },
+                "line": {
+                    "type": "number"
+                },
+                "line_id": {
+                    "type": "string"
+                },
+                "market_id": {
+                    "type": "integer"
+                },
+                "matched_stake": {
+                    "type": "number"
+                },
+                "matching_status": {
+                    "type": "string",
+                    "enum": [
+                        "unmatched",
+                        "fully_matched",
+                        "partially_matched"
+                    ]
+                },
+                "odds": {
+                    "type": "number"
+                },
+                "outcome_id": {
+                    "description": "outcome description ID",
+                    "type": "integer"
+                },
+                "profit": {
+                    "type": "number"
+                },
+                "sport_event_id": {
+                    "type": "integer"
+                },
+                "stake": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "void",
+                        "closed",
+                        "canceled",
+                        "manually_settled",
+                        "inactive",
+                        "wiped",
+                        "open",
+                        "invalid"
+                    ]
+                },
+                "unmatched_stake": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "winning_status": {
+                    "type": "string",
+                    "enum": [
+                        "lost",
+                        "won",
+                        "no_result",
+                        "tbd",
+                        "manually_lost",
+                        "manually_won",
+                        "draw",
+                        "push"
+                    ]
+                }
+            }
+        },
+        "contract.WagerHistory": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "external_id": {
+                    "type": "string"
+                },
+                "line": {
+                    "type": "number"
+                },
+                "line_id": {
+                    "type": "string"
+                },
+                "market_id": {
+                    "type": "integer"
+                },
+                "matched_stake": {
+                    "type": "number"
+                },
+                "matching_status": {
+                    "type": "string",
+                    "enum": [
+                        "unmatched",
+                        "fully_matched",
+                        "partially_matched"
+                    ]
+                },
+                "odds": {
+                    "type": "number"
+                },
+                "original_stake": {
+                    "type": "number"
+                },
+                "outcome_id": {
+                    "type": "integer"
+                },
+                "profit": {
+                    "type": "number"
+                },
+                "settled_at": {
+                    "type": "string"
+                },
+                "sport_event_id": {
+                    "type": "integer"
+                },
+                "stake": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "void",
+                        "closed",
+                        "canceled",
+                        "manually_settled",
+                        "inactive",
+                        "wiped",
+                        "open",
+                        "invalid",
+                        "settled"
+                    ]
+                },
+                "unmatched_stake": {
+                    "type": "number"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "wager_id": {
+                    "type": "string"
+                },
+                "winning_status": {
+                    "type": "string",
+                    "enum": [
+                        "lost",
+                        "won",
+                        "no_result",
+                        "tbd",
+                        "manually_lost",
+                        "manually_won",
+                        "draw",
+                        "push"
+                    ]
+                }
+            }
+        },
+        "contract.WagerMatchingDetail": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "line": {
+                    "type": "number"
+                },
+                "matched_at": {
+                    "type": "string"
+                },
+                "odd": {
+                    "type": "number"
+                },
+                "profit": {
+                    "type": "number"
+                },
+                "stake": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "winning_status": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.WagerPusher": {
+            "type": "object",
+            "properties": {
+                "external_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "line": {
+                    "type": "number"
+                },
+                "line_id": {
+                    "type": "string"
+                },
+                "market_id": {
+                    "type": "integer"
+                },
+                "matched_odds": {
+                    "type": "number"
+                },
+                "matched_stake": {
+                    "type": "number"
+                },
+                "matching_id": {
+                    "type": "integer"
+                },
+                "matching_status": {
+                    "type": "string"
+                },
+                "odds": {
+                    "type": "number"
+                },
+                "origin_market_line": {
+                    "description": "OriginMarketLine for determine the home outcome line (always return the line of HOME competitor)\nThis would enable MM to start pricing spreads faster\nticket for this: https://betprophet.atlassian.net/browse/PAR-534",
+                    "type": "number"
+                },
+                "outcome_id": {
+                    "description": "outcome description ID",
+                    "type": "integer"
+                },
+                "profit": {
+                    "type": "number"
+                },
+                "sequence_number": {
+                    "type": "integer"
+                },
+                "sport_event_id": {
+                    "type": "integer"
+                },
+                "stake": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "totally_matched_stake": {
+                    "type": "number"
+                },
+                "unmatched_stake": {
+                    "type": "number"
+                },
+                "update_type": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "winning_status": {
+                    "type": "string"
+                }
+            }
+        },
+        "market.MMListWithMultipleEventResponse": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/definitions/contract.MMMarket"
+                }
+            }
+        },
+        "market.MMListWithMultipleEventResponseV2": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/definitions/v2.MMMarketV2"
+                }
+            }
+        },
+        "market_maker.CancelMultipleWagersResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/contract.CancelWagerItemResponse"
+                    }
+                }
+            }
+        },
+        "market_maker.CancelWagerResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "Success": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "market_maker.CancelWagersByEventResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/wager.CancelWagersByEventResponse"
+                }
+            }
+        },
+        "market_maker.CancelWagersByMarketResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/wager.CancelWagersByMarketResponse"
+                }
+            }
+        },
+        "market_maker.CancelWagersByUserResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/wager.CancelWagersByUserResponse"
+                }
+            }
+        },
+        "market_maker.ConnectionConfig": {
+            "type": "object",
+            "properties": {
+                "app_id": {
+                    "type": "string"
+                },
+                "cluster": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "service": {
+                    "type": "string"
+                }
+            }
+        },
+        "market_maker.GetBalanceResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "balance": {
+                            "description": "for now, only return `total_balance` for MM\nthe field name will be kept as `balance` for backward compatible",
+                            "type": "number"
+                        },
+                        "matched_wager_balance": {
+                            "type": "number"
+                        },
+                        "unmatched_wager_balance": {
+                            "type": "number"
+                        },
+                        "unmatched_wager_balance_status": {
+                            "type": "string"
+                        },
+                        "unmatched_wager_last_synced_at": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "market_maker.GetMatchedBetsResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/contract.GetMatchedBetsResponse"
+                },
+                "last_synced_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "market_maker.GetPlayerResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "player": {
+                            "$ref": "#/definitions/contract.Player"
+                        }
+                    }
+                }
+            }
+        },
+        "market_maker.GetWagerHistory": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "created_at": {
+                            "type": "string"
+                        },
+                        "external_id": {
+                            "type": "string"
+                        },
+                        "line": {
+                            "type": "number"
+                        },
+                        "line_id": {
+                            "type": "string"
+                        },
+                        "market_id": {
+                            "type": "integer"
+                        },
+                        "matched_stake": {
+                            "type": "number"
+                        },
+                        "matching_status": {
+                            "type": "string",
+                            "enum": [
+                                "unmatched",
+                                "fully_matched",
+                                "partially_matched"
+                            ]
+                        },
+                        "odds": {
+                            "type": "number"
+                        },
+                        "original_stake": {
+                            "type": "number"
+                        },
+                        "outcome_id": {
+                            "type": "integer"
+                        },
+                        "profit": {
+                            "type": "number"
+                        },
+                        "settled_at": {
+                            "type": "string"
+                        },
+                        "sport_event_id": {
+                            "type": "integer"
+                        },
+                        "stake": {
+                            "type": "number"
+                        },
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "void",
+                                "closed",
+                                "canceled",
+                                "manually_settled",
+                                "inactive",
+                                "wiped",
+                                "open",
+                                "invalid",
+                                "settled"
+                            ]
+                        },
+                        "unmatched_stake": {
+                            "type": "number"
+                        },
+                        "updated_at": {
+                            "type": "string"
+                        },
+                        "user_id": {
+                            "type": "string"
+                        },
+                        "wager_id": {
+                            "type": "string"
+                        },
+                        "winning_status": {
+                            "type": "string",
+                            "enum": [
+                                "lost",
+                                "won",
+                                "no_result",
+                                "tbd",
+                                "manually_lost",
+                                "manually_won",
+                                "draw",
+                                "push"
+                            ]
+                        }
+                    }
+                },
+                "last_synced_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "market_maker.GetWagerMatchingDetailResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/contract.WagerMatchingDetail"
+                        }
+                    }
+                },
+                "last_synced_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "market_maker.GetWagerMatchingDetailResponseV2": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/contract.GetWagerMatchingDetailV2Response"
+                },
+                "last_synced_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "market_maker.ListMMResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "event_id": {
+                            "type": "integer"
+                        },
+                        "markets": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contract.MMMarket"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "market_maker.ListPlayerResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "next_cursor": {
+                            "type": "string"
+                        },
+                        "players": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contract.Player"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "market_maker.ListTransactionResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "has_next": {
+                            "type": "boolean"
+                        },
+                        "limit": {
+                            "type": "integer"
+                        },
+                        "page": {
+                            "type": "integer"
+                        },
+                        "total_page": {
+                            "type": "integer"
+                        },
+                        "transactions": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contract.Transaction"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "market_maker.ListTransactionResponseV2": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "next_cursor": {
+                            "type": "string"
+                        },
+                        "transactions": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contract.Transaction"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "market_maker.ListWagerHistoryResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "has_next": {
+                            "type": "boolean"
+                        },
+                        "limit": {
+                            "type": "integer"
+                        },
+                        "page": {
+                            "type": "integer"
+                        },
+                        "total_page": {
+                            "type": "integer"
+                        },
+                        "wagers": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contract.WagerHistory"
+                            }
+                        }
+                    }
+                },
+                "last_synced_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "market_maker.ListWagerHistoryResponseV2": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "next_cursor": {
+                            "type": "string"
+                        },
+                        "wagers": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contract.WagerHistory"
+                            }
+                        }
+                    }
+                },
+                "last_synced_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "market_maker.LoginRequest": {
+            "type": "object",
+            "properties": {
+                "access_key": {
+                    "type": "string"
+                },
+                "secret_key": {
+                    "type": "string"
+                }
+            }
+        },
+        "market_maker.MarketSearchResponse": {
+            "type": "object",
+            "properties": {
+                "markets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.Market"
+                    }
+                },
+                "next_cursor": {
+                    "type": "string"
+                }
+            }
+        },
+        "market_maker.PlaceMultipleWagersResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "failed_wagers": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contract.FailedCancelWager"
+                            }
+                        },
+                        "succeed_wagers": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contract.Wager"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "market_maker.PlaceWagerResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "success": {
+                            "type": "boolean"
+                        },
+                        "wager": {
+                            "$ref": "#/definitions/contract.Wager"
+                        }
+                    }
+                }
+            }
+        },
+        "market_maker.RefreshRequest": {
+            "type": "object",
+            "properties": {
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "market_maker.RegisterPusher": {
+            "type": "object",
+            "properties": {
+                "auth": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/pusher.RegisterPusherResponse"
+                }
+            }
+        },
+        "market_maker.SportEventListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "sport_events": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contract.SportEvent"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "market_maker.SuccessLogin": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "access_expire_time": {
+                            "type": "integer"
+                        },
+                        "access_token": {
+                            "type": "string"
+                        },
+                        "refresh_expire_time": {
+                            "type": "integer"
+                        },
+                        "refresh_token": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "market_maker.SuccessRefresh": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "access_expire_time": {
+                            "type": "integer"
+                        },
+                        "access_token": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "market_maker.TournamentListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "tournaments": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contract.Tournament"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "pusher.RegisterPusherResponse": {
+            "type": "object",
+            "properties": {
+                "authenticated": {
+                    "$ref": "#/definitions/types.AuthenticatedInfo"
+                },
+                "authorized_channel": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.AuthorizedInfo"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "subscriptions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.Subscription"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pusher.registerPusherRequest": {
+            "type": "object",
+            "properties": {
+                "socket_id": {
+                    "type": "string"
+                },
+                "subscriptions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.Subscription"
+                    }
+                }
+            }
+        },
+        "response.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {},
+                "message": {
+                    "description": "| Error Code                         | Error Message                                                                         | HTTP Status Code | Description                                                                                                                                                                                                             |\n\t\t   \t\t\t\t| ---------------------------------- | ------------------------------------------------------------------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n\t\t   \t\t\t\t| invalid_request                    | Invalid request                                                                       | 400              | Invalid request: invalid body or param or header provided in general. When can’t find detail error                                                                                                                      |\n\t\t   \t\t\t\t| invalid_param                      | Invalid param: \u003cparam_name\u003e                                                           | 400              | Invalid parameter with given name                                                                                                                                                                                       |\n\t\t   \t\t\t\t| unauthorized                       | Unauthorized                                                                          | 401              | Invalid authorization token                                                                                                                                                                                             |\n\t\t   \t\t\t\t| data_not_found                     | Data not found                                                                        | 404              | Requested data does not exists or not found                                                                                                                                                                             |\n\t\t   \t\t\t\t| data_not_found                     | Not found: \u003centity_name\u003e                                                              | 404              | Requested data does not exists or not found (point out detail which entity not found)                                                                                                                                   |\n\t\t   \t\t\t\t| internal_error                     | Internal server error                                                                 | 500              | Internal server error                                                                                                                                                                                                   |\n\t\t   \t\t\t\t| keypair_num_exceed                 | Cannot create new key pair, only 20 key pair can be created                           | 403              | Number of existed key pairs has reached the maximum number of 20 key pairs                                                                                                                                              |\n\t\t   \t\t\t\t| session_num_exceed                 | Cannot authorize new session, only 20 sessions can exist simultaneously               | 403              | Number of authorized sessions has reached the maximum number of 20 sessions                                                                                                                                             |\n\t\t   \t\t\t\t| rate_limit_reached                 | Rate limit reached, can only send up to 50 requests per seconds                       | 429              | Rate limit reached                                                                                                                                                                                                      |\n\t\t   \t\t\t\t| insufficient_amount                | You don’t have sufficient amount to proceed the operation                             | 403              | This is an example error code for any given operation                                                                                                                                                                   |\n\t\t   \t\t\t\t| invalid_line_id                    | Invalid line id                                                                       | 400              | Invalid line id                                                                                                                                                                                                         |\n\t\t   \t\t\t\t| invalid_stake                      | Invalid stake                                                                         | 400              | Invalid stake                                                                                                                                                                                                           |\n\t\t   \t\t\t\t| invalid_external_id                | Invalid external id                                                                   | 400              | Invalid external id                                                                                                                                                                                                     |\n\t\t   \t\t\t\t| wager_limit_exceeded               | Wager limit exceeded                                                                  | 400              | The error is raised when total wager or bet exceeds the allowed limit, currently the maximum batch is 20.                                                                                                               |\n\t\t   \t\t\t\t| invalid_wager_id                   | Invalid wager id                                                                      | 400              | Invalid wager id                                                                                                                                                                                                        |\n\t\t   \t\t\t\t| invalid_cursor                     | Invalid cursor                                                                        | 400              | Invalid cursor param                                                                                                                                                                                                    |\n\t\t   \t\t\t\t| invalid_from                       | Invalid param from                                                                    | 400              | Invalid param from                                                                                                                                                                                                      |\n\t\t   \t\t\t\t| invalid_to                         | Invalid param to                                                                      | 400              | Invalid param to                                                                                                                                                                                                        |\n\t\t   \t\t\t\t| invalid_updated_at_from            | Invalid param updated_at_from                                                         | 400              | Invalid param updated_at_from                                                                                                                                                                                           |\n\t\t   \t\t\t\t| invalid_updated_at_to              | Invalid param updated_at_to                                                           | 400              | Invalid param updated_at_to                                                                                                                                                                                             |\n\t\t   \t\t\t\t| invalid_competitor_id              | Invalid competitor id                                                                 | 400              | Invalid competitor id, when                                                                                                                                                                                             |\n\t\t   \t\t\t\t| sport_event_not_found              | Sport event not found                                                                 | 404              | Sport event not found                                                                                                                                                                                                   |\n\t\t   \t\t\t\t| market_invalid_event               | Invalid event_id                                                                      | 400              | This error is used when attempting to create or access a market with an invalid event ID. The condition EventID \u003c= 0 or r.EventID \u003e 2147483647 checks if the provided event ID is equal to 0 or falls outside the valid |\n\t\t   \t\t\t\t| market_event_limit_exceeded        | Event limit exceeded                                                                  | 400              | This error is raised when the number of event_ids in a market query exceeds the allowed limit, currently (0, 50]                                                                                                        |\n\t\t   \t\t\t\t| opened_retry                       | We are processing other request. Please wait and retry later                          | 500              | Newly opened wager is in its first matching queue, please retry after 300ms.                                                                                                                                            |\n\t\t   \t\t\t\t| unknown_error                      | Unknown error                                                                         | 500              | Unknown error                                                                                                                                                                                                           |\n\t\t   \t\t\t\t| err_ref_id_invalid                 | reference id invalid                                                                  | 404              | Reference id invalid, currently 0                                                                                                                                                                                       |\n\t\t   \t\t\t\t| event_not_available                | event is not available for betting                                                    | 400              | Event is not available for betting                                                                                                                                                                                      |\n\t\t   \t\t\t\t| sport_event_competitor_blacklisted | can not place bet with given competitors                                              | 400              | The event competitor in blacklisted                                                                                                                                                                                     |\n\t\t   \t\t\t\t| sport_event_is_not_booked          | sport event is not booked                                                             | 400              | sport event is not booked                                                                                                                                                                                               |\n\t\t   \t\t\t\t| wager_ref_id_existed               | wager ref id is already existing                                                      | 400              | Wager ref id is already existing                                                                                                                                                                                        |\n\t\t   \t\t\t\t| wager_already_matched              | failed to cancel wager. wager is already matched                                      | 400              | Wager is already matched                                                                                                                                                                                                |\n\t\t   \t\t\t\t| wager_not_belongs_to_user          | this wager does not belong to user                                                    | 500              | Wager not belong to the user (who 's calling)                                                                                                                                                                           |\n\t\t   \t\t\t\t| wager_already_cancelled            | failed to cancel wager. wager is already cancelled                                    | 400              | Wager is already cancelled                                                                                                                                                                                              |\n\t\t   \t\t\t\t| wager_is_invalid                   | The wager you attempting to cancel is invalid                                         | 400              | Wager’ status is invalid                                                                                                                                                                                                |\n\t\t   \t\t\t\t| wager_invalid_odds                 | invalid odds (consider extract keyword and return like partner error, for consistent) | 400              | invalid odds, when odds \u003c= 1.0                                                                                                                                                                                          |\n\t\t   \t\t\t\t| wager_not_matching_external_id     | external id must matches with existing wager                                          | 400              | External id must matches with existing wager                                                                                                                                                                            |\n\t\t   \t\t\t\t| wager_opened_retry                 | Newly opened wager is in its first matching queue, please retry after 300ms.          | 425              | Failed to lock wager when cancel wager.                                                                                                                                                                                 |\n\t\t   \t\t\t\t| wager_is_placing                   | cannot cancel a placing wager, please try again later                                 | 409              | Cannot cancel a placing wager                                                                                                                                                                                           |\n\t\t   \t\t\t\t| wager_stake_exceeds_max            | your wager stake exceeds the maximum allowed                                          | 400              | your wager stake exceeds the maximum allowed, currently 100000000                                                                                                                                                       |\n\t\t   \t\t\t\t| wager_external_id_existed          | given user id already has wager with the same external id                             | 400              | given user id already has wager with the same external id                                                                                                                                                               |\n\t\t   \t\t\t\t| wager_balance_check_timeout        | wallet check balance request timeout                                                  | 500              | Time out when check wager balance                                                                                                                                                                                       |\n\t\t   \t\t\t\t| wager_unable_place                 | we cannot place your bet                                                              | 500              | Unhadled error in wager.                                                                                                                                                                                                |\n\t\t   \t\t\t\t| wager_unable_cancel                | failed to cancel wager                                                                | 500              | For unhanled wager                                                                                                                                                                                                      |\n\t\t   \t\t\t\t| invalid_market_id                  | Invalid market id                                                                     | 400              | Invalid market id, when even id equal to zero                                                                                                                                                                           |\n\t\t   \t\t  \t| invalid_event_id                   | Invalid event id                                                                      | 400              | Invalid event id, when even id equal to zero                                                                                                                                                                            |\n\t\t   \t\t  \t| supplemental_market_pre_match_only | supplemental market just ready for pre-match sport event                              | 400              | When market line' type is sup_moneyline, the sport event’ status must not equal to not_started                                                                                                                          |\n\t\t   \t\t  \t| market_line_invalid                | market line id is invalid                                                             | 400              | when can’t found market by line id in database                                                                                                                                                                          |\n\t\t   \t\t  \t| wallet_not_found                   | Wallet not found                                                                      | 404              | Wallet not found                                                                                                                                                                                                        |\n\t\t   \t\t  \t| no_cancellable_wagers              | Failed to cancel wagers. No available wagers to be cancelled                          | 404              | No cancellable wagers                                                                                                                                                                                                   |\n\t\t   \t\t  \t| wager_invalid_profit               | update odds or stake then try again                                                   | 400              | The profit calculated from odds and stake less than 1 cent                                                                                                                                                              |\n\t\t   \t\t  \t| reporting_not_available            | reporting service not available                                                       | 503              | Reporting DB in maintenance mode                                                                                                                                                                                        |\n\t\t   \t\t  \t| from_date_greater_than_to_date     | from date must be lower than to date                                                  | 400              | Param from must be lower than param to                                                                                                                                                                                  |\n\t\t   \t\t  \t| invalid_from_to_range              | 'from' can't be more than 7 days from 'to'                                            | 400              | Param from can't be more than 7 days from param to                                                                                                                                                                      |\n\t\t   \t\t  \t| invalid_updated_at_range           | updated_at_from can't be more than 2 days from updated_at_to                          | 400              | Param updated_at_from can't be more than 2 days from param updated_at_to                                                                                                                                                |\n\t\t\t\t\t| missing_date_range           | missing date range param                          | 400              | Missing date range param                                                                                                                                                |\n\t\t\t\t\t| too_many_delayed_requests           |The request cannot be delayed at the moment                         | 429              | Request rate limit for delayed processing has been reached                                                                                                                                                |\n\t\t\t\t\t| err_wager_placement_disabled           | wager placement is currently disabled                         | 403              | The system under maintenance mode so not allow place wager                                                                                                                                                |",
+                    "type": "string"
+                }
+            }
+        },
+        "types.AuthenticatedInfo": {
+            "type": "object",
+            "properties": {
+                "auth": {
+                    "type": "string"
+                },
+                "user_data": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.AuthorizedInfo": {
+            "type": "object",
+            "properties": {
+                "auth": {
+                    "type": "string"
+                },
+                "binding_events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.BindingEvent"
+                    }
+                },
+                "channel_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.BindingEvent": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.Market": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "event_id": {
+                    "type": "integer"
+                },
+                "market_id": {
+                    "description": "represent for \tUUID           string `boil:\"id\" json:\"-\"`",
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "player_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "sub_type": {
+                    "type": "string"
+                },
+                "tournament_id": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.Subscription": {
+            "type": "object",
+            "properties": {
+                "ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "v2.MMMarketV2": {
+            "type": "object",
+            "properties": {
+                "category_name": {
+                    "type": "string"
+                },
+                "favourite": {
+                    "type": "boolean"
+                },
+                "group_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "line": {
+                    "type": "number"
+                },
+                "market_lines": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/contract.MMMarket"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "player_id": {
+                    "type": "integer"
+                },
+                "selections": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/contract.Selection"
+                        }
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "sub_type": {
+                    "type": "string"
+                },
+                "total_matched": {
+                    "type": "number"
+                },
+                "total_stake": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "moneyline",
+                        "spread",
+                        "total",
+                        "sup_moneyline"
+                    ]
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "wager.CancelWagersByEventResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "wager.CancelWagersByMarketResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "wager.CancelWagersByUserResponse": {
+            "type": "object",
+            "properties": {
+                "Success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "wager.GetOddsLadderResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "wager.cancelMultipleWagersRequest": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/wager.cancelWagerRequest"
+                    }
+                }
+            }
+        },
+        "wager.cancelWagerRequest": {
+            "type": "object",
+            "properties": {
+                "external_id": {
+                    "type": "string"
+                },
+                "wager_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "wager.cancelWagersByEventRequest": {
+            "type": "object",
+            "properties": {
+                "event_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "wager.cancelWagersByMarketRequest": {
+            "type": "object",
+            "properties": {
+                "event_id": {
+                    "type": "integer"
+                },
+                "line_id": {
+                    "type": "string"
+                },
+                "market_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "wager.placeMultipleWagersRequest": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/wager.placeWagerRequest"
+                    }
+                }
+            }
+        },
+        "wager.placeWagerRequest": {
+            "type": "object",
+            "properties": {
+                "external_id": {
+                    "description": "max length is 100, only contain A-z, 0-9, _, -",
+                    "type": "string"
+                },
+                "line_id": {
+                    "type": "string"
+                },
+                "odds": {
+                    "type": "number"
+                },
+                "stake": {
+                    "type": "number"
+                },
+                "wager_strategy": {
+                    "type": "string",
+                    "enum": [
+                        "fillOrKill"
+                    ],
+                    "example": "fillOrKill"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Token": {
+            "description": "Please use \"access_token\" from the response of /auth/login endpoint, and add \"Bearer\" with space as prefix. For example: /auth/login response: {\"access_token\": \"ACCESS_TOKEN\"}, then please use \"Bearer ACCESS_TOKEN\"",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
