@@ -5,6 +5,7 @@ import { formatCliCommand } from "../../cli/command-format.js";
 import type { AnyAgentTool } from "./common.js";
 import { jsonResult, readNumberParam, readStringParam } from "./common.js";
 import {
+  braveRateLimiter,
   CacheEntry,
   DEFAULT_CACHE_TTL_MINUTES,
   DEFAULT_TIMEOUT_SECONDS,
@@ -314,6 +315,9 @@ async function runWebSearch(params: {
   if (params.provider !== "brave") {
     throw new Error("Unsupported web search provider.");
   }
+
+  // Rate limit Brave Search API (free tier: 1 req/sec, 2000 req/month)
+  await braveRateLimiter.acquire();
 
   const url = new URL(BRAVE_SEARCH_ENDPOINT);
   url.searchParams.set("q", params.query);
