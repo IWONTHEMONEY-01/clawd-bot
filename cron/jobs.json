@@ -200,6 +200,37 @@
         "lastStatus": "ok",
         "lastDurationMs": 9489
       }
+    },
+    {
+      "id": "a1b2c3d4-5678-90ab-cdef-research5min",
+      "name": "research-progress-update",
+      "description": "5-minute research progress updates for NBA/MLB prop modeling",
+      "enabled": true,
+      "deleteAfterRun": false,
+      "createdAtMs": 1769200000000,
+      "updatedAtMs": 1769200000000,
+      "schedule": {
+        "kind": "cron",
+        "expr": "*/5 * * * *"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Research progress update! Check HEARTBEAT.md for active research tasks. Pick ONE task that's in progress or start the next uncompleted one. Do 5 minutes of focused research: web search, analyze sources, take notes. Then send Anthony a brief update: what you researched, key findings, next steps. Save any valuable findings to memory. Keep the update to 3-5 sentences max.",
+        "deliver": true,
+        "channel": "telegram",
+        "to": "6632715854",
+        "bestEffortDeliver": false
+      },
+      "isolation": {
+        "postToMainPrefix": "Research",
+        "postToMainMode": "summary",
+        "postToMainMaxChars": 8000
+      },
+      "state": {
+        "nextRunAtMs": 1769200300000
+      }
     }
   ]
 }

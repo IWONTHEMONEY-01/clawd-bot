@@ -89,6 +89,18 @@ function stripToolXmlFromText(text: string): string {
   return result;
 }
 
+/**
+ * Convert literal escape sequences to actual characters.
+ * MiniMax sometimes outputs literal \n instead of actual newlines.
+ */
+function unescapeLiteralSequences(text: string): string {
+  if (!text) return text;
+  return text
+    .replace(/\\n/g, "\n")
+    .replace(/\\t/g, "\t")
+    .replace(/\\r/g, "\r");
+}
+
 function isLikelyHttpErrorText(raw: string): boolean {
   const match = raw.match(HTTP_STATUS_PREFIX_RE);
   if (!match) return false;
@@ -296,6 +308,8 @@ export function sanitizeUserFacingText(text: string): string {
   // Strip final tags and tool XML that should never be shown to users
   let stripped = stripFinalTagsFromText(text);
   stripped = stripToolXmlFromText(stripped);
+  // Convert literal \n to actual newlines (MiniMax quirk)
+  stripped = unescapeLiteralSequences(stripped);
   const trimmed = stripped.trim();
   if (!trimmed) return stripped;
 
