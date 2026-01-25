@@ -16,13 +16,17 @@
       "model": {
         "primary": "minimax/MiniMax-M2.1"
       },
-      "workspace": "C:\\Users\\afrad\\clawd",
+      "workspace": "/home/user/clawd-bot",
       "maxConcurrent": 4,
       "subagents": {
         "maxConcurrent": 8
       },
       "sandbox": {
         "mode": "off"
+      },
+      "heartbeat": {
+        "enabled": true,
+        "every": "10m"
       }
     }
   },

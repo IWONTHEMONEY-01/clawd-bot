@@ -151,7 +151,7 @@
       "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "Check ClawdBot API costs. Run: python C:\\Users\\afrad\\.clawdbot\\clawd\\clawdbot-telegram\\skills\\cost-tracker\\scripts\\track_cost.py check --json. If needs_alert is true, tell me costs exceeded the threshold.",
+        "message": "Check ClawdBot API costs. Read cost-tracker.json in the workspace to see current spending. If total costs are approaching limits or growing faster than expected, alert the owner.",
         "deliver": true,
         "channel": "telegram",
         "to": "6632715854",
