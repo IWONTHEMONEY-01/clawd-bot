@@ -1,6 +1,10 @@
 {
   "auth": {
     "profiles": {
+      "anthropic:default": {
+        "provider": "anthropic",
+        "mode": "api_key"
+      },
       "minimax:default": {
         "provider": "minimax",
         "mode": "api_key"
@@ -10,7 +14,7 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "minimax/MiniMax-M2.1"
+        "primary": "anthropic/claude-3-5-sonnet-20241022"
       },
       "workspace": "C:\\Users\\afrad\\clawd",
       "maxConcurrent": 4,
