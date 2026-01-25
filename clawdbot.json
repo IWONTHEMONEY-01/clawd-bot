@@ -4,6 +4,10 @@
       "minimax:default": {
         "provider": "minimax",
         "mode": "api_key"
+      },
+      "anthropic:default": {
+        "provider": "anthropic",
+        "mode": "api_key"
       }
     }
   },
