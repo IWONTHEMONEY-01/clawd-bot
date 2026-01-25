@@ -4,21 +4,27 @@ Automatically saves state to git every 5 minutes to protect against crashes and 
 
 ## Quick Start
 
-### Option 1: Run as background daemon
+### Linux (cron) - Recommended
 ```bash
-# Start the daemon (runs continuously)
-auto-persist\start-daemon.cmd
+# Make script executable and run setup
+chmod +x ~/.clawdbot/auto-persist/setup-cron.sh
+bash ~/.clawdbot/auto-persist/setup-cron.sh
 ```
 
-### Option 2: Setup Windows Scheduled Task (recommended)
+### Windows (Scheduled Task)
 ```powershell
-# Run as Administrator
-powershell -ExecutionPolicy Bypass -File auto-persist\setup-scheduled-task.ps1
+# Run PowerShell as Administrator
+powershell -ExecutionPolicy Bypass -File "C:\Users\afrad\.clawdbot\auto-persist\setup-scheduled-task.ps1"
 ```
 
-### Option 3: Manual run
+### Manual run (any platform)
 ```bash
-node auto-persist\persist-service.js --once
+node ~/.clawdbot/auto-persist/persist-service.js --once
+```
+
+### Daemon mode (foreground, any platform)
+```bash
+node ~/.clawdbot/auto-persist/persist-service.js --daemon
 ```
 
 ## What Gets Saved
@@ -58,3 +64,15 @@ State snapshots are saved to `auto-persist/snapshots/` with 1-hour retention (12
 ## Logs
 
 View persist logs at `auto-persist/persist.log`
+
+## Removing the scheduled job
+
+### Linux
+```bash
+crontab -l | grep -v persist-service.js | crontab -
+```
+
+### Windows
+```powershell
+Unregister-ScheduledTask -TaskName "ClawdbotAutoPersist" -Confirm:$false
+```
