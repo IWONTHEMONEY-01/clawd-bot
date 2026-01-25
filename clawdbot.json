@@ -14,7 +14,7 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "anthropic/claude-3-5-sonnet-20241022"
+        "primary": "minimax/MiniMax-M2.1"
       },
       "workspace": "C:\\Users\\afrad\\clawd",
       "maxConcurrent": 4,

@@ -76,7 +76,7 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
   "agents": {\n\
     "defaults": {\n\
       "model": {\n\
-        "primary": "anthropic/claude-3-5-sonnet-20241022"\n\
+        "primary": "minimax/MiniMax-M2.1"\n\
       },\n\
       "workspace": "/root/clawd",\n\
       "memorySearch": {\n\
