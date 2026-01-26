@@ -72,17 +72,49 @@ BRAVE_API_KEY=<your api key>
 
 ## 3. Firewall Rules (VPS/Hetzner/DigitalOcean)
 
-If running on a raw VPS (not Railway), block port 18789:
+If running on a raw VPS (not Railway), block port 18789 and enable brute-force protection:
+
+### Basic Firewall (UFW)
 
 ```bash
-# UFW (Ubuntu)
+# Enable firewall with SSH access
+sudo ufw allow 22
 sudo ufw deny 18789
-
-# iptables
-sudo iptables -A INPUT -p tcp --dport 18789 -j DROP
+sudo ufw enable
 
 # Verify
-sudo ss -tlnp | grep 18789  # Should only show 127.0.0.1
+sudo ufw status
+```
+
+### Brute-Force Protection (fail2ban)
+
+Automatically bans IPs after failed login attempts:
+
+```bash
+# Install and enable
+sudo apt install fail2ban -y
+sudo systemctl enable fail2ban --now
+
+# Check status
+sudo fail2ban-client status
+sudo fail2ban-client status sshd
+```
+
+Default config bans after 5 failed attempts for 10 minutes. For stricter settings, create `/etc/fail2ban/jail.local`:
+
+```ini
+[sshd]
+enabled = true
+port = ssh
+maxretry = 3
+bantime = 1h
+findtime = 10m
+```
+
+### iptables (Alternative)
+
+```bash
+sudo iptables -A INPUT -p tcp --dport 18789 -j DROP
 ```
 
 **Railway:** Port 18789 is not exposed by default. Only exposed if you create a public domain.
