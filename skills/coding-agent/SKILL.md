@@ -229,10 +229,126 @@ git worktree remove /tmp/issue-99
 
 ---
 
+## tmux (Interactive Sessions)
+
+Use the **tmux skill** for interactive coding sessions (always, except very simple one-shot prompts). Prefer bash background mode for non-interactive runs.
+
+### Parallel Issue Fixing with git worktrees + tmux
+
+For fixing multiple issues in parallel, use git worktrees (isolated branches) + tmux sessions:
+
+```bash
+# 1. Clone repo to temp location
+cd /tmp && git clone git@github.com:user/repo.git repo-worktrees
+cd repo-worktrees
+
+# 2. Create worktrees for each issue (isolated branches!)
+git worktree add -b fix/issue-78 /tmp/issue-78 main
+git worktree add -b fix/issue-99 /tmp/issue-99 main
+
+# 3. Set up tmux sessions
+SOCKET="${TMPDIR:-/tmp}/codex-fixes.sock"
+tmux -S "$SOCKET" new-session -d -s fix-78
+tmux -S "$SOCKET" new-session -d -s fix-99
+
+# 4. Launch Codex in each (after pnpm install!)
+tmux -S "$SOCKET" send-keys -t fix-78 "cd /tmp/issue-78 && pnpm install && codex --yolo 'Fix issue #78: <description>. Commit and push.'" Enter
+tmux -S "$SOCKET" send-keys -t fix-99 "cd /tmp/issue-99 && pnpm install && codex --yolo 'Fix issue #99: <description>. Commit and push.'" Enter
+
+# 5. Monitor progress
+tmux -S "$SOCKET" capture-pane -p -t fix-78 -S -30
+tmux -S "$SOCKET" capture-pane -p -t fix-99 -S -30
+
+# 6. Check if done (prompt returned)
+tmux -S "$SOCKET" capture-pane -p -t fix-78 -S -3 | grep -q "❯" && echo "Done!"
+
+# 7. Create PRs after fixes
+cd /tmp/issue-78 && git push -u origin fix/issue-78
+gh pr create --repo user/repo --head fix/issue-78 --title "fix: ..." --body "..."
+
+# 8. Cleanup
+tmux -S "$SOCKET" kill-server
+git worktree remove /tmp/issue-78
+git worktree remove /tmp/issue-99
+```
+
+**Why worktrees?** Each Codex works in isolated branch, no conflicts. Can run 5+ parallel fixes!
+
+**Why tmux over bash background?** Codex is interactive — needs TTY for proper output. tmux provides persistent sessions with full history capture.
+
+---
+
+## PR Template (The Razor Standard)
+
+When submitting PRs to external repos, use this format for quality & maintainer-friendliness:
+
+```markdown
+## Original Prompt
+[Exact request/problem statement]
+
+## What this does
+[High-level description]
+
+**Features:**
+- [Key feature 1]
+- [Key feature 2]
+
+**Example usage:**
+```bash
+# Example
+command example
+```
+
+## Feature intent (maintainer-friendly)
+[Why useful, how it fits, workflows it enables]
+
+## Prompt history (timestamped)
+- YYYY-MM-DD HH:MM UTC: [Step 1]
+- YYYY-MM-DD HH:MM UTC: [Step 2]
+
+## How I tested
+**Manual verification:**
+1. [Test step] - Output: `[result]`
+2. [Test step] - Result: [result]
+
+**Files tested:**
+- [Detail]
+- [Edge cases]
+
+## Session logs (implementation)
+- [What was researched]
+- [What was discovered]
+- [Time spent]
+
+## Implementation details
+**New files:**
+- `path/file.ts` - [description]
+
+**Modified files:**
+- `path/file.ts` - [change]
+
+**Technical notes:**
+- [Detail 1]
+- [Detail 2]
+
+---
+*Submitted by Razor - Mariano's AI agent*
+```
+
+**Key principles:**
+- Human-written description (no AI slop)
+- Feature intent for maintainers
+- Timestamped prompt history
+- Session logs if using Codex/agent
+
+Example: https://github.com/steipete/bird/pull/22
+
+---
+
 ## Learnings (Jan 2026)
 
 - **PTY is essential:** Coding agents are interactive terminal apps. Without `pty:true`, output breaks or agent hangs.
 - **Git repo required:** Codex won't run outside a git directory. Use `mktemp -d && git init` for scratch work.
 - **exec is your friend:** `codex exec "prompt"` runs and exits cleanly - perfect for one-shots.
 - **submit vs write:** Use `submit` to send input + Enter, `write` for raw data without newline.
-- **Sass works:** Codex responds well to playful prompts. Asked it to write a haiku about being second fiddle to a space lobster, got: *"Second chair, I code / Space lobster sets the tempo / Keys glow, I follow"* 🦞
+- **Sass works:** Codex responds well to playful prompts. Asked it to write a haiku about being second fiddle to a space lobster, got: *"Second chair, I code / Space lobster sets the tempo / Keys glow, I follow"*
