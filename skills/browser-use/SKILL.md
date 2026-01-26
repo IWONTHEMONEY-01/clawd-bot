@@ -17,7 +17,7 @@ API Key is read from clawdbot config at `skills.entries.browser-use.apiKey`.
 
 If not configured, tell the user:
 
-> To use Browser Use, you need an API key. Get one at https://cloud.browser-use.com (new signups get $10 free credit). Then configure it:
+> To use Browser Use, you need an API key. Get one at https://cloud.browser-use.com. Then configure it:
 > ```
 > clawdbot config set skills.entries.browser-use.apiKey "bu_your_key_here"
 > ```
@@ -82,8 +82,6 @@ curl -X PATCH "https://api.browser-use.com/api/v2/browsers/<session-id>" \
   -d '{"status": "stopped"}'
 ```
 
-**Pricing:** $0.06/hour (Pay As You Go) or $0.03/hour (Business). Max 4 hours per session. Billed per minute, refunded for unused time.
-
 ---
 
 ## 2. Profiles
@@ -136,8 +134,7 @@ curl "https://api.browser-use.com/api/v2/tasks/<task-id>" -H "X-Browser-Use-API-
 {
   "status": "finished",
   "output": "The MacBook Air M3 is priced at $1,099",
-  "isSuccess": true,
-  "cost": "0.02"
+  "isSuccess": true
 }
 ```
 
