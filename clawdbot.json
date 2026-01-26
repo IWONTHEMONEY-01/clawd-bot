@@ -65,7 +65,6 @@
     "telegram": {
       "enabled": true,
       "dmPolicy": "pairing",
-      "botToken": "8376642115:AAFdVZ7l8qPqx71VFpeoSGzlI_574tOcb3o",
       "groupPolicy": "allowlist",
       "streamMode": "partial"
     },
@@ -110,8 +109,7 @@
     "mode": "local",
     "bind": "loopback",
     "auth": {
-      "mode": "token",
-      "token": "d60ff600754da51af6eb87deb0fbcc56e99f4e26d78c1ec6"
+      "mode": "token"
     },
     "tailscale": {
       "mode": "off",
