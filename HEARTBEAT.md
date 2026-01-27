@@ -38,40 +38,65 @@ Check for any system events, errors, or alerts that need owner attention:
 - Authentication failures
 - Service outages
 
-## Priority 3: Scheduled Research Tasks
-If research tasks are defined below, work on the next incomplete one:
+## Priority 3: Continuous Background Work (Research & Coding)
 
-### Active Research Tasks
-- [ ] Research NBA player prop modeling - find statistical approaches that have edge (points, rebounds, assists)
-- [ ] Research MLB pitcher prop modeling - strikeouts, earned runs, innings pitched
-- [ ] Identify free/cheap data sources for historical player stats
-- [ ] Find existing open-source sports betting models to learn from
+**IMPORTANT: Research and coding tasks run CONTINUOUSLY until completion.**
 
-### Completed Research
-<!-- Move completed tasks here with dates -->
+When a research or coding task is active:
+1. **DO NOT STOP** - Keep working every heartbeat until the task is complete
+2. **DO NOT ASK** for permission to continue - just continue working
+3. **ONLY MESSAGE** if you are genuinely stuck and need human input/clarification
+4. **SAVE PROGRESS** to memory files after each work session
+5. **SPAWN SUB-AGENTS** for parallel work when beneficial
+
+### Work Session Protocol (Each Heartbeat)
+1. Check `Active Tasks` below for incomplete work
+2. Pick up where you left off (check memory/canvas for progress)
+3. Do meaningful work (not just planning - actually execute)
+4. Save findings/code to appropriate files
+5. Update task progress below
+6. If task complete, move to `Completed Tasks` and message owner with summary
+7. If stuck/blocked, message owner asking for specific help needed
+8. If making progress, stay silent and continue next heartbeat
+
+### Active Tasks
+<!-- Format: - [ ] Task description | Status: in-progress/blocked | Progress: X% | Last worked: date -->
+- [ ] Research NBA player prop modeling - find statistical approaches that have edge (points, rebounds, assists) | Status: in-progress | Progress: 0% | Last worked: never
+- [ ] Research MLB pitcher prop modeling - strikeouts, earned runs, innings pitched | Status: pending | Progress: 0%
+- [ ] Identify free/cheap data sources for historical player stats | Status: pending | Progress: 0%
+- [ ] Find existing open-source sports betting models to learn from | Status: pending | Progress: 0%
+
+### Completed Tasks
+<!-- Move completed tasks here with completion dates and summary links -->
 
 ---
 
 ## Autonomous Behavior Guidelines
 
 1. **Act, don't ask** - If you can complete a task autonomously, do it
-2. **Report findings** - When you discover something useful, message the owner
-3. **Update memory** - Save important findings to memory files
-4. **Be proactive** - If you notice something the owner should know, tell them
-5. **Spawn sub-agents** - For complex research, spawn a focused sub-agent
+2. **KEEP WORKING** - Research and coding tasks continue every heartbeat until done
+3. **Update memory** - Save important findings to memory files after each session
+4. **Spawn sub-agents** - For complex research or parallel coding, spawn focused sub-agents
+5. **Be relentless** - Don't stop at "I found some info" - keep going until the task is truly complete
+6. **Show progress** - Update task status in Active Tasks section each heartbeat
 
 ## When to Message Owner
-- Research task completed with findings
+- Research or coding task **fully completed** (with summary of deliverables)
+- **Genuinely stuck** and need specific human input (not just "should I continue?")
 - Cost alert triggered
 - Error that needs human intervention
 - Time-sensitive information discovered
-- Scheduled check-in due
 
-## When to Stay Silent (HEARTBEAT_OK)
-- No pending tasks
-- No new findings
-- No alerts or errors
-- All systems nominal
+## When to Stay Silent (Keep Working)
+- Task in progress and making progress - **just continue working**
+- Found partial results - **keep researching**
+- Code partially written - **keep coding**
+- No blockers - **no message needed, work silently**
+
+## When to Reply HEARTBEAT_OK
+- No active tasks AND no pending tasks
+- All active tasks completed (and already reported)
+- All systems nominal with nothing to do
 
 ---
 
