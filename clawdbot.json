@@ -1,6 +1,10 @@
 {
   "auth": {
     "profiles": {
+      "zai:default": {
+        "provider": "zai",
+        "mode": "api_key"
+      },
       "minimax:default": {
         "provider": "minimax",
         "mode": "api_key"
@@ -14,7 +18,7 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "minimax/MiniMax-M2.1",
+        "primary": "zai/glm-4.7",
         "fallbacks": []
       },
       "workspace": "/home/user/clawd-bot",
