@@ -158,6 +158,7 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
       "enabled": true,\n\
       "entries": {\n\
         "session-memory": { "enabled": true },\n\
+        "auto-memory-save": { "enabled": true },\n\
         "command-logger": { "enabled": true },\n\
         "boot-md": { "enabled": true }\n\
       }\n\
@@ -265,10 +266,11 @@ if [ -n "$GITHUB_TOKEN" ]; then\n\
   fi\n\
   git config user.email "bot@clawdbot.local"\n\
   git config user.name "Clawdbot"\n\
-  # Try to fetch existing memory from memory-sync branch\n\
+  # Try to fetch existing memory AND sessions from memory-sync branch\n\
   if git fetch origin memory-sync 2>/dev/null; then\n\
     git checkout -f origin/memory-sync -- memory/ 2>/dev/null || true\n\
-    echo "Restored memory from memory-sync branch"\n\
+    git checkout -f origin/memory-sync -- .clawdbot/agents/main/sessions/ 2>/dev/null || true\n\
+    echo "Restored memory and sessions from memory-sync branch"\n\
   fi\n\
   echo "Git configured for memory sync"\n\
 fi\n\
@@ -279,18 +281,21 @@ if [ -n "$GITHUB_TOKEN" ]; then\n\
     while true; do\n\
       sleep 600\n\
       cd /root/clawd 2>/dev/null || continue\n\
-      # ONLY add workspace files\n\
+      # Add workspace files AND session transcripts\n\
       git add memory/*.md memory/**/*.md 2>/dev/null || true\n\
       git add AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md TOOLS.md USER.md canvas/ tasks/ 2>/dev/null || true\n\
+      # Add session transcripts (conversation history)\n\
+      git add .clawdbot/agents/main/sessions/*.jsonl 2>/dev/null || true\n\
+      git add .clawdbot/agents/main/sessions/sessions.json 2>/dev/null || true\n\
       if [ -n "$(git diff --cached --name-only 2>/dev/null)" ]; then\n\
-        git commit -m "Auto-sync memory $(date -u +%Y-%m-%dT%H:%M:%SZ)" || true\n\
+        git commit -m "Auto-sync memory+sessions $(date -u +%Y-%m-%dT%H:%M:%SZ)" || true\n\
         # Push to memory-sync branch ONLY - never touch main\n\
         git push origin memory-sync:memory-sync --force 2>/dev/null || echo "Memory sync push failed"\n\
-        echo "Memory synced to git (memory-sync branch)"\n\
+        echo "Memory and sessions synced to git (memory-sync branch)"\n\
       fi\n\
     done\n\
   ) &\n\
-  echo "Memory sync daemon started"\n\
+  echo "Memory sync daemon started (includes session transcripts)"\n\
 fi\n\
 \n\
 exec node /app/railway-gateway.mjs\n\
