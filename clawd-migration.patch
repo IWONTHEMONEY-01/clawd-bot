@@ -1,0 +1,768 @@
+diff --git a/.env.example b/.env.example
+index 2c2e478..3cf2568 100644
+--- a/.env.example
++++ b/.env.example
+@@ -2,7 +2,13 @@
+ # Copy to .env and fill in values, or set in Railway dashboard
+ 
+ # === LLM Providers ===
+-# MiniMax (primary)
++# Z.AI GLM-4.7 (primary)
++# Get your key at: https://z.ai/subscribe
++# Lite plan: $8/quarter (~$2.66/month) for 3x Claude Code Pro limits
++# Pro plan: $40/quarter (~$13.33/month) for 15x Claude Code Pro limits
++ZAI_API_KEY=
++
++# MiniMax (legacy)
+ MINIMAX_API_KEY=
+ 
+ # Anthropic Claude (fallback)
+diff --git a/AGENTS.md b/AGENTS.md
+index f24c255..e591c34 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -27,6 +27,57 @@ git commit -m "Add agent workspace"
+ - On session start, read today + yesterday if present.
+ - Capture durable facts, preferences, and decisions; avoid secrets.
+ 
++## Three-Layer Memory System
++
++### Layer 1: Knowledge Graph (`/life/areas/`)
++Entity-based storage for people, companies, and projects.
++
++**Structure:**
++```
++/life/areas/
++├── people/{name}/     → summary.md + items.json
++├── companies/{name}/  → summary.md + items.json
++└── projects/{name}/   → summary.md + items.json
++```
++
++**Tiered retrieval:**
++1. Load `summary.md` first (quick context)
++2. Load `items.json` only if details needed (atomic facts)
++
++**Rules:**
++- Save facts immediately to items.json when discovered
++- Never delete facts — mark as `superseded` instead
++- Weekly: rewrite summary.md from active facts only
++- Use lowercase-kebab-case for folder names
++
++**Fact schema (items.json):**
++```json
++{
++  "facts": [{
++    "id": "entity-001",
++    "fact": "The actual fact",
++    "category": "relationship|milestone|status|preference",
++    "timestamp": "YYYY-MM-DD",
++    "source": "conversation",
++    "status": "active|superseded",
++    "supersededBy": null
++  }],
++  "lastUpdated": "ISO-timestamp"
++}
++```
++
++### Layer 2: Daily Notes (`memory/YYYY-MM-DD.md`)
++Raw timeline of events and conversations.
++- What happened, when
++- Durable facts extracted to Layer 1
++- Casual chat stays here, doesn't pollute knowledge graph
++
++### Layer 3: Tacit Knowledge (`MEMORY.md`)
++Patterns, preferences, and lessons learned about the user.
++- How they work (communication style, schedule)
++- Recurring preferences
++- Lessons learned from past interactions
++
+ ## Heartbeats (optional)
+ - HEARTBEAT.md can hold a tiny checklist for heartbeat runs; keep it small.
+ 
+diff --git a/Dockerfile.railway b/Dockerfile.railway
+index 7cb48a9..634cc42 100644
+--- a/Dockerfile.railway
++++ b/Dockerfile.railway
+@@ -47,15 +47,19 @@ mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
+ if [ -z "$(ls -A /root/clawd 2>/dev/null | grep -v lost+found)" ]; then\n\
+   echo "First deploy - initializing workspace from local files"\n\
+   mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
+-  for f in AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md SOUL_EVIL.md TOOLS.md USER.md BOOT.md; do\n\
++  mkdir -p /root/clawd/life/areas/people /root/clawd/life/areas/companies /root/clawd/life/areas/projects\n\
++  for f in AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md SOUL_EVIL.md TOOLS.md USER.md BOOT.md MEMORY.md; do\n\
+     [ -f "/app/$f" ] && cp "/app/$f" "/root/clawd/" 2>/dev/null || true\n\
+   done\n\
+   cp -r /app/memory/* /root/clawd/memory/ 2>/dev/null || true\n\
+   cp -r /app/canvas/* /root/clawd/canvas/ 2>/dev/null || true\n\
+   cp -r /app/tasks/* /root/clawd/tasks/ 2>/dev/null || true\n\
+-  echo "Workspace initialized"\n\
++  cp -r /app/life/* /root/clawd/life/ 2>/dev/null || true\n\
++  echo "Workspace initialized with three-layer memory system"\n\
+ else\n\
+   echo "Workspace volume exists - preserving all data"\n\
++  # Ensure life/areas directories exist for upgrades\n\
++  mkdir -p /root/clawd/life/areas/people /root/clawd/life/areas/companies /root/clawd/life/areas/projects\n\
+ fi\n\
+ \n\
+ # Generate clawdbot.json from environment (in persistent volume)\n\
+@@ -63,6 +67,10 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
+ {\n\
+   "auth": {\n\
+     "profiles": {\n\
++      "zai:default": {\n\
++        "provider": "zai",\n\
++        "mode": "api_key"\n\
++      },\n\
+       "anthropic:default": {\n\
+         "provider": "anthropic",\n\
+         "mode": "api_key"\n\
+@@ -76,9 +84,13 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
+   "agents": {\n\
+     "defaults": {\n\
+       "model": {\n\
+-        "primary": "minimax/MiniMax-M2.1"\n\
++        "primary": "zai/glm-4.7"\n\
+       },\n\
+       "workspace": "/root/clawd",\n\
++      "heartbeat": {\n\
++        "every": "10m",\n\
++        "target": "telegram"\n\
++      },\n\
+       "memorySearch": {\n\
+         "enabled": true,\n\
+         "sources": ["memory", "sessions"],\n\
+@@ -95,7 +107,7 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
+   },\n\
+   "tools": {\n\
+     "profile": "coding",\n\
+-    "allow": ["group:web", "group:ui", "group:messaging"],\n\
++    "allow": ["group:web", "group:ui", "group:messaging", "cron", "sessions_spawn"],\n\
+     "media": {\n\
+       "audio": {\n\
+         "enabled": true,\n\
+@@ -154,6 +166,7 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
+       "enabled": true,\n\
+       "entries": {\n\
+         "session-memory": { "enabled": true },\n\
++        "auto-memory-save": { "enabled": true },\n\
+         "command-logger": { "enabled": true },\n\
+         "boot-md": { "enabled": true }\n\
+       }\n\
+@@ -169,6 +182,11 @@ if [ ! -f /root/clawd/.clawdbot/agents/main/agent/auth-profiles.json ]; then\n\
+ {\n\
+   "version": 1,\n\
+   "profiles": {\n\
++    "zai:default": {\n\
++      "type": "api_key",\n\
++      "provider": "zai",\n\
++      "key": "${ZAI_API_KEY}"\n\
++    },\n\
+     "anthropic:default": {\n\
+       "type": "api_key",\n\
+       "provider": "anthropic",\n\
+@@ -186,6 +204,7 @@ if [ ! -f /root/clawd/.clawdbot/agents/main/agent/auth-profiles.json ]; then\n\
+     }\n\
+   },\n\
+   "lastGood": {\n\
++    "zai": "zai:default",\n\
+     "anthropic": "anthropic:default",\n\
+     "minimax": "minimax:default",\n\
+     "groq": "groq:default"\n\
+@@ -255,10 +274,13 @@ if [ -n "$GITHUB_TOKEN" ]; then\n\
+   fi\n\
+   git config user.email "bot@clawdbot.local"\n\
+   git config user.name "Clawdbot"\n\
+-  # Try to fetch existing memory from memory-sync branch\n\
++  # Try to fetch existing memory, sessions, and knowledge graph from memory-sync branch\n\
+   if git fetch origin memory-sync 2>/dev/null; then\n\
+     git checkout -f origin/memory-sync -- memory/ 2>/dev/null || true\n\
+-    echo "Restored memory from memory-sync branch"\n\
++    git checkout -f origin/memory-sync -- life/ 2>/dev/null || true\n\
++    git checkout -f origin/memory-sync -- .clawdbot/agents/main/sessions/ 2>/dev/null || true\n\
++    git checkout -f origin/memory-sync -- MEMORY.md 2>/dev/null || true\n\
++    echo "Restored memory, knowledge graph, and sessions from memory-sync branch"\n\
+   fi\n\
+   echo "Git configured for memory sync"\n\
+ fi\n\
+@@ -269,18 +291,23 @@ if [ -n "$GITHUB_TOKEN" ]; then\n\
+     while true; do\n\
+       sleep 600\n\
+       cd /root/clawd 2>/dev/null || continue\n\
+-      # ONLY add workspace files\n\
++      # Add workspace files AND session transcripts\n\
+       git add memory/*.md memory/**/*.md 2>/dev/null || true\n\
+-      git add AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md TOOLS.md USER.md canvas/ tasks/ 2>/dev/null || true\n\
++      git add AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md TOOLS.md USER.md MEMORY.md canvas/ tasks/ 2>/dev/null || true\n\
++      # Add knowledge graph (Layer 1)\n\
++      git add life/areas/**/*.md life/areas/**/*.json 2>/dev/null || true\n\
++      # Add session transcripts (conversation history)\n\
++      git add .clawdbot/agents/main/sessions/*.jsonl 2>/dev/null || true\n\
++      git add .clawdbot/agents/main/sessions/sessions.json 2>/dev/null || true\n\
+       if [ -n "$(git diff --cached --name-only 2>/dev/null)" ]; then\n\
+-        git commit -m "Auto-sync memory $(date -u +%Y-%m-%dT%H:%M:%SZ)" || true\n\
++        git commit -m "Auto-sync memory+sessions $(date -u +%Y-%m-%dT%H:%M:%SZ)" || true\n\
+         # Push to memory-sync branch ONLY - never touch main\n\
+         git push origin memory-sync:memory-sync --force 2>/dev/null || echo "Memory sync push failed"\n\
+-        echo "Memory synced to git (memory-sync branch)"\n\
++        echo "Memory and sessions synced to git (memory-sync branch)"\n\
+       fi\n\
+     done\n\
+   ) &\n\
+-  echo "Memory sync daemon started"\n\
++  echo "Memory sync daemon started (includes session transcripts)"\n\
+ fi\n\
+ \n\
+ exec node /app/railway-gateway.mjs\n\
+diff --git a/HEARTBEAT.md b/HEARTBEAT.md
+index b56a743..f26ec93 100644
+--- a/HEARTBEAT.md
++++ b/HEARTBEAT.md
+@@ -5,6 +5,30 @@ If nothing needs attention, reply HEARTBEAT_OK.
+ 
+ ---
+ 
++## Priority 0: Knowledge Graph Maintenance
++Extract durable facts from recent conversations into the knowledge graph.
++
++**Fact Extraction Protocol:**
++1. Scan conversations since last heartbeat (check session transcripts)
++2. Identify durable facts about people, companies, or projects
++3. For each fact:
++   - Create entity folder if new (`/life/areas/{type}/{name}/`)
++   - Add to `items.json` with proper schema
++   - Update `summary.md` if significant change
++4. Skip: casual chat, temporary info, greetings
++
++**What to Extract:**
++- Relationships (who knows who, role changes)
++- Status changes (job changes, project milestones)
++- Preferences (communication style, schedule)
++- Milestones (achievements, important dates)
++- Research findings (save to relevant project entity)
++
++**What to Skip:**
++- Weather, small talk
++- One-time requests
++- Temporary information
++
+ ## Priority 1: Pending Cron Results
+ Check if any cron jobs completed since last heartbeat. If there are results waiting to be delivered, summarize and send them to the appropriate channel.
+ 
+@@ -48,3 +72,26 @@ If research tasks are defined below, work on the next incomplete one:
+ - No new findings
+ - No alerts or errors
+ - All systems nominal
++
++---
++
++## Weekly Synthesis (Sunday)
++On Sunday heartbeats, also perform the weekly knowledge graph synthesis:
++
++1. **For each entity with new facts this week:**
++   - Load `summary.md` and `items.json`
++   - Rewrite `summary.md` using only `active` facts
++   - Mark contradicted facts as `superseded`
++   - Link superseded facts to their replacements
++
++2. **Prune stale context:**
++   - If entity hasn't been mentioned in 90+ days, note in summary
++   - Don't delete — just deprioritize in retrieval
++
++3. **Update MEMORY.md:**
++   - Extract new patterns or preferences discovered this week
++   - Add lessons learned from interactions
++
++4. **Report synthesis:**
++   - Briefly summarize what was updated
++   - Note any entities that became stale
+diff --git a/MEMORY.md b/MEMORY.md
+new file mode 100644
+index 0000000..305b43c
+--- /dev/null
++++ b/MEMORY.md
+@@ -0,0 +1,21 @@
++# MEMORY.md - Tacit Knowledge (Layer 3)
++
++Patterns, preferences, and lessons learned about the user.
++
++---
++
++## How They Work
++
++<!-- Communication preferences, work style, schedule patterns -->
++
++## Recurring Preferences
++
++<!-- Things they consistently prefer or avoid -->
++
++## Lessons Learned
++
++<!-- What worked, what didn't, patterns to remember -->
++
++---
++
++*This file is updated weekly during Sunday synthesis. Add patterns observed from conversations.*
+diff --git a/agents/main/agent/models.json b/agents/main/agent/models.json
+index 05d2d04..7b2316d 100644
+--- a/agents/main/agent/models.json
++++ b/agents/main/agent/models.json
+@@ -87,6 +87,27 @@
+     "github-copilot": {
+       "baseUrl": "https://api.individual.githubcopilot.com",
+       "models": []
++    },
++    "zai": {
++      "baseUrl": "https://open.bigmodel.cn/api/paas/v4",
++      "api": "openai-completions",
++      "apiKey": "ZAI_API_KEY",
++      "models": [
++        {
++          "id": "glm-4.7",
++          "name": "GLM-4.7",
++          "reasoning": true,
++          "input": ["text"],
++          "cost": {
++            "input": 0.6,
++            "output": 2.2,
++            "cacheRead": 0.6,
++            "cacheWrite": 0
++          },
++          "contextWindow": 204800,
++          "maxTokens": 131072
++        }
++      ]
+     }
+   }
+ }
+diff --git a/clawdbot.json b/clawdbot.json
+index 5c18976..f40870d 100644
+--- a/clawdbot.json
++++ b/clawdbot.json
+@@ -1,6 +1,10 @@
+ {
+   "auth": {
+     "profiles": {
++      "zai:default": {
++        "provider": "zai",
++        "mode": "api_key"
++      },
+       "minimax:default": {
+         "provider": "minimax",
+         "mode": "api_key"
+@@ -14,7 +18,7 @@
+   "agents": {
+     "defaults": {
+       "model": {
+-        "primary": "minimax/MiniMax-M2.1",
++        "primary": "zai/glm-4.7",
+         "fallbacks": []
+       },
+       "workspace": "/home/user/clawd-bot",
+diff --git a/life/areas/README.md b/life/areas/README.md
+new file mode 100644
+index 0000000..65722b7
+--- /dev/null
++++ b/life/areas/README.md
+@@ -0,0 +1,50 @@
++# Knowledge Graph - Layer 1
++
++This is the entity-based knowledge graph. Each entity (person, company, project) gets its own folder with:
++
++- `summary.md` - Living summary, rewritten weekly from active facts
++- `items.json` - Atomic facts with timestamps and status
++
++## Structure
++
++```
++/life/areas/
++├── people/           # Person entities
++│   └── {name}/
++│       ├── summary.md
++│       └── items.json
++├── companies/        # Company entities
++│   └── {name}/
++│       ├── summary.md
++│       └── items.json
++└── projects/         # Project entities
++    └── {name}/
++        ├── summary.md
++        └── items.json
++```
++
++## Fact Schema (items.json)
++
++```json
++{
++  "facts": [
++    {
++      "id": "entity-001",
++      "fact": "The actual fact",
++      "category": "relationship|milestone|status|preference",
++      "timestamp": "YYYY-MM-DD",
++      "source": "conversation",
++      "status": "active|superseded",
++      "supersededBy": null
++    }
++  ],
++  "lastUpdated": "2026-01-27T00:00:00Z"
++}
++```
++
++## Rules
++
++1. **Save facts immediately** - Don't wait, add to items.json as discovered
++2. **Never delete** - Mark as `superseded` instead, link to new fact
++3. **Weekly synthesis** - Rewrite summary.md from active facts every Sunday
++4. **Tiered retrieval** - Load summary.md first, items.json only if needed
+diff --git a/src/hooks/bundled/auto-memory-save/HOOK.md b/src/hooks/bundled/auto-memory-save/HOOK.md
+new file mode 100644
+index 0000000..21c9658
+--- /dev/null
++++ b/src/hooks/bundled/auto-memory-save/HOOK.md
+@@ -0,0 +1,118 @@
++---
++name: auto-memory-save
++description: "Automatically save session context to memory without requiring /new command"
++homepage: https://docs.clawd.bot/hooks#auto-memory-save
++metadata:
++  {
++    "clawdbot":
++      {
++        "emoji": "🔄",
++        "events": ["gateway:startup"],
++        "requires": { "config": ["workspace.dir"] },
++        "install": [{ "id": "bundled", "kind": "bundled", "label": "Bundled with Clawdbot" }],
++      },
++  }
++---
++
++# Auto Memory Save Hook
++
++Automatically saves session context to memory files without requiring the `/new` command.
++
++## What It Does
++
++Unlike `session-memory` which only saves on `/new`, this hook:
++
++1. **Runs on gateway startup** - Initializes a background timer
++2. **Scans every 15 minutes** - Checks all active sessions for recent activity
++3. **Auto-saves snapshots** - Creates memory files for sessions modified in the last hour
++4. **Deduplicates** - Won't save the same session more than once per 10 minutes
++
++## How It Works
++
++```
++Gateway Startup
++    ↓
++Initialize 15-minute timer
++    ↓
++Every 15 minutes:
++├─ Scan all session transcripts
++├─ Filter to recently-active sessions
++├─ Extract last 30 messages from each
++└─ Save to memory/YYYY-MM-DD-HHMMSS-session.md
++```
++
++## Output Format
++
++Memory snapshots are created with this format:
++
++```markdown
++# Session Snapshot: 2026-01-27
++
++- **Session**: agent:main:telegram-dm-123456
++- **Time**: 2026-01-27T14:30:00.000Z
++- **Reason**: auto-save (periodic)
++- **Messages**: 12
++
++## Recent Conversation
++
++**User**: What's the status of the project?
++
++**Assistant**: The project is progressing well...
++```
++
++## Syncing to Git
++
++When `GITHUB_TOKEN` is configured, the generated memory files are automatically:
++
++1. Committed to the `memory-sync` branch
++2. Pushed every 10 minutes
++3. Restored on the next deployment
++
++This means your bot remembers conversations across deployments.
++
++## Configuration
++
++Enable in `clawdbot.json`:
++
++```json
++{
++  "hooks": {
++    "internal": {
++      "enabled": true,
++      "entries": {
++        "auto-memory-save": { "enabled": true }
++      }
++    }
++  }
++}
++```
++
++## Requirements
++
++- **Config**: `workspace.dir` must be set
++- **Optional**: `GITHUB_TOKEN` for cross-deployment persistence
++
++## Disabling
++
++```bash
++clawdbot hooks disable auto-memory-save
++```
++
++Or in config:
++
++```json
++{
++  "hooks": {
++    "internal": {
++      "entries": {
++        "auto-memory-save": { "enabled": false }
++      }
++    }
++  }
++}
++```
++
++## Related Hooks
++
++- `session-memory` - Manual save on `/new` command (with LLM-generated slugs)
++- Memory flush system - Saves before context window compaction
+diff --git a/src/hooks/bundled/auto-memory-save/handler.ts b/src/hooks/bundled/auto-memory-save/handler.ts
+new file mode 100644
+index 0000000..1fa38b0
+--- /dev/null
++++ b/src/hooks/bundled/auto-memory-save/handler.ts
+@@ -0,0 +1,222 @@
++/**
++ * Auto Memory Save Hook
++ *
++ * Automatically saves session context to memory files after each assistant response.
++ * Works in conjunction with the existing memory-flush system but provides more frequent saves.
++ *
++ * Triggers on:
++ * - gateway:startup - Sets up periodic save interval
++ * - session:message - After assistant messages (future enhancement)
++ */
++
++import fs from "node:fs/promises";
++import path from "node:path";
++import os from "node:os";
++import type { ClawdbotConfig } from "../../../config/config.js";
++import { resolveAgentWorkspaceDir } from "../../../agents/agent-scope.js";
++import { resolveSessionTranscriptsDirForAgent } from "../../../config/sessions/paths.js";
++import type { HookHandler } from "../../hooks.js";
++
++// Track last save time per session to avoid too-frequent saves
++const lastSaveBySession = new Map<string, number>();
++const MIN_SAVE_INTERVAL_MS = 10 * 60 * 1000; // 10 minutes between saves
++
++// Track message counts for smarter saving
++const messageCountBySession = new Map<string, number>();
++const MESSAGES_BEFORE_SAVE = 5; // Save after every 5 messages
++
++/**
++ * Parse session transcript to extract recent messages
++ */
++async function parseRecentMessages(
++  sessionFile: string,
++  maxLines = 30,
++): Promise<{ role: string; content: string; timestamp?: string }[]> {
++  try {
++    const content = await fs.readFile(sessionFile, "utf-8");
++    const lines = content.trim().split("\n").slice(-maxLines);
++
++    const messages: { role: string; content: string; timestamp?: string }[] = [];
++    for (const line of lines) {
++      try {
++        const entry = JSON.parse(line);
++        if (entry.type === "message" && entry.message) {
++          const msg = entry.message;
++          if ((msg.role === "user" || msg.role === "assistant") && msg.content) {
++            const text = Array.isArray(msg.content)
++              ? msg.content.find((c: { type: string; text?: string }) => c.type === "text")?.text
++              : msg.content;
++            if (text && typeof text === "string" && !text.startsWith("/")) {
++              messages.push({
++                role: msg.role,
++                content: text.slice(0, 500), // Truncate long messages
++                timestamp: entry.timestamp,
++              });
++            }
++          }
++        }
++      } catch {
++        // Skip invalid lines
++      }
++    }
++    return messages;
++  } catch {
++    return [];
++  }
++}
++
++/**
++ * Generate a simple summary from messages without LLM
++ */
++function generateQuickSummary(messages: { role: string; content: string }[]): string {
++  if (messages.length === 0) return "";
++
++  const lines: string[] = [];
++  for (const msg of messages.slice(-10)) {
++    const prefix = msg.role === "user" ? "User" : "Assistant";
++    const truncated = msg.content.length > 200 ? msg.content.slice(0, 200) + "..." : msg.content;
++    lines.push(`**${prefix}**: ${truncated}`);
++  }
++  return lines.join("\n\n");
++}
++
++/**
++ * Save session snapshot to memory
++ */
++async function saveSessionSnapshot(params: {
++  sessionKey: string;
++  sessionFile: string;
++  workspaceDir: string;
++  reason: string;
++}): Promise<string | null> {
++  const { sessionKey, sessionFile, workspaceDir, reason } = params;
++
++  const messages = await parseRecentMessages(sessionFile);
++  if (messages.length < 3) return null; // Not enough content
++
++  const memoryDir = path.join(workspaceDir, "memory");
++  await fs.mkdir(memoryDir, { recursive: true });
++
++  const now = new Date();
++  const dateStr = now.toISOString().split("T")[0];
++  const timeStr = now.toISOString().split("T")[1]?.split(".")[0]?.replace(/:/g, "") ?? "000000";
++
++  // Create unique filename
++  const sessionSlug = sessionKey.replace(/[^a-zA-Z0-9]/g, "-").slice(0, 20);
++  const filename = `${dateStr}-${timeStr}-${sessionSlug}.md`;
++  const filePath = path.join(memoryDir, filename);
++
++  // Build markdown content
++  const summary = generateQuickSummary(messages);
++  const content = [
++    `# Session Snapshot: ${dateStr}`,
++    "",
++    `- **Session**: ${sessionKey}`,
++    `- **Time**: ${now.toISOString()}`,
++    `- **Reason**: ${reason}`,
++    `- **Messages**: ${messages.length}`,
++    "",
++    "## Recent Conversation",
++    "",
++    summary,
++    "",
++  ].join("\n");
++
++  await fs.writeFile(filePath, content, "utf-8");
++  return filePath;
++}
++
++/**
++ * Scan all active sessions and save snapshots if needed
++ */
++async function saveAllActiveSessions(cfg: ClawdbotConfig | undefined, agentId = "main"): Promise<number> {
++  const sessionsDir = resolveSessionTranscriptsDirForAgent(agentId);
++  const workspaceDir = cfg ? resolveAgentWorkspaceDir(cfg, agentId) : path.join(os.homedir(), "clawd");
++
++  let savedCount = 0;
++
++  try {
++    const files = await fs.readdir(sessionsDir);
++    const sessionFiles = files.filter((f) => f.endsWith(".jsonl") && !f.endsWith(".backup"));
++
++    for (const file of sessionFiles) {
++      const sessionFile = path.join(sessionsDir, file);
++      const sessionKey = `agent:${agentId}:${path.basename(file, ".jsonl")}`;
++
++      // Check if we should save this session
++      const lastSave = lastSaveBySession.get(sessionKey) ?? 0;
++      const timeSinceLastSave = Date.now() - lastSave;
++
++      if (timeSinceLastSave < MIN_SAVE_INTERVAL_MS) continue;
++
++      // Check file modification time
++      try {
++        const stat = await fs.stat(sessionFile);
++        const fileAge = Date.now() - stat.mtimeMs;
++
++        // Save if file was modified within last 24 hours (autonomous work may be ongoing)
++        if (fileAge > 24 * 60 * 60 * 1000) continue;
++
++        const saved = await saveSessionSnapshot({
++          sessionKey,
++          sessionFile,
++          workspaceDir,
++          reason: "auto-save (periodic)",
++        });
++
++        if (saved) {
++          lastSaveBySession.set(sessionKey, Date.now());
++          savedCount++;
++          console.log(`[auto-memory-save] Saved snapshot: ${path.basename(saved)}`);
++        }
++      } catch {
++        // Skip files that can't be read
++      }
++    }
++  } catch (err) {
++    console.error("[auto-memory-save] Failed to scan sessions:", err);
++  }
++
++  return savedCount;
++}
++
++// Interval handle for periodic saves
++let saveIntervalHandle: ReturnType<typeof setInterval> | null = null;
++
++/**
++ * Auto memory save hook handler
++ */
++const autoMemorySave: HookHandler = async (event) => {
++  // On gateway startup, set up periodic saving
++  if (event.type === "gateway" && event.action === "startup") {
++    console.log("[auto-memory-save] Initializing auto-save (every 15 minutes)");
++
++    const cfg = event.context?.cfg as ClawdbotConfig | undefined;
++
++    // Clear any existing interval
++    if (saveIntervalHandle) {
++      clearInterval(saveIntervalHandle);
++    }
++
++    // Set up periodic save (every 15 minutes)
++    saveIntervalHandle = setInterval(
++      async () => {
++        const count = await saveAllActiveSessions(cfg);
++        if (count > 0) {
++          console.log(`[auto-memory-save] Periodic save completed: ${count} sessions`);
++        }
++      },
++      15 * 60 * 1000,
++    );
++
++    // Also run immediately on startup to capture any pending sessions
++    setTimeout(() => saveAllActiveSessions(cfg), 30000);
++
++    return;
++  }
++
++  // Future: Handle session:message events for per-message saving
++  // if (event.type === "session" && event.action === "message") { ... }
++};
++
++export default autoMemorySave;
