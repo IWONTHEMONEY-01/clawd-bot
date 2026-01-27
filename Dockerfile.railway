@@ -63,6 +63,10 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
 {\n\
   "auth": {\n\
     "profiles": {\n\
+      "zai:default": {\n\
+        "provider": "zai",\n\
+        "mode": "api_key"\n\
+      },\n\
       "anthropic:default": {\n\
         "provider": "anthropic",\n\
         "mode": "api_key"\n\
@@ -76,7 +80,7 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
   "agents": {\n\
     "defaults": {\n\
       "model": {\n\
-        "primary": "minimax/MiniMax-M2.1"\n\
+        "primary": "zai/glm-4.7"\n\
       },\n\
       "workspace": "/root/clawd",\n\
       "memorySearch": {\n\
@@ -169,6 +173,11 @@ if [ ! -f /root/clawd/.clawdbot/agents/main/agent/auth-profiles.json ]; then\n\
 {\n\
   "version": 1,\n\
   "profiles": {\n\
+    "zai:default": {\n\
+      "type": "api_key",\n\
+      "provider": "zai",\n\
+      "key": "${ZAI_API_KEY}"\n\
+    },\n\
     "anthropic:default": {\n\
       "type": "api_key",\n\
       "provider": "anthropic",\n\
@@ -186,6 +195,7 @@ if [ ! -f /root/clawd/.clawdbot/agents/main/agent/auth-profiles.json ]; then\n\
     }\n\
   },\n\
   "lastGood": {\n\
+    "zai": "zai:default",\n\
     "anthropic": "anthropic:default",\n\
     "minimax": "minimax:default",\n\
     "groq": "groq:default"\n\
