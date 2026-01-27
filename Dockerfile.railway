@@ -83,6 +83,11 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
         "primary": "zai/glm-4.7"\n\
       },\n\
       "workspace": "/root/clawd",\n\
+      "heartbeat": {\n\
+        "enabled": true,\n\
+        "every": "30m",\n\
+        "target": "telegram"\n\
+      },\n\
       "memorySearch": {\n\
         "enabled": true,\n\
         "sources": ["memory", "sessions"],\n\
@@ -99,7 +104,7 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
   },\n\
   "tools": {\n\
     "profile": "coding",\n\
-    "allow": ["group:web", "group:ui", "group:messaging"],\n\
+    "allow": ["group:web", "group:ui", "group:messaging", "cron", "sessions_spawn"],\n\
     "media": {\n\
       "audio": {\n\
         "enabled": true,\n\

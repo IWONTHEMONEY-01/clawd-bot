@@ -154,8 +154,8 @@ async function saveAllActiveSessions(cfg: ClawdbotConfig | undefined, agentId = 
         const stat = await fs.stat(sessionFile);
         const fileAge = Date.now() - stat.mtimeMs;
 
-        // Only save if file was modified recently (within last hour)
-        if (fileAge > 60 * 60 * 1000) continue;
+        // Save if file was modified within last 24 hours (autonomous work may be ongoing)
+        if (fileAge > 24 * 60 * 60 * 1000) continue;
 
         const saved = await saveSessionSnapshot({
           sessionKey,
