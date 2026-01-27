@@ -280,7 +280,13 @@ if [ -n "$GITHUB_TOKEN" ]; then\n\
     git checkout -f origin/memory-sync -- life/ 2>/dev/null || true\n\
     git checkout -f origin/memory-sync -- .clawdbot/agents/main/sessions/ 2>/dev/null || true\n\
     git checkout -f origin/memory-sync -- MEMORY.md 2>/dev/null || true\n\
-    echo "Restored memory, knowledge graph, and sessions from memory-sync branch"\n\
+    git checkout -f origin/memory-sync -- HEARTBEAT.md 2>/dev/null || true\n\
+    echo "Restored memory, knowledge graph, sessions, and HEARTBEAT.md from memory-sync branch"\n\
+  fi\n\
+  # Also fetch latest HEARTBEAT.md from main branch (takes priority over memory-sync)\n\
+  if git fetch origin main 2>/dev/null; then\n\
+    git checkout -f origin/main -- HEARTBEAT.md 2>/dev/null || true\n\
+    echo "Updated HEARTBEAT.md from main branch"\n\
   fi\n\
   echo "Git configured for memory sync"\n\
 fi\n\
