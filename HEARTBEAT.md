@@ -5,6 +5,30 @@ If nothing needs attention, reply HEARTBEAT_OK.
 
 ---
 
+## Priority 0: Knowledge Graph Maintenance
+Extract durable facts from recent conversations into the knowledge graph.
+
+**Fact Extraction Protocol:**
+1. Scan conversations since last heartbeat (check session transcripts)
+2. Identify durable facts about people, companies, or projects
+3. For each fact:
+   - Create entity folder if new (`/life/areas/{type}/{name}/`)
+   - Add to `items.json` with proper schema
+   - Update `summary.md` if significant change
+4. Skip: casual chat, temporary info, greetings
+
+**What to Extract:**
+- Relationships (who knows who, role changes)
+- Status changes (job changes, project milestones)
+- Preferences (communication style, schedule)
+- Milestones (achievements, important dates)
+- Research findings (save to relevant project entity)
+
+**What to Skip:**
+- Weather, small talk
+- One-time requests
+- Temporary information
+
 ## Priority 1: Pending Cron Results
 Check if any cron jobs completed since last heartbeat. If there are results waiting to be delivered, summarize and send them to the appropriate channel.
 
@@ -48,3 +72,26 @@ If research tasks are defined below, work on the next incomplete one:
 - No new findings
 - No alerts or errors
 - All systems nominal
+
+---
+
+## Weekly Synthesis (Sunday)
+On Sunday heartbeats, also perform the weekly knowledge graph synthesis:
+
+1. **For each entity with new facts this week:**
+   - Load `summary.md` and `items.json`
+   - Rewrite `summary.md` using only `active` facts
+   - Mark contradicted facts as `superseded`
+   - Link superseded facts to their replacements
+
+2. **Prune stale context:**
+   - If entity hasn't been mentioned in 90+ days, note in summary
+   - Don't delete — just deprioritize in retrieval
+
+3. **Update MEMORY.md:**
+   - Extract new patterns or preferences discovered this week
+   - Add lessons learned from interactions
+
+4. **Report synthesis:**
+   - Briefly summarize what was updated
+   - Note any entities that became stale

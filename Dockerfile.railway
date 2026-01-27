@@ -47,15 +47,19 @@ mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
 if [ -z "$(ls -A /root/clawd 2>/dev/null | grep -v lost+found)" ]; then\n\
   echo "First deploy - initializing workspace from local files"\n\
   mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
-  for f in AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md SOUL_EVIL.md TOOLS.md USER.md BOOT.md; do\n\
+  mkdir -p /root/clawd/life/areas/people /root/clawd/life/areas/companies /root/clawd/life/areas/projects\n\
+  for f in AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md SOUL_EVIL.md TOOLS.md USER.md BOOT.md MEMORY.md; do\n\
     [ -f "/app/$f" ] && cp "/app/$f" "/root/clawd/" 2>/dev/null || true\n\
   done\n\
   cp -r /app/memory/* /root/clawd/memory/ 2>/dev/null || true\n\
   cp -r /app/canvas/* /root/clawd/canvas/ 2>/dev/null || true\n\
   cp -r /app/tasks/* /root/clawd/tasks/ 2>/dev/null || true\n\
-  echo "Workspace initialized"\n\
+  cp -r /app/life/* /root/clawd/life/ 2>/dev/null || true\n\
+  echo "Workspace initialized with three-layer memory system"\n\
 else\n\
   echo "Workspace volume exists - preserving all data"\n\
+  # Ensure life/areas directories exist for upgrades\n\
+  mkdir -p /root/clawd/life/areas/people /root/clawd/life/areas/companies /root/clawd/life/areas/projects\n\
 fi\n\
 \n\
 # Generate clawdbot.json from environment (in persistent volume)\n\
@@ -271,11 +275,13 @@ if [ -n "$GITHUB_TOKEN" ]; then\n\
   fi\n\
   git config user.email "bot@clawdbot.local"\n\
   git config user.name "Clawdbot"\n\
-  # Try to fetch existing memory AND sessions from memory-sync branch\n\
+  # Try to fetch existing memory, sessions, and knowledge graph from memory-sync branch\n\
   if git fetch origin memory-sync 2>/dev/null; then\n\
     git checkout -f origin/memory-sync -- memory/ 2>/dev/null || true\n\
+    git checkout -f origin/memory-sync -- life/ 2>/dev/null || true\n\
     git checkout -f origin/memory-sync -- .clawdbot/agents/main/sessions/ 2>/dev/null || true\n\
-    echo "Restored memory and sessions from memory-sync branch"\n\
+    git checkout -f origin/memory-sync -- MEMORY.md 2>/dev/null || true\n\
+    echo "Restored memory, knowledge graph, and sessions from memory-sync branch"\n\
   fi\n\
   echo "Git configured for memory sync"\n\
 fi\n\
@@ -288,7 +294,9 @@ if [ -n "$GITHUB_TOKEN" ]; then\n\
       cd /root/clawd 2>/dev/null || continue\n\
       # Add workspace files AND session transcripts\n\
       git add memory/*.md memory/**/*.md 2>/dev/null || true\n\
-      git add AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md TOOLS.md USER.md canvas/ tasks/ 2>/dev/null || true\n\
+      git add AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md TOOLS.md USER.md MEMORY.md canvas/ tasks/ 2>/dev/null || true\n\
+      # Add knowledge graph (Layer 1)\n\
+      git add life/areas/**/*.md life/areas/**/*.json 2>/dev/null || true\n\
       # Add session transcripts (conversation history)\n\
       git add .clawdbot/agents/main/sessions/*.jsonl 2>/dev/null || true\n\
       git add .clawdbot/agents/main/sessions/sessions.json 2>/dev/null || true\n\
