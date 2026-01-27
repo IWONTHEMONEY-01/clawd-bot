@@ -88,7 +88,7 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
       },\n\
       "workspace": "/root/clawd",\n\
       "heartbeat": {\n\
-        "every": "10m",\n\
+        "every": "5m",\n\
         "target": "telegram"\n\
       },\n\
       "memorySearch": {\n\
