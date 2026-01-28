@@ -107,7 +107,7 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
   },\n\
   "tools": {\n\
     "profile": "coding",\n\
-    "allow": ["group:web", "group:ui", "group:messaging", "cron", "sessions_spawn"],\n\
+    "allow": ["group:fs", "group:runtime", "group:sessions", "group:memory", "group:web", "group:ui", "group:messaging", "cron", "sessions_spawn", "bash"],\n\
     "media": {\n\
       "audio": {\n\
         "enabled": true,\n\
