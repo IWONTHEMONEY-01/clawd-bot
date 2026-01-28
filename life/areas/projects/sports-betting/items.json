@@ -1,0 +1,97 @@
+{
+  "project": "Sports Betting Model System",
+  "created": "2026-01-28",
+  "status": "active",
+  "facts": [
+    {
+      "id": "sb-001",
+      "type": "project-milestone",
+      "fact": "Sports Betting Model System project initiated with focus on NBA and MLB player props",
+      "date": "2026-01-28",
+      "source": "sports-betting-research",
+      "tags": ["nba", "mlb", "betting", "project-init"],
+      "status": "active"
+    },
+    {
+      "id": "sb-002",
+      "type": "research-milestone",
+      "fact": "NBA Player Prop Modeling Research completed: identified statistical approaches (linear regression, gradient boosting, neural networks), key predictors (recent performance, opponent strength, rest days, home/away), and evaluation methods (RMSE, MAE, Sharpe ratio)",
+      "date": "2026-01-28",
+      "source": "sports-betting-research",
+      "tags": ["nba", "player-props", "modeling", "research"],
+      "status": "complete"
+    },
+    {
+      "id": "sb-003",
+      "type": "research-milestone",
+      "fact": "MLB Pitcher Prop Modeling Research completed: identified statistical approaches (Poisson regression, random forest, XGBoost), key predictors (FIP, ERA, strikeouts/9, opponent lineup strength), and importance of regression to mean",
+      "date": "2026-01-28",
+      "source": "sports-betting-research",
+      "tags": ["mlb", "pitcher-props", "modeling", "research"],
+      "status": "complete"
+    },
+    {
+      "id": "sb-004",
+      "type": "research-milestone",
+      "fact": "Data Sources Research completed: documented free APIs (nba_api, MLB-StatsAPI, baseball-scraper), cheap providers (Action Network API, BetRivers API, OddsMatrix), and access methods for real-time and historical data",
+      "date": "2026-01-28",
+      "source": "sports-betting-research",
+      "tags": ["data-sources", "apis", "research"],
+      "status": "complete"
+    },
+    {
+      "id": "sb-005",
+      "type": "research-milestone",
+      "fact": "Open Source Betting Models Research completed: cataloged 15+ GitHub repos, identified common techniques (Kelly criterion, Elo ratings, Poisson models), and best practices (unit management, bankroll tracking, disciplined staking)",
+      "date": "2026-01-28",
+      "source": "sports-betting-research",
+      "tags": ["open-source", "github", "best-practices", "research"],
+      "status": "complete"
+    },
+    {
+      "id": "sb-006",
+      "type": "tech-milestone",
+      "fact": "Tech stack established: Python 3.10+, SQLAlchemy for database, nba_api for NBA data, MLB-StatsAPI for MLB data, scikit-learn for classical ML, xgboost for gradient boosting, pandas/numpy for data manipulation",
+      "date": "2026-01-28",
+      "source": "sports-betting-research",
+      "tags": ["python", "tech-stack", "libraries"],
+      "status": "active"
+    },
+    {
+      "id": "sb-007",
+      "type": "code-milestone",
+      "fact": "Core infrastructure created: database.py (SQLAlchemy models for games, players, props, bets), data_fetcher.py (API integration for NBA/MLB data), main.py (application entry point)",
+      "date": "2026-01-28",
+      "source": "sports-betting-research",
+      "tags": ["infrastructure", "code", "database"],
+      "status": "complete"
+    },
+    {
+      "id": "sb-008",
+      "type": "documentation-milestone",
+      "fact": "Research documentation created: 4 comprehensive markdown files covering NBA player props, MLB pitcher props, data sources, and open source models",
+      "date": "2026-01-28",
+      "source": "sports-betting-research",
+      "tags": ["documentation", "markdown", "research"],
+      "status": "complete"
+    },
+    {
+      "id": "sb-009",
+      "type": "next-steps",
+      "fact": "Next development priorities: feature engineering (rolling averages, player matchups, situational factors), baseline model implementation, backtesting framework, live odds integration",
+      "date": "2026-01-28",
+      "source": "sports-betting-research",
+      "tags": ["next-steps", "development", "priorities"],
+      "status": "pending"
+    },
+    {
+      "id": "sb-010",
+      "type": "model-insight",
+      "fact": "Key modeling insight: Player performance is highly variable; recent form (last 5-10 games) is more predictive than season averages; situational context (back-to-back, travel, rest days) significantly impacts performance",
+      "date": "2026-01-28",
+      "source": "sports-betting-research",
+      "tags": ["modeling", "insights", "performance"],
+      "status": "active"
+    }
+  ]
+}
