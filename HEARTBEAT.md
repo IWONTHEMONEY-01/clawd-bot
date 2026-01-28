@@ -1,147 +1,166 @@
 # HEARTBEAT.md - Shared Instructions for All Bots
 
-This file contains SHARED instructions that apply to all bots.
+---
 
-**Your specific tasks go in your own task file:** `/root/clawd/tasks/<your-name>-tasks.md`
+## CRITICAL RULES - READ THIS FIRST
 
-When heartbeat fires:
-1. Check your own task file first (your specific work)
-2. Then check this file for shared duties (knowledge graph, system events)
-3. If nothing needs attention, reply HEARTBEAT_OK
+### File System Rules
+
+**Your workspace is `/root/clawd/`** - All files go here.
+
+| Location | Purpose | Who Writes |
+|----------|---------|------------|
+| `/root/clawd/HEARTBEAT.md` | Shared instructions | **DO NOT EDIT** - comes from main branch |
+| `/root/clawd/BOOT.md` | Startup instructions | **DO NOT EDIT** - comes from main branch |
+| `/root/clawd/MEMORY.md` | Long-term patterns | All bots can append |
+| `/root/clawd/tasks/<your-name>-tasks.md` | YOUR task list | Only you |
+| `/root/clawd/memory/` | Research, notes, findings | All bots |
+| `/root/clawd/memory/research/` | Research projects | All bots |
+| `/root/clawd/canvas/` | Work-in-progress, drafts | All bots |
+| `/root/clawd/life/areas/` | Knowledge graph entities | All bots |
+
+### Files You MUST NOT Overwrite
+
+- `HEARTBEAT.md` - This file! Shared instructions from main branch
+- `BOOT.md` - Startup instructions from main branch
+- Other bot's task files (e.g., if you're Market Making bot, don't touch `metrics-tasks.md`)
+
+### Your Task File
+
+**Create your own task file based on your role:**
+
+- Market Making Bot → `/root/clawd/tasks/market-making-tasks.md`
+- Advanced Metrics Bot → `/root/clawd/tasks/metrics-tasks.md`
+- General Bot → `/root/clawd/tasks/general-tasks.md`
+
+**Task file format:**
+```markdown
+# [Your Name] Tasks
+
+## Active Tasks
+- [ ] Task description | Status: in-progress | Progress: X% | Last worked: YYYY-MM-DD
+- [ ] Another task | Status: pending | Progress: 0%
+
+## Completed Tasks
+- [x] Finished task | Completed: YYYY-MM-DD | Summary: Brief description
+```
+
+### Where to Save Research & Work
+
+```
+/root/clawd/memory/research/           # Research findings
+/root/clawd/memory/research/nba-props.md
+/root/clawd/memory/research/market-making.md
+
+/root/clawd/canvas/                    # Work in progress, drafts, code
+/root/clawd/canvas/draft-model.py
+/root/clawd/canvas/analysis-notes.md
+```
+
+### Git Sync (Automatic Backup)
+
+Every 5 minutes, these are backed up to GitHub (`memory-sync` branch):
+- `memory/` - All research and notes
+- `tasks/` - All task files
+- `canvas/` - All drafts
+- `life/` - Knowledge graph
+- Session transcripts
+
+**Your work is safe!**
+
+---
+
+## Heartbeat Protocol
+
+When heartbeat fires (every 5 minutes):
+
+1. **Check YOUR task file** at `/root/clawd/tasks/<your-name>-tasks.md`
+2. **If active tasks exist** → Work on them (see Work Session Protocol below)
+3. **If no active tasks** → Check shared duties below, then reply HEARTBEAT_OK
 
 ---
 
 ## Priority 0: Knowledge Graph Maintenance
-Extract durable facts from recent conversations into the knowledge graph.
 
-**Fact Extraction Protocol:**
-1. Scan conversations since last heartbeat (check session transcripts)
-2. Identify durable facts about people, companies, or projects
-3. For each fact:
-   - Create entity folder if new (`/life/areas/{type}/{name}/`)
-   - Add to `items.json` with proper schema
-   - Update `summary.md` if significant change
-4. Skip: casual chat, temporary info, greetings
+Extract durable facts from recent conversations into `/root/clawd/life/areas/`.
 
 **What to Extract:**
-- Relationships (who knows who, role changes)
-- Status changes (job changes, project milestones)
-- Preferences (communication style, schedule)
-- Milestones (achievements, important dates)
-- Research findings (save to relevant project entity)
+- People: relationships, roles, preferences
+- Companies: status, milestones
+- Projects: progress, decisions
 
 **What to Skip:**
-- Weather, small talk
-- One-time requests
-- Temporary information
+- Small talk, weather, one-time requests
+
+---
 
 ## Priority 1: Pending Cron Results
-Check if any cron jobs completed since last heartbeat. If there are results waiting to be delivered, summarize and send them to the appropriate channel.
 
-## Priority 2: Unread System Events
-Check for any system events, errors, or alerts that need owner attention:
+Check if any cron jobs completed. Deliver results if waiting.
+
+---
+
+## Priority 2: System Events
+
+Check for alerts needing owner attention:
 - API cost alerts
 - Authentication failures
 - Service outages
 
-## Priority 3: Continuous Background Work (Research & Coding)
+---
 
-**IMPORTANT: Research and coding tasks run CONTINUOUSLY until completion.**
+## Priority 3: Your Active Tasks
 
-### Where to Save Your Work
-
-Your workspace is `/root/clawd/`. Save all work there:
-
-```
-/root/clawd/memory/           # Research findings, notes, analysis
-/root/clawd/memory/research/  # Create this for research projects
-/root/clawd/tasks/            # Task tracking, project plans
-/root/clawd/canvas/           # Work-in-progress, drafts
-```
-
-**Example:** For NBA prop modeling research, save to:
-- `/root/clawd/memory/research/nba-prop-modeling.md`
-
-**Git Sync:** Everything in memory/, tasks/, canvas/ is automatically pushed to GitHub (memory-sync branch) every 5 minutes. Your work is backed up!
-
-### Work Session Protocol
-
-When a research or coding task is active:
-1. **DO NOT STOP** - Keep working every heartbeat until the task is complete
-2. **DO NOT ASK** for permission to continue - just continue working
-3. **ONLY MESSAGE** if you are genuinely stuck and need human input/clarification
-4. **SAVE PROGRESS** to `/root/clawd/memory/` after each work session
-5. **SPAWN SUB-AGENTS** for parallel work when beneficial
+**Research and coding tasks run CONTINUOUSLY until completion.**
 
 ### Work Session Protocol (Each Heartbeat)
-1. Check YOUR task file (`/root/clawd/tasks/<your-name>-tasks.md`) for incomplete work
-2. Pick up where you left off (check memory/canvas for progress)
-3. Do meaningful work (not just planning - actually execute)
-4. Save findings/code to appropriate files
-5. Update task progress in YOUR task file
-6. If task complete, move to `Completed Tasks` in your file and message owner with summary
-7. If stuck/blocked, message owner asking for specific help needed
-8. If making progress, stay silent and continue next heartbeat
 
-### Your Tasks Live in Your Own File
+1. **Read your task file** - What's in progress?
+2. **Pick up where you left off** - Check memory/canvas for your previous work
+3. **Do real work** - Not just planning, actually execute
+4. **Save progress** - Write findings to `/root/clawd/memory/` or `/root/clawd/canvas/`
+5. **Update your task file** - Mark progress percentage
+6. **If complete** - Move to Completed, message owner with summary
+7. **If stuck** - Message owner with specific question
+8. **If making progress** - Stay silent, continue next heartbeat
 
-**Do NOT put tasks in this shared HEARTBEAT.md file.**
+### Rules for Background Work
 
-Create and maintain your own task file:
-- `/root/clawd/tasks/market-making-tasks.md`
-- `/root/clawd/tasks/metrics-tasks.md`
-- `/root/clawd/tasks/general-tasks.md`
-
-This file persists in your volume and is YOUR responsibility to maintain.
+- **DO NOT STOP** - Keep working every heartbeat until done
+- **DO NOT ASK** for permission to continue - just continue
+- **ONLY MESSAGE** if genuinely stuck or task is complete
+- **SAVE PROGRESS** after each work session
+- **SPAWN SUB-AGENTS** for parallel work when beneficial
 
 ---
 
-## Autonomous Behavior Guidelines
-
-1. **Act, don't ask** - If you can complete a task autonomously, do it
-2. **KEEP WORKING** - Research and coding tasks continue every heartbeat until done
-3. **Update memory** - Save important findings to memory files after each session
-4. **Spawn sub-agents** - For complex research or parallel coding, spawn focused sub-agents
-5. **Be relentless** - Don't stop at "I found some info" - keep going until the task is truly complete
-6. **Show progress** - Update task status in Active Tasks section each heartbeat
-
 ## When to Message Owner
-- Research or coding task **fully completed** (with summary of deliverables)
-- **Genuinely stuck** and need specific human input (not just "should I continue?")
-- Cost alert triggered
-- Error that needs human intervention
-- Time-sensitive information discovered
 
-## When to Stay Silent (Keep Working)
-- Task in progress and making progress - **just continue working**
-- Found partial results - **keep researching**
-- Code partially written - **keep coding**
-- No blockers - **no message needed, work silently**
+- Task **fully completed** with summary
+- **Genuinely stuck** needing specific input
+- Cost alert or error needing intervention
+- Time-sensitive discovery
+
+## When to Stay Silent
+
+- Task in progress, making progress → keep working
+- Found partial results → keep researching
+- Code partially written → keep coding
+- No blockers → work silently
 
 ## When to Reply HEARTBEAT_OK
-- No active tasks AND no pending tasks
-- All active tasks completed (and already reported)
-- All systems nominal with nothing to do
+
+- No active tasks in your task file
+- All tasks completed and reported
+- Nothing needs attention
 
 ---
 
 ## Weekly Synthesis (Sunday)
-On Sunday heartbeats, also perform the weekly knowledge graph synthesis:
 
-1. **For each entity with new facts this week:**
-   - Load `summary.md` and `items.json`
-   - Rewrite `summary.md` using only `active` facts
-   - Mark contradicted facts as `superseded`
-   - Link superseded facts to their replacements
+On Sundays, also:
 
-2. **Prune stale context:**
-   - If entity hasn't been mentioned in 90+ days, note in summary
-   - Don't delete — just deprioritize in retrieval
-
-3. **Update MEMORY.md:**
-   - Extract new patterns or preferences discovered this week
-   - Add lessons learned from interactions
-
-4. **Report synthesis:**
-   - Briefly summarize what was updated
-   - Note any entities that became stale
+1. Update knowledge graph summaries
+2. Mark stale facts as superseded
+3. Update MEMORY.md with patterns learned
+4. Report what was synthesized
