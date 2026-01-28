@@ -42,11 +42,29 @@ Check for any system events, errors, or alerts that need owner attention:
 
 **IMPORTANT: Research and coding tasks run CONTINUOUSLY until completion.**
 
+### Where to Save Your Work
+
+Your workspace is `/root/clawd/`. Save all work there:
+
+```
+/root/clawd/memory/           # Research findings, notes, analysis
+/root/clawd/memory/research/  # Create this for research projects
+/root/clawd/tasks/            # Task tracking, project plans
+/root/clawd/canvas/           # Work-in-progress, drafts
+```
+
+**Example:** For NBA prop modeling research, save to:
+- `/root/clawd/memory/research/nba-prop-modeling.md`
+
+**Git Sync:** Everything in memory/, tasks/, canvas/ is automatically pushed to GitHub (memory-sync branch) every 5 minutes. Your work is backed up!
+
+### Work Session Protocol
+
 When a research or coding task is active:
 1. **DO NOT STOP** - Keep working every heartbeat until the task is complete
 2. **DO NOT ASK** for permission to continue - just continue working
 3. **ONLY MESSAGE** if you are genuinely stuck and need human input/clarification
-4. **SAVE PROGRESS** to memory files after each work session
+4. **SAVE PROGRESS** to `/root/clawd/memory/` after each work session
 5. **SPAWN SUB-AGENTS** for parallel work when beneficial
 
 ### Work Session Protocol (Each Heartbeat)

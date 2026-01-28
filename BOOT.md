@@ -2,25 +2,47 @@
 
 This file runs automatically when the gateway starts (on deploy/restart).
 
+---
+
+## YOUR WORKSPACE
+
+**Your workspace is: `/root/clawd/`**
+
+All file operations should happen within this directory:
+
+```
+/root/clawd/
+├── memory/              # Save research findings, notes, learnings here
+│   └── *.md             # Create topical markdown files
+├── tasks/               # Task tracking files
+├── canvas/              # Scratchpad for work-in-progress
+├── life/areas/          # Knowledge graph (people, companies, projects)
+├── HEARTBEAT.md         # Your task list - check this every heartbeat
+├── MEMORY.md            # Long-term patterns and preferences
+└── .clawdbot/agents/main/sessions/  # Conversation history
+```
+
+**Git Sync:** Files in memory/, life/, tasks/, canvas/ are automatically synced to GitHub every 5 minutes. Your work is backed up!
+
+---
+
 ## Priority 1: Resume Conversation Context
 
 On startup, you were just reborn. To maintain continuity:
 
-1. **Find and read the session transcript** - Conversation history is stored at:
+1. **Find and read the session transcript** at:
    ```
-   /home/user/clawd-bot/agents/main/sessions/
+   /root/clawd/.clawdbot/agents/main/sessions/
    ```
-   Look for `.jsonl` files. Each line is a JSON object with `role` and `content` fields.
-   Read the most recent file and extract the last 20 messages.
+   Look for `.jsonl` files. Read the most recent and extract last 20 messages.
 
 2. **Parse the conversation:**
    - Each line is JSON with `type`, `message.role`, and `message.content`
    - Look for entries where `message.role` is "user" or "assistant"
-   - Content may be array - look for `type: "text"` entries for actual messages
    - Note what topics were being discussed
    - Identify any pending tasks or ongoing work
 
-3. **Also check HEARTBEAT.md** for any in-progress research tasks
+3. **Check HEARTBEAT.md** for any in-progress research/coding tasks
 
 4. **Send greeting to owner via Telegram** (to: 6632715854):
 
@@ -36,7 +58,7 @@ On startup, you were just reborn. To maintain continuity:
 
 ## Priority 2: System Checks
 
-- Verify workspace at /home/user/clawd-bot is accessible
+- Verify workspace at `/root/clawd/` is accessible
 - Confirm HEARTBEAT.md has research tasks defined
 - Check that memory files are readable
 
