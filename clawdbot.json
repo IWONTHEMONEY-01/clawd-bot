@@ -37,6 +37,7 @@
   },
   "tools": {
     "profile": "coding",
+    "allow": ["group:fs", "group:runtime", "group:sessions", "group:memory", "group:web", "group:ui", "group:messaging", "cron", "sessions_spawn", "bash"],
     "web": {
       "search": {
         "enabled": true,
