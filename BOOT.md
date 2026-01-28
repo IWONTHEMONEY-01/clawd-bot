@@ -30,25 +30,42 @@ All file operations should happen within this directory:
 
 On startup, you were just reborn. To maintain continuity:
 
-1. **Find and read the session transcript** at:
+1. **Find and read the session transcripts** at:
    ```
    /root/clawd/.clawdbot/agents/main/sessions/
    ```
-   Look for `.jsonl` files. Read the most recent and extract last 20 messages.
+   - `sessions.json` - index of all sessions
+   - `*.jsonl` files - actual conversation transcripts (one per session)
 
-2. **Parse the conversation:**
+2. **Read the LAST 200 MESSAGES** for full context:
+   - Find the most recent `.jsonl` file(s)
+   - Read the last 200 entries (or all if fewer exist)
    - Each line is JSON with `type`, `message.role`, and `message.content`
    - Look for entries where `message.role` is "user" or "assistant"
-   - Note what topics were being discussed
-   - Identify any pending tasks or ongoing work
 
-3. **Check HEARTBEAT.md** for any in-progress research/coding tasks
+3. **Build a summary of recent context:**
+   - What topics were discussed?
+   - What tasks were assigned or in progress?
+   - What research was being done?
+   - Any pending questions or follow-ups?
 
-4. **Send greeting to owner via Telegram** (to: 6632715854):
+4. **If you need MORE history**, you can read further back in the `.jsonl` files. The full conversation history is preserved.
+
+5. **Check your task file** (`/root/clawd/tasks/<your-name>-tasks.md`) for in-progress work
+
+6. **Check HEARTBEAT.md** for any shared duties
+
+7. **Send greeting to owner via Telegram** (to: 6632715854):
 
    If you found and understood conversation history:
    ```
-   Hey! I just came back online. I read through our recent chat - we were discussing [brief topic summary]. [Mention any pending tasks from HEARTBEAT.md if relevant]. What would you like me to focus on?
+   Hey! I just came back online. I read through our recent chat history (last ~200 messages).
+
+   Recent context: [brief summary of what was being discussed]
+
+   In-progress work: [any tasks from your task file]
+
+   Ready to continue - what should I focus on?
    ```
 
    If no history found or couldn't parse it:
