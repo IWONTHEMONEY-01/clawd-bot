@@ -56,11 +56,42 @@ On startup, you were just reborn. To maintain continuity:
    Hey! I just came back online. Starting fresh this session. What would you like me to work on?
    ```
 
-## Priority 2: System Checks
+## Priority 2: Create Your Task File
+
+Each bot maintains its own task file. On startup:
+
+1. **Create your tasks directory and file** if they don't exist:
+   ```
+   /root/clawd/tasks/
+   /root/clawd/tasks/my-tasks.md
+   ```
+
+2. **Name your task file based on your role:**
+   - If you're a market making bot → `market-making-tasks.md`
+   - If you're an analytics/metrics bot → `metrics-tasks.md`
+   - If you're a general assistant → `general-tasks.md`
+   - Or use whatever name fits your purpose
+
+3. **Task file format:**
+   ```markdown
+   # My Tasks
+
+   ## Active Tasks
+   - [ ] Task description | Status: in-progress | Progress: X%
+
+   ## Completed Tasks
+   - [x] Completed task | Completed: date
+   ```
+
+4. **This file persists** - it's YOUR task list, separate from HEARTBEAT.md
+
+HEARTBEAT.md contains shared instructions for all bots. Your task file contains YOUR specific work.
+
+## Priority 3: System Checks
 
 - Verify workspace at `/root/clawd/` is accessible
-- Confirm HEARTBEAT.md has research tasks defined
 - Check that memory files are readable
+- Confirm your task file exists (create if not)
 
 ## Notes
 
