@@ -1,7 +1,7 @@
 {
   "agent:main:main": {
     "sessionId": "7a1df14a-0929-4083-8cc5-fd6a1c1ee4ca",
-    "updatedAt": 1769635153110,
+    "updatedAt": 1769635777930,
     "systemSent": true,
     "skillsSnapshot": {
       "prompt": "\n\nThe following skills provide specialized instructions for specific tasks.\nUse the read tool to load a skill's file when the task matches its description.\n\n<available_skills>\n  <skill>\n    <name>bluebubbles</name>\n    <description>Build or update the BlueBubbles external channel plugin for Clawdbot (extension package, REST send/probe, webhook inbound).</description>\n    <location>/app/skills/bluebubbles/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>browser-use</name>\n    <description>Cloud browsers and autonomous browser automation via API. Spin up cloud browsers for direct control, persist logins with profiles, or run autonomous browser tasks as a subagent.</description>\n    <location>/app/skills/browser-use/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>clawdbot-docs</name>\n    <description>Clawdbot documentation expert skill with decision tree navigation, search scripts (sitemap, keyword, full-text index via qmd), doc fetching, version tracking, and config snippets for all Clawdbot features (providers, gateway, automation, platforms, tools).</description>\n    <location>/app/skills/clawdbot-docs/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>cost-tracker</name>\n    <description>Track ClawdBot API costs and alert when spending threshold is reached. Use when asked about usage, costs, spending, or to check/set spending alerts.</description>\n    <location>/app/skills/cost-tracker/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>github</name>\n    <description>Interact with GitHub using the `gh` CLI. Use `gh issue`, `gh pr`, `gh run`, and `gh api` for issues, PRs, CI runs, and advanced queries.</description>\n    <location>/app/skills/github/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>gog</name>\n    <description>Google Workspace CLI for Gmail, Calendar, Drive, Contacts, Sheets, and Docs.</description>\n    <location>/app/skills/gog/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>market-making</name>\n    <description>Market making fundamentals, bid-ask spread management, inventory risk, and liquidity provision strategies across financial and betting markets.</description>\n    <location>/app/skills/market-making/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>notion</name>\n    <description>Notion API for creating and managing pages, databases, and blocks.</description>\n    <location>/app/skills/notion/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>probability-statistics</name>\n    <description>Foundational probability theory, statistics, and mathematical concepts for quantitative analysis. Core knowledge for betting, trading, and analytics.</description>\n    <location>/app/skills/probability-statistics/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>quant-trading</name>\n    <description>Quantitative trading strategies, signal generation, backtesting, and algorithmic execution. Building systematic trading approaches.</description>\n    <location>/app/skills/quant-trading/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>research-coordinator</name>\n    <description>Coordinate learning across probability, sports analytics, betting, quant trading, and market making. Manage research tasks, capture insights, and build tools.</description>\n    <location>/app/skills/research-coordinator/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>self-improvement</name>\n    <description>Log learnings and errors to markdown files for continuous improvement. Coding agents can later process these into fixes, and important learnings get promoted to project memory.</description>\n    <location>/app/skills/self-improvement/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>skill-creator</name>\n    <description>Create or update AgentSkills. Use when designing, structuring, or packaging skills with scripts, references, and assets.</description>\n    <location>/app/skills/skill-creator/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>slack</name>\n    <description>Use when you need to control Slack from Clawdbot via the slack tool, including reacting to messages or pinning/unpinning items in Slack channels or DMs.</description>\n    <location>/app/skills/slack/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>sports-analytics</name>\n    <description>Advanced sports analytics and sabermetrics across all major sports. Statistical methods for player evaluation, game prediction, and edge finding.</description>\n    <location>/app/skills/sports-analytics/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>sports-betting</name>\n    <description>Sports betting strategy, odds analysis, value identification, bankroll management, and market dynamics. Finding edges and managing risk.</description>\n    <location>/app/skills/sports-betting/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>supabase-users</name>\n    <description>Comprehensive Supabase development expert covering Edge Functions, database schema management, migrations, PostgreSQL functions, and RLS policies. Use for any Supabase development including TypeScript/Deno Edge Functions, declarative schema management, SQL formatting, migration creation, database function authoring with SECURITY INVOKER, and RLS policy implementation with auth.uid() and auth.jwt().</description>\n    <location>/app/skills/supabase-users/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>weather</name>\n    <description>Get current weather and forecasts (no API key required). Supports travel-aware location tracking.</description>\n    <location>/app/skills/weather/SKILL.md</location>\n  </skill>\n</available_skills>",
@@ -193,25 +193,25 @@
     },
     "deliveryContext": {
       "channel": "telegram",
-      "to": "6632715854",
+      "to": "telegram:6632715854",
       "accountId": "default"
     },
     "lastChannel": "telegram",
-    "lastTo": "6632715854",
+    "lastTo": "telegram:6632715854",
     "lastAccountId": "default",
     "modelProvider": "zai",
     "model": "glm-4.7",
     "contextTokens": 204800,
     "abortedLastRun": false,
-    "inputTokens": 137213,
-    "outputTokens": 359,
-    "totalTokens": 137213,
+    "inputTokens": 122893,
+    "outputTokens": 141,
+    "totalTokens": 127212,
     "chatType": "direct",
     "origin": {
-      "label": "6632715854",
-      "provider": "heartbeat",
-      "from": "6632715854",
-      "to": "6632715854",
+      "label": "Anthony F (@IWONTHEMONEY) id:6632715854",
+      "provider": "telegram",
+      "from": "telegram:6632715854",
+      "to": "telegram:6632715854",
       "surface": "telegram",
       "chatType": "direct",
       "accountId": "default"
@@ -222,7 +222,7 @@
     "authProfileOverrideCompactionCount": 0,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1769635019499,
+      "generatedAt": 1769635619534,
       "sessionId": "7a1df14a-0929-4083-8cc5-fd6a1c1ee4ca",
       "sessionKey": "agent:main:main",
       "provider": "zai",
@@ -234,8 +234,8 @@
         "sandboxed": false
       },
       "systemPrompt": {
-        "chars": 18687,
-        "projectContextChars": 7849,
+        "chars": 13549,
+        "projectContextChars": 2711,
         "nonProjectContextChars": 10838
       },
       "injectedWorkspaceFiles": [
@@ -283,8 +283,8 @@
           "name": "HEARTBEAT.md",
           "path": "/root/clawd/HEARTBEAT.md",
           "missing": false,
-          "rawChars": 5643,
-          "injectedChars": 5643,
+          "rawChars": 505,
+          "injectedChars": 505,
           "truncated": false
         },
         {
@@ -3260,405 +3260,5 @@
     "inputTokens": 1010,
     "outputTokens": 913,
     "totalTokens": 1556
-  },
-  "agent:main:subagent:73c943b8-22a2-4d57-b98f-6af072503e8e": {
-    "sessionId": "c41a53ca-4788-476e-adb9-f804871fcabb",
-    "updatedAt": 1769632091404,
-    "label": "Investigate File System Issue",
-    "skillsSnapshot": {
-      "prompt": "\n\nThe following skills provide specialized instructions for specific tasks.\nUse the read tool to load a skill's file when the task matches its description.\n\n<available_skills>\n  <skill>\n    <name>bluebubbles</name>\n    <description>Build or update the BlueBubbles external channel plugin for Clawdbot (extension package, REST send/probe, webhook inbound).</description>\n    <location>/app/skills/bluebubbles/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>browser-use</name>\n    <description>Cloud browsers and autonomous browser automation via API. Spin up cloud browsers for direct control, persist logins with profiles, or run autonomous browser tasks as a subagent.</description>\n    <location>/app/skills/browser-use/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>clawdbot-docs</name>\n    <description>Clawdbot documentation expert skill with decision tree navigation, search scripts (sitemap, keyword, full-text index via qmd), doc fetching, version tracking, and config snippets for all Clawdbot features (providers, gateway, automation, platforms, tools).</description>\n    <location>/app/skills/clawdbot-docs/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>cost-tracker</name>\n    <description>Track ClawdBot API costs and alert when spending threshold is reached. Use when asked about usage, costs, spending, or to check/set spending alerts.</description>\n    <location>/app/skills/cost-tracker/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>github</name>\n    <description>Interact with GitHub using the `gh` CLI. Use `gh issue`, `gh pr`, `gh run`, and `gh api` for issues, PRs, CI runs, and advanced queries.</description>\n    <location>/app/skills/github/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>gog</name>\n    <description>Google Workspace CLI for Gmail, Calendar, Drive, Contacts, Sheets, and Docs.</description>\n    <location>/app/skills/gog/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>market-making</name>\n    <description>Market making fundamentals, bid-ask spread management, inventory risk, and liquidity provision strategies across financial and betting markets.</description>\n    <location>/app/skills/market-making/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>notion</name>\n    <description>Notion API for creating and managing pages, databases, and blocks.</description>\n    <location>/app/skills/notion/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>probability-statistics</name>\n    <description>Foundational probability theory, statistics, and mathematical concepts for quantitative analysis. Core knowledge for betting, trading, and analytics.</description>\n    <location>/app/skills/probability-statistics/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>quant-trading</name>\n    <description>Quantitative trading strategies, signal generation, backtesting, and algorithmic execution. Building systematic trading approaches.</description>\n    <location>/app/skills/quant-trading/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>research-coordinator</name>\n    <description>Coordinate learning across probability, sports analytics, betting, quant trading, and market making. Manage research tasks, capture insights, and build tools.</description>\n    <location>/app/skills/research-coordinator/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>self-improvement</name>\n    <description>Log learnings and errors to markdown files for continuous improvement. Coding agents can later process these into fixes, and important learnings get promoted to project memory.</description>\n    <location>/app/skills/self-improvement/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>skill-creator</name>\n    <description>Create or update AgentSkills. Use when designing, structuring, or packaging skills with scripts, references, and assets.</description>\n    <location>/app/skills/skill-creator/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>slack</name>\n    <description>Use when you need to control Slack from Clawdbot via the slack tool, including reacting to messages or pinning/unpinning items in Slack channels or DMs.</description>\n    <location>/app/skills/slack/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>sports-analytics</name>\n    <description>Advanced sports analytics and sabermetrics across all major sports. Statistical methods for player evaluation, game prediction, and edge finding.</description>\n    <location>/app/skills/sports-analytics/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>sports-betting</name>\n    <description>Sports betting strategy, odds analysis, value identification, bankroll management, and market dynamics. Finding edges and managing risk.</description>\n    <location>/app/skills/sports-betting/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>supabase-users</name>\n    <description>Comprehensive Supabase development expert covering Edge Functions, database schema management, migrations, PostgreSQL functions, and RLS policies. Use for any Supabase development including TypeScript/Deno Edge Functions, declarative schema management, SQL formatting, migration creation, database function authoring with SECURITY INVOKER, and RLS policy implementation with auth.uid() and auth.jwt().</description>\n    <location>/app/skills/supabase-users/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>weather</name>\n    <description>Get current weather and forecasts (no API key required). Supports travel-aware location tracking.</description>\n    <location>/app/skills/weather/SKILL.md</location>\n  </skill>\n</available_skills>",
-      "skills": [
-        {
-          "name": "bluebubbles"
-        },
-        {
-          "name": "browser-use"
-        },
-        {
-          "name": "clawdbot-docs"
-        },
-        {
-          "name": "cost-tracker"
-        },
-        {
-          "name": "github"
-        },
-        {
-          "name": "gog"
-        },
-        {
-          "name": "market-making"
-        },
-        {
-          "name": "notion"
-        },
-        {
-          "name": "probability-statistics"
-        },
-        {
-          "name": "quant-trading"
-        },
-        {
-          "name": "research-coordinator"
-        },
-        {
-          "name": "self-improvement"
-        },
-        {
-          "name": "skill-creator"
-        },
-        {
-          "name": "slack"
-        },
-        {
-          "name": "sports-analytics"
-        },
-        {
-          "name": "sports-betting"
-        },
-        {
-          "name": "supabase-users"
-        },
-        {
-          "name": "weather"
-        }
-      ],
-      "resolvedSkills": [
-        {
-          "name": "bluebubbles",
-          "description": "Build or update the BlueBubbles external channel plugin for Clawdbot (extension package, REST send/probe, webhook inbound).",
-          "filePath": "/app/skills/bluebubbles/SKILL.md",
-          "baseDir": "/app/skills/bluebubbles",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "browser-use",
-          "description": "Cloud browsers and autonomous browser automation via API. Spin up cloud browsers for direct control, persist logins with profiles, or run autonomous browser tasks as a subagent.",
-          "filePath": "/app/skills/browser-use/SKILL.md",
-          "baseDir": "/app/skills/browser-use",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "clawdbot-docs",
-          "description": "Clawdbot documentation expert skill with decision tree navigation, search scripts (sitemap, keyword, full-text index via qmd), doc fetching, version tracking, and config snippets for all Clawdbot features (providers, gateway, automation, platforms, tools).",
-          "filePath": "/app/skills/clawdbot-docs/SKILL.md",
-          "baseDir": "/app/skills/clawdbot-docs",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "cost-tracker",
-          "description": "Track ClawdBot API costs and alert when spending threshold is reached. Use when asked about usage, costs, spending, or to check/set spending alerts.",
-          "filePath": "/app/skills/cost-tracker/SKILL.md",
-          "baseDir": "/app/skills/cost-tracker",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "github",
-          "description": "Interact with GitHub using the `gh` CLI. Use `gh issue`, `gh pr`, `gh run`, and `gh api` for issues, PRs, CI runs, and advanced queries.",
-          "filePath": "/app/skills/github/SKILL.md",
-          "baseDir": "/app/skills/github",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "gog",
-          "description": "Google Workspace CLI for Gmail, Calendar, Drive, Contacts, Sheets, and Docs.",
-          "filePath": "/app/skills/gog/SKILL.md",
-          "baseDir": "/app/skills/gog",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "market-making",
-          "description": "Market making fundamentals, bid-ask spread management, inventory risk, and liquidity provision strategies across financial and betting markets.",
-          "filePath": "/app/skills/market-making/SKILL.md",
-          "baseDir": "/app/skills/market-making",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "notion",
-          "description": "Notion API for creating and managing pages, databases, and blocks.",
-          "filePath": "/app/skills/notion/SKILL.md",
-          "baseDir": "/app/skills/notion",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "probability-statistics",
-          "description": "Foundational probability theory, statistics, and mathematical concepts for quantitative analysis. Core knowledge for betting, trading, and analytics.",
-          "filePath": "/app/skills/probability-statistics/SKILL.md",
-          "baseDir": "/app/skills/probability-statistics",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "quant-trading",
-          "description": "Quantitative trading strategies, signal generation, backtesting, and algorithmic execution. Building systematic trading approaches.",
-          "filePath": "/app/skills/quant-trading/SKILL.md",
-          "baseDir": "/app/skills/quant-trading",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "research-coordinator",
-          "description": "Coordinate learning across probability, sports analytics, betting, quant trading, and market making. Manage research tasks, capture insights, and build tools.",
-          "filePath": "/app/skills/research-coordinator/SKILL.md",
-          "baseDir": "/app/skills/research-coordinator",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "self-improvement",
-          "description": "Log learnings and errors to markdown files for continuous improvement. Coding agents can later process these into fixes, and important learnings get promoted to project memory.",
-          "filePath": "/app/skills/self-improvement/SKILL.md",
-          "baseDir": "/app/skills/self-improvement",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "skill-creator",
-          "description": "Create or update AgentSkills. Use when designing, structuring, or packaging skills with scripts, references, and assets.",
-          "filePath": "/app/skills/skill-creator/SKILL.md",
-          "baseDir": "/app/skills/skill-creator",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "slack",
-          "description": "Use when you need to control Slack from Clawdbot via the slack tool, including reacting to messages or pinning/unpinning items in Slack channels or DMs.",
-          "filePath": "/app/skills/slack/SKILL.md",
-          "baseDir": "/app/skills/slack",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "sports-analytics",
-          "description": "Advanced sports analytics and sabermetrics across all major sports. Statistical methods for player evaluation, game prediction, and edge finding.",
-          "filePath": "/app/skills/sports-analytics/SKILL.md",
-          "baseDir": "/app/skills/sports-analytics",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "sports-betting",
-          "description": "Sports betting strategy, odds analysis, value identification, bankroll management, and market dynamics. Finding edges and managing risk.",
-          "filePath": "/app/skills/sports-betting/SKILL.md",
-          "baseDir": "/app/skills/sports-betting",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "supabase-users",
-          "description": "Comprehensive Supabase development expert covering Edge Functions, database schema management, migrations, PostgreSQL functions, and RLS policies. Use for any Supabase development including TypeScript/Deno Edge Functions, declarative schema management, SQL formatting, migration creation, database function authoring with SECURITY INVOKER, and RLS policy implementation with auth.uid() and auth.jwt().",
-          "filePath": "/app/skills/supabase-users/SKILL.md",
-          "baseDir": "/app/skills/supabase-users",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "weather",
-          "description": "Get current weather and forecasts (no API key required). Supports travel-aware location tracking.",
-          "filePath": "/app/skills/weather/SKILL.md",
-          "baseDir": "/app/skills/weather",
-          "source": "clawdbot-bundled"
-        }
-      ],
-      "version": 0
-    },
-    "modelProvider": "zai",
-    "model": "glm-4.7",
-    "contextTokens": 204800,
-    "abortedLastRun": false,
-    "inputTokens": 545,
-    "outputTokens": 786,
-    "totalTokens": 8490
-  },
-  "agent:main:subagent:e1cacbda-f128-43ca-a77e-29ab4524b995": {
-    "sessionId": "689529b8-72a0-4c08-8402-8f8849189b7e",
-    "updatedAt": 1769632130007,
-    "label": "Wait For Investigation",
-    "skillsSnapshot": {
-      "prompt": "\n\nThe following skills provide specialized instructions for specific tasks.\nUse the read tool to load a skill's file when the task matches its description.\n\n<available_skills>\n  <skill>\n    <name>bluebubbles</name>\n    <description>Build or update the BlueBubbles external channel plugin for Clawdbot (extension package, REST send/probe, webhook inbound).</description>\n    <location>/app/skills/bluebubbles/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>browser-use</name>\n    <description>Cloud browsers and autonomous browser automation via API. Spin up cloud browsers for direct control, persist logins with profiles, or run autonomous browser tasks as a subagent.</description>\n    <location>/app/skills/browser-use/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>clawdbot-docs</name>\n    <description>Clawdbot documentation expert skill with decision tree navigation, search scripts (sitemap, keyword, full-text index via qmd), doc fetching, version tracking, and config snippets for all Clawdbot features (providers, gateway, automation, platforms, tools).</description>\n    <location>/app/skills/clawdbot-docs/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>cost-tracker</name>\n    <description>Track ClawdBot API costs and alert when spending threshold is reached. Use when asked about usage, costs, spending, or to check/set spending alerts.</description>\n    <location>/app/skills/cost-tracker/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>github</name>\n    <description>Interact with GitHub using the `gh` CLI. Use `gh issue`, `gh pr`, `gh run`, and `gh api` for issues, PRs, CI runs, and advanced queries.</description>\n    <location>/app/skills/github/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>gog</name>\n    <description>Google Workspace CLI for Gmail, Calendar, Drive, Contacts, Sheets, and Docs.</description>\n    <location>/app/skills/gog/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>market-making</name>\n    <description>Market making fundamentals, bid-ask spread management, inventory risk, and liquidity provision strategies across financial and betting markets.</description>\n    <location>/app/skills/market-making/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>notion</name>\n    <description>Notion API for creating and managing pages, databases, and blocks.</description>\n    <location>/app/skills/notion/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>probability-statistics</name>\n    <description>Foundational probability theory, statistics, and mathematical concepts for quantitative analysis. Core knowledge for betting, trading, and analytics.</description>\n    <location>/app/skills/probability-statistics/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>quant-trading</name>\n    <description>Quantitative trading strategies, signal generation, backtesting, and algorithmic execution. Building systematic trading approaches.</description>\n    <location>/app/skills/quant-trading/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>research-coordinator</name>\n    <description>Coordinate learning across probability, sports analytics, betting, quant trading, and market making. Manage research tasks, capture insights, and build tools.</description>\n    <location>/app/skills/research-coordinator/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>self-improvement</name>\n    <description>Log learnings and errors to markdown files for continuous improvement. Coding agents can later process these into fixes, and important learnings get promoted to project memory.</description>\n    <location>/app/skills/self-improvement/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>skill-creator</name>\n    <description>Create or update AgentSkills. Use when designing, structuring, or packaging skills with scripts, references, and assets.</description>\n    <location>/app/skills/skill-creator/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>slack</name>\n    <description>Use when you need to control Slack from Clawdbot via the slack tool, including reacting to messages or pinning/unpinning items in Slack channels or DMs.</description>\n    <location>/app/skills/slack/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>sports-analytics</name>\n    <description>Advanced sports analytics and sabermetrics across all major sports. Statistical methods for player evaluation, game prediction, and edge finding.</description>\n    <location>/app/skills/sports-analytics/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>sports-betting</name>\n    <description>Sports betting strategy, odds analysis, value identification, bankroll management, and market dynamics. Finding edges and managing risk.</description>\n    <location>/app/skills/sports-betting/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>supabase-users</name>\n    <description>Comprehensive Supabase development expert covering Edge Functions, database schema management, migrations, PostgreSQL functions, and RLS policies. Use for any Supabase development including TypeScript/Deno Edge Functions, declarative schema management, SQL formatting, migration creation, database function authoring with SECURITY INVOKER, and RLS policy implementation with auth.uid() and auth.jwt().</description>\n    <location>/app/skills/supabase-users/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>weather</name>\n    <description>Get current weather and forecasts (no API key required). Supports travel-aware location tracking.</description>\n    <location>/app/skills/weather/SKILL.md</location>\n  </skill>\n</available_skills>",
-      "skills": [
-        {
-          "name": "bluebubbles"
-        },
-        {
-          "name": "browser-use"
-        },
-        {
-          "name": "clawdbot-docs"
-        },
-        {
-          "name": "cost-tracker"
-        },
-        {
-          "name": "github"
-        },
-        {
-          "name": "gog"
-        },
-        {
-          "name": "market-making"
-        },
-        {
-          "name": "notion"
-        },
-        {
-          "name": "probability-statistics"
-        },
-        {
-          "name": "quant-trading"
-        },
-        {
-          "name": "research-coordinator"
-        },
-        {
-          "name": "self-improvement"
-        },
-        {
-          "name": "skill-creator"
-        },
-        {
-          "name": "slack"
-        },
-        {
-          "name": "sports-analytics"
-        },
-        {
-          "name": "sports-betting"
-        },
-        {
-          "name": "supabase-users"
-        },
-        {
-          "name": "weather"
-        }
-      ],
-      "resolvedSkills": [
-        {
-          "name": "bluebubbles",
-          "description": "Build or update the BlueBubbles external channel plugin for Clawdbot (extension package, REST send/probe, webhook inbound).",
-          "filePath": "/app/skills/bluebubbles/SKILL.md",
-          "baseDir": "/app/skills/bluebubbles",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "browser-use",
-          "description": "Cloud browsers and autonomous browser automation via API. Spin up cloud browsers for direct control, persist logins with profiles, or run autonomous browser tasks as a subagent.",
-          "filePath": "/app/skills/browser-use/SKILL.md",
-          "baseDir": "/app/skills/browser-use",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "clawdbot-docs",
-          "description": "Clawdbot documentation expert skill with decision tree navigation, search scripts (sitemap, keyword, full-text index via qmd), doc fetching, version tracking, and config snippets for all Clawdbot features (providers, gateway, automation, platforms, tools).",
-          "filePath": "/app/skills/clawdbot-docs/SKILL.md",
-          "baseDir": "/app/skills/clawdbot-docs",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "cost-tracker",
-          "description": "Track ClawdBot API costs and alert when spending threshold is reached. Use when asked about usage, costs, spending, or to check/set spending alerts.",
-          "filePath": "/app/skills/cost-tracker/SKILL.md",
-          "baseDir": "/app/skills/cost-tracker",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "github",
-          "description": "Interact with GitHub using the `gh` CLI. Use `gh issue`, `gh pr`, `gh run`, and `gh api` for issues, PRs, CI runs, and advanced queries.",
-          "filePath": "/app/skills/github/SKILL.md",
-          "baseDir": "/app/skills/github",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "gog",
-          "description": "Google Workspace CLI for Gmail, Calendar, Drive, Contacts, Sheets, and Docs.",
-          "filePath": "/app/skills/gog/SKILL.md",
-          "baseDir": "/app/skills/gog",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "market-making",
-          "description": "Market making fundamentals, bid-ask spread management, inventory risk, and liquidity provision strategies across financial and betting markets.",
-          "filePath": "/app/skills/market-making/SKILL.md",
-          "baseDir": "/app/skills/market-making",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "notion",
-          "description": "Notion API for creating and managing pages, databases, and blocks.",
-          "filePath": "/app/skills/notion/SKILL.md",
-          "baseDir": "/app/skills/notion",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "probability-statistics",
-          "description": "Foundational probability theory, statistics, and mathematical concepts for quantitative analysis. Core knowledge for betting, trading, and analytics.",
-          "filePath": "/app/skills/probability-statistics/SKILL.md",
-          "baseDir": "/app/skills/probability-statistics",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "quant-trading",
-          "description": "Quantitative trading strategies, signal generation, backtesting, and algorithmic execution. Building systematic trading approaches.",
-          "filePath": "/app/skills/quant-trading/SKILL.md",
-          "baseDir": "/app/skills/quant-trading",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "research-coordinator",
-          "description": "Coordinate learning across probability, sports analytics, betting, quant trading, and market making. Manage research tasks, capture insights, and build tools.",
-          "filePath": "/app/skills/research-coordinator/SKILL.md",
-          "baseDir": "/app/skills/research-coordinator",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "self-improvement",
-          "description": "Log learnings and errors to markdown files for continuous improvement. Coding agents can later process these into fixes, and important learnings get promoted to project memory.",
-          "filePath": "/app/skills/self-improvement/SKILL.md",
-          "baseDir": "/app/skills/self-improvement",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "skill-creator",
-          "description": "Create or update AgentSkills. Use when designing, structuring, or packaging skills with scripts, references, and assets.",
-          "filePath": "/app/skills/skill-creator/SKILL.md",
-          "baseDir": "/app/skills/skill-creator",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "slack",
-          "description": "Use when you need to control Slack from Clawdbot via the slack tool, including reacting to messages or pinning/unpinning items in Slack channels or DMs.",
-          "filePath": "/app/skills/slack/SKILL.md",
-          "baseDir": "/app/skills/slack",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "sports-analytics",
-          "description": "Advanced sports analytics and sabermetrics across all major sports. Statistical methods for player evaluation, game prediction, and edge finding.",
-          "filePath": "/app/skills/sports-analytics/SKILL.md",
-          "baseDir": "/app/skills/sports-analytics",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "sports-betting",
-          "description": "Sports betting strategy, odds analysis, value identification, bankroll management, and market dynamics. Finding edges and managing risk.",
-          "filePath": "/app/skills/sports-betting/SKILL.md",
-          "baseDir": "/app/skills/sports-betting",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "supabase-users",
-          "description": "Comprehensive Supabase development expert covering Edge Functions, database schema management, migrations, PostgreSQL functions, and RLS policies. Use for any Supabase development including TypeScript/Deno Edge Functions, declarative schema management, SQL formatting, migration creation, database function authoring with SECURITY INVOKER, and RLS policy implementation with auth.uid() and auth.jwt().",
-          "filePath": "/app/skills/supabase-users/SKILL.md",
-          "baseDir": "/app/skills/supabase-users",
-          "source": "clawdbot-bundled"
-        },
-        {
-          "name": "weather",
-          "description": "Get current weather and forecasts (no API key required). Supports travel-aware location tracking.",
-          "filePath": "/app/skills/weather/SKILL.md",
-          "baseDir": "/app/skills/weather",
-          "source": "clawdbot-bundled"
-        }
-      ],
-      "version": 0
-    },
-    "modelProvider": "zai",
-    "model": "glm-4.7",
-    "contextTokens": 204800,
-    "abortedLastRun": false,
-    "inputTokens": 1000,
-    "outputTokens": 1296,
-    "totalTokens": 2990
   }
 }
