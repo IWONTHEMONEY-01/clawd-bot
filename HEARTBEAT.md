@@ -1,7 +1,13 @@
-# HEARTBEAT.md - Autonomous Task Checklist
+# HEARTBEAT.md - Shared Instructions for All Bots
 
-When heartbeat fires, check these items and act on any that need attention.
-If nothing needs attention, reply HEARTBEAT_OK.
+This file contains SHARED instructions that apply to all bots.
+
+**Your specific tasks go in your own task file:** `/root/clawd/tasks/<your-name>-tasks.md`
+
+When heartbeat fires:
+1. Check your own task file first (your specific work)
+2. Then check this file for shared duties (knowledge graph, system events)
+3. If nothing needs attention, reply HEARTBEAT_OK
 
 ---
 
@@ -42,32 +48,51 @@ Check for any system events, errors, or alerts that need owner attention:
 
 **IMPORTANT: Research and coding tasks run CONTINUOUSLY until completion.**
 
+### Where to Save Your Work
+
+Your workspace is `/root/clawd/`. Save all work there:
+
+```
+/root/clawd/memory/           # Research findings, notes, analysis
+/root/clawd/memory/research/  # Create this for research projects
+/root/clawd/tasks/            # Task tracking, project plans
+/root/clawd/canvas/           # Work-in-progress, drafts
+```
+
+**Example:** For NBA prop modeling research, save to:
+- `/root/clawd/memory/research/nba-prop-modeling.md`
+
+**Git Sync:** Everything in memory/, tasks/, canvas/ is automatically pushed to GitHub (memory-sync branch) every 5 minutes. Your work is backed up!
+
+### Work Session Protocol
+
 When a research or coding task is active:
 1. **DO NOT STOP** - Keep working every heartbeat until the task is complete
 2. **DO NOT ASK** for permission to continue - just continue working
 3. **ONLY MESSAGE** if you are genuinely stuck and need human input/clarification
-4. **SAVE PROGRESS** to memory files after each work session
+4. **SAVE PROGRESS** to `/root/clawd/memory/` after each work session
 5. **SPAWN SUB-AGENTS** for parallel work when beneficial
 
 ### Work Session Protocol (Each Heartbeat)
-1. Check `Active Tasks` below for incomplete work
+1. Check YOUR task file (`/root/clawd/tasks/<your-name>-tasks.md`) for incomplete work
 2. Pick up where you left off (check memory/canvas for progress)
 3. Do meaningful work (not just planning - actually execute)
 4. Save findings/code to appropriate files
-5. Update task progress below
-6. If task complete, move to `Completed Tasks` and message owner with summary
+5. Update task progress in YOUR task file
+6. If task complete, move to `Completed Tasks` in your file and message owner with summary
 7. If stuck/blocked, message owner asking for specific help needed
 8. If making progress, stay silent and continue next heartbeat
 
-### Active Tasks
-<!-- Format: - [ ] Task description | Status: in-progress/blocked | Progress: X% | Last worked: date -->
-- [ ] Research NBA player prop modeling - find statistical approaches that have edge (points, rebounds, assists) | Status: in-progress | Progress: 0% | Last worked: never
-- [ ] Research MLB pitcher prop modeling - strikeouts, earned runs, innings pitched | Status: pending | Progress: 0%
-- [ ] Identify free/cheap data sources for historical player stats | Status: pending | Progress: 0%
-- [ ] Find existing open-source sports betting models to learn from | Status: pending | Progress: 0%
+### Your Tasks Live in Your Own File
 
-### Completed Tasks
-<!-- Move completed tasks here with completion dates and summary links -->
+**Do NOT put tasks in this shared HEARTBEAT.md file.**
+
+Create and maintain your own task file:
+- `/root/clawd/tasks/market-making-tasks.md`
+- `/root/clawd/tasks/metrics-tasks.md`
+- `/root/clawd/tasks/general-tasks.md`
+
+This file persists in your volume and is YOUR responsibility to maintain.
 
 ---
 
