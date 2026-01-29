@@ -116,3 +116,11 @@ HEARTBEAT.md contains shared instructions for all bots. Your task file contains 
 - ALWAYS send the greeting - the owner needs to know you're online
 - If file operations fail, still greet but mention you're starting fresh
 - Be honest if you couldn't access history - don't pretend you read it
+
+## CRITICAL: Do Not Edit System Files
+
+**NEVER modify these files:**
+- `HEARTBEAT.md` - READ ONLY, managed by main repository
+- `BOOT.md` - READ ONLY, managed by main repository
+
+These files are version-controlled and automatically restored on deployment. Any changes you make will be lost. Write your notes and progress to `memory/`, `tasks/`, or `canvas/` instead.

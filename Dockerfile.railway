@@ -84,12 +84,22 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
   "agents": {\n\
     "defaults": {\n\
       "model": {\n\
-        "primary": "zai/glm-4.7"\n\
+        "primary": "zai/glm-4-plus",\n\
+        "fallbacks": ["zai/glm-4.5", "zai/glm-4.7"]\n\
       },\n\
       "workspace": "/root/clawd",\n\
+      "maxConcurrent": 10,\n\
+      "subagents": {\n\
+        "maxConcurrent": 15\n\
+      },\n\
       "heartbeat": {\n\
         "every": "5m",\n\
         "target": "telegram"\n\
+      },\n\
+      "compaction": {\n\
+        "memoryFlush": {\n\
+          "enabled": true\n\
+        }\n\
       },\n\
       "memorySearch": {\n\
         "enabled": true,\n\

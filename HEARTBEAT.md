@@ -21,9 +21,13 @@
 
 ### Files You MUST NOT Overwrite
 
-- `HEARTBEAT.md` - This file! Shared instructions from main branch
-- `BOOT.md` - Startup instructions from main branch
+**NEVER WRITE TO THESE FILES - They are managed by the main repository:**
+
+- `HEARTBEAT.md` - This file! READ ONLY. Never edit, never append, never modify.
+- `BOOT.md` - Startup instructions. READ ONLY.
 - Other bot's task files (e.g., if you're Market Making bot, don't touch `metrics-tasks.md`)
+
+**IMPORTANT:** If you find yourself wanting to modify HEARTBEAT.md or BOOT.md, STOP. Those files are source-controlled and your changes will be overwritten. Write to your task file or memory/ instead.
 
 ### Your Task File
 
@@ -49,11 +53,10 @@
 
 ```
 /root/clawd/memory/research/           # Research findings
-/root/clawd/memory/research/nba-props.md
-/root/clawd/memory/research/market-making.md
+/root/clawd/memory/research/topic-name.md
 
 /root/clawd/canvas/                    # Work in progress, drafts, code
-/root/clawd/canvas/draft-model.py
+/root/clawd/canvas/draft-code.py
 /root/clawd/canvas/analysis-notes.md
 ```
 

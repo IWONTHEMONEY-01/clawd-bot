@@ -18,13 +18,13 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "zai/glm-4.7",
-        "fallbacks": []
+        "primary": "zai/glm-4-plus",
+        "fallbacks": ["zai/glm-4.5", "zai/glm-4.7"]
       },
       "workspace": "/home/user/clawd-bot",
-      "maxConcurrent": 4,
+      "maxConcurrent": 10,
       "subagents": {
-        "maxConcurrent": 8
+        "maxConcurrent": 15
       },
       "sandbox": {
         "mode": "off"
@@ -32,6 +32,18 @@
       "heartbeat": {
         "enabled": true,
         "every": "10m"
+      },
+      "compaction": {
+        "memoryFlush": {
+          "enabled": true
+        }
+      },
+      "memorySearch": {
+        "enabled": true,
+        "sources": ["memory", "sessions"],
+        "experimental": {
+          "sessionMemory": true
+        }
       }
     }
   },
@@ -152,6 +164,19 @@
       }
     }
   },
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "session-memory": {
+          "enabled": true
+        },
+        "auto-memory-save": {
+          "enabled": true
+        }
+      }
+    }
+  },
   "wizard": {
     "lastRunAt": "2026-01-21T06:00:39.295Z",
     "lastRunVersion": "2026.1.20",
@@ -159,7 +184,7 @@
     "lastRunMode": "local"
   },
   "meta": {
-    "lastTouchedVersion": "2026.1.20",
-    "lastTouchedAt": "2026-01-21T06:00:39.316Z"
+    "lastTouchedVersion": "2026.1.28",
+    "lastTouchedAt": "2026-01-28T23:15:00.000Z"
   }
 }
