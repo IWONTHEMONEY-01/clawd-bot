@@ -270,28 +270,32 @@ export GOG_ACCOUNT="${GMAIL_ACCOUNT}"\n\
 echo "Config generated, starting gateway..."\n\
 \n\
 # Set up git for memory sync - uses SEPARATE branch to avoid destroying source code\n\
+# MEMORY_BRANCH: defaults to memory-sync, set per-service for isolation\n\
+# MEMORY_REPO: defaults to clawd-bot.git, set to different repo for full isolation\n\
+MEMORY_BRANCH="${MEMORY_BRANCH:-memory-sync}"\n\
+MEMORY_REPO="${MEMORY_REPO:-IWONTHEMONEY-01/clawd-bot.git}"\n\
 if [ -n "$GITHUB_TOKEN" ]; then\n\
   cd /root/clawd\n\
   # Only init if not already a git repo\n\
   if [ ! -d ".git" ]; then\n\
-    git init -b memory-sync\n\
-    echo "Git initialized"\n\
+    git init -b "$MEMORY_BRANCH"\n\
+    echo "Git initialized with branch: $MEMORY_BRANCH"\n\
   fi\n\
   # Only add remote if it doesnt exist\n\
   if ! git remote get-url origin >/dev/null 2>&1; then\n\
-    git remote add origin https://${GITHUB_TOKEN}@github.com/IWONTHEMONEY-01/clawd-bot.git\n\
-    echo "Git remote added"\n\
+    git remote add origin https://${GITHUB_TOKEN}@github.com/${MEMORY_REPO}\n\
+    echo "Git remote added: $MEMORY_REPO"\n\
   fi\n\
   git config user.email "bot@clawdbot.local"\n\
   git config user.name "Clawdbot"\n\
-  # Try to fetch existing memory, sessions, and knowledge graph from memory-sync branch\n\
-  if git fetch origin memory-sync 2>/dev/null; then\n\
-    git checkout -f origin/memory-sync -- memory/ 2>/dev/null || true\n\
-    git checkout -f origin/memory-sync -- life/ 2>/dev/null || true\n\
-    git checkout -f origin/memory-sync -- .clawdbot/agents/main/sessions/ 2>/dev/null || true\n\
-    git checkout -f origin/memory-sync -- MEMORY.md 2>/dev/null || true\n\
-    git checkout -f origin/memory-sync -- HEARTBEAT.md 2>/dev/null || true\n\
-    echo "Restored memory, knowledge graph, sessions, and HEARTBEAT.md from memory-sync branch"\n\
+  # Try to fetch existing memory, sessions, and knowledge graph from memory branch\n\
+  if git fetch origin "$MEMORY_BRANCH" 2>/dev/null; then\n\
+    git checkout -f origin/"$MEMORY_BRANCH" -- memory/ 2>/dev/null || true\n\
+    git checkout -f origin/"$MEMORY_BRANCH" -- life/ 2>/dev/null || true\n\
+    git checkout -f origin/"$MEMORY_BRANCH" -- .clawdbot/agents/main/sessions/ 2>/dev/null || true\n\
+    git checkout -f origin/"$MEMORY_BRANCH" -- MEMORY.md 2>/dev/null || true\n\
+    git checkout -f origin/"$MEMORY_BRANCH" -- HEARTBEAT.md 2>/dev/null || true\n\
+    echo "Restored memory, knowledge graph, sessions, and HEARTBEAT.md from $MEMORY_BRANCH branch"\n\
   fi\n\
   # Also fetch latest HEARTBEAT.md from main branch (takes priority over memory-sync)\n\
   if git fetch origin main 2>/dev/null; then\n\
@@ -301,7 +305,7 @@ if [ -n "$GITHUB_TOKEN" ]; then\n\
   echo "Git configured for memory sync"\n\
 fi\n\
 \n\
-# Start memory sync in background (every 10 minutes) - pushes to memory-sync branch ONLY\n\
+# Start memory sync in background (every 10 minutes) - pushes to MEMORY_BRANCH only\n\
 if [ -n "$GITHUB_TOKEN" ]; then\n\
   (\n\
     while true; do\n\
@@ -317,13 +321,13 @@ if [ -n "$GITHUB_TOKEN" ]; then\n\
       git add .clawdbot/agents/main/sessions/sessions.json 2>/dev/null || true\n\
       if [ -n "$(git diff --cached --name-only 2>/dev/null)" ]; then\n\
         git commit -m "Auto-sync memory+sessions $(date -u +%Y-%m-%dT%H:%M:%SZ)" || true\n\
-        # Push to memory-sync branch ONLY - never touch main\n\
-        git push origin memory-sync:memory-sync --force 2>/dev/null || echo "Memory sync push failed"\n\
-        echo "Memory and sessions synced to git (memory-sync branch)"\n\
+        # Push to memory branch ONLY - never touch main\n\
+        git push origin "$MEMORY_BRANCH":"$MEMORY_BRANCH" --force 2>/dev/null || echo "Memory sync push failed"\n\
+        echo "Memory and sessions synced to git ($MEMORY_BRANCH branch)"\n\
       fi\n\
     done\n\
   ) &\n\
-  echo "Memory sync daemon started (includes session transcripts)"\n\
+  echo "Memory sync daemon started (branch: $MEMORY_BRANCH)"\n\
 fi\n\
 \n\
 exec node /app/railway-gateway.mjs\n\
