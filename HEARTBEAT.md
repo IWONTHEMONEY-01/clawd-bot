@@ -133,7 +133,28 @@ Check for alerts needing owner attention:
 - **DO NOT ASK** for permission to continue - just continue
 - **ONLY MESSAGE** if genuinely stuck or task is complete
 - **SAVE PROGRESS** after each work session
-- **SPAWN SUB-AGENTS** for parallel work when beneficial
+- **SPAWN SUB-AGENTS** sparingly - only when truly parallel work is needed
+
+### CRITICAL: Missing Credentials or Config
+
+**If you encounter missing API keys, tokens, or credentials: STOP IMMEDIATELY.**
+
+Do NOT:
+- Retry repeatedly hoping it works
+- Spawn subagents to find workarounds
+- Try alternative approaches without the credential
+- Keep burning API calls on a blocked task
+
+DO:
+- Message owner ONCE with exactly what's missing
+- Mark the task as BLOCKED in your task file
+- Move on to other tasks or reply HEARTBEAT_OK
+- Wait for owner to provide the credential
+
+**Example message:**
+> "BLOCKED: Kalshi API requires KALSHI_API_KEY_ID env var. Task paused until you provide it."
+
+This saves resources. The owner can provide credentials faster than you can work around them.
 
 ---
 
@@ -141,6 +162,7 @@ Check for alerts needing owner attention:
 
 - Task **fully completed** with summary
 - **Genuinely stuck** needing specific input
+- **Missing credentials** - API keys, tokens, secrets (message ONCE then stop)
 - Cost alert or error needing intervention
 - Time-sensitive discovery
 

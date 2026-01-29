@@ -101,7 +101,7 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
         "maxConcurrent": 2\n\
       },\n\
       "heartbeat": {\n\
-        "every": "5m",\n\
+        "every": "15m",\n\
         "target": "telegram"\n\
       },\n\
       "compaction": {\n\
