@@ -1,19 +1,24 @@
 {
   "agent:main:main": {
     "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
-    "updatedAt": 1769745710741,
+    "updatedAt": 1769746887458,
     "systemSent": true,
     "abortedLastRun": false,
     "chatType": "direct",
     "deliveryContext": {
-      "to": "6632715854"
+      "channel": "telegram",
+      "to": "6632715854",
+      "accountId": "default"
     },
     "lastTo": "6632715854",
     "origin": {
       "label": "6632715854",
       "provider": "heartbeat",
       "from": "6632715854",
-      "to": "6632715854"
+      "to": "6632715854",
+      "surface": "telegram",
+      "chatType": "direct",
+      "accountId": "default"
     },
     "sessionFile": "/root/clawd/.clawdbot/agents/main/sessions/5b1a9552-47f3-4543-9959-47288c1fe8bc.jsonl",
     "compactionCount": 0,
@@ -207,7 +212,255 @@
     },
     "authProfileOverride": "zai:default",
     "authProfileOverrideSource": "auto",
-    "authProfileOverrideCompactionCount": 0
+    "authProfileOverrideCompactionCount": 0,
+    "inputTokens": 46669,
+    "outputTokens": 945,
+    "totalTokens": 50988,
+    "modelProvider": "zai",
+    "model": "glm-4.7",
+    "contextTokens": 204800,
+    "systemPromptReport": {
+      "source": "run",
+      "generatedAt": 1769746587634,
+      "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
+      "sessionKey": "agent:main:main",
+      "provider": "zai",
+      "model": "glm-4.7",
+      "workspaceDir": "/root/clawd",
+      "bootstrapMaxChars": 20000,
+      "sandbox": {
+        "mode": "off",
+        "sandboxed": false
+      },
+      "systemPrompt": {
+        "chars": 19183,
+        "projectContextChars": 8348,
+        "nonProjectContextChars": 10835
+      },
+      "injectedWorkspaceFiles": [
+        {
+          "name": "AGENTS.md",
+          "path": "/root/clawd/AGENTS.md",
+          "missing": false,
+          "rawChars": 1083,
+          "injectedChars": 1083,
+          "truncated": false
+        },
+        {
+          "name": "SOUL.md",
+          "path": "/root/clawd/SOUL.md",
+          "missing": false,
+          "rawChars": 233,
+          "injectedChars": 233,
+          "truncated": false
+        },
+        {
+          "name": "TOOLS.md",
+          "path": "/root/clawd/TOOLS.md",
+          "missing": false,
+          "rawChars": 493,
+          "injectedChars": 493,
+          "truncated": false
+        },
+        {
+          "name": "IDENTITY.md",
+          "path": "/root/clawd/IDENTITY.md",
+          "missing": false,
+          "rawChars": 68,
+          "injectedChars": 68,
+          "truncated": false
+        },
+        {
+          "name": "USER.md",
+          "path": "/root/clawd/USER.md",
+          "missing": false,
+          "rawChars": 109,
+          "injectedChars": 109,
+          "truncated": false
+        },
+        {
+          "name": "HEARTBEAT.md",
+          "path": "/root/clawd/HEARTBEAT.md",
+          "missing": false,
+          "rawChars": 6142,
+          "injectedChars": 6142,
+          "truncated": false
+        },
+        {
+          "name": "BOOTSTRAP.md",
+          "path": "/root/clawd/BOOTSTRAP.md",
+          "missing": true,
+          "rawChars": 0,
+          "injectedChars": 47,
+          "truncated": false
+        }
+      ],
+      "skills": {
+        "promptChars": 5537,
+        "entries": [
+          {
+            "name": "bluebubbles",
+            "blockChars": 260
+          },
+          {
+            "name": "browser-use",
+            "blockChars": 314
+          },
+          {
+            "name": "clawdbot-docs",
+            "blockChars": 397
+          },
+          {
+            "name": "cost-tracker",
+            "blockChars": 287
+          },
+          {
+            "name": "github",
+            "blockChars": 263
+          },
+          {
+            "name": "gog",
+            "blockChars": 197
+          },
+          {
+            "name": "market-making",
+            "blockChars": 284
+          },
+          {
+            "name": "notion",
+            "blockChars": 193
+          },
+          {
+            "name": "probability-statistics",
+            "blockChars": 308
+          },
+          {
+            "name": "quant-trading",
+            "blockChars": 272
+          },
+          {
+            "name": "research-coordinator",
+            "blockChars": 313
+          },
+          {
+            "name": "self-improvement",
+            "blockChars": 323
+          },
+          {
+            "name": "skill-creator",
+            "blockChars": 261
+          },
+          {
+            "name": "slack",
+            "blockChars": 277
+          },
+          {
+            "name": "sports-analytics",
+            "blockChars": 292
+          },
+          {
+            "name": "sports-betting",
+            "blockChars": 279
+          },
+          {
+            "name": "supabase-users",
+            "blockChars": 544
+          },
+          {
+            "name": "weather",
+            "blockChars": 226
+          }
+        ]
+      },
+      "tools": {
+        "listChars": 1187,
+        "schemaChars": 5442,
+        "entries": [
+          {
+            "name": "read",
+            "summaryChars": 232,
+            "schemaChars": 398,
+            "propertiesCount": 4
+          },
+          {
+            "name": "edit",
+            "summaryChars": 129,
+            "schemaChars": 617,
+            "propertiesCount": 6
+          },
+          {
+            "name": "write",
+            "summaryChars": 127,
+            "schemaChars": 313,
+            "propertiesCount": 3
+          },
+          {
+            "name": "exec",
+            "summaryChars": 181,
+            "schemaChars": 1037,
+            "propertiesCount": 12
+          },
+          {
+            "name": "bash",
+            "summaryChars": 181,
+            "schemaChars": 1037,
+            "propertiesCount": 12
+          },
+          {
+            "name": "process",
+            "summaryChars": 85,
+            "schemaChars": 844,
+            "propertiesCount": 11
+          },
+          {
+            "name": "sessions_list",
+            "summaryChars": 54,
+            "schemaChars": 176,
+            "propertiesCount": 4
+          },
+          {
+            "name": "sessions_history",
+            "summaryChars": 36,
+            "schemaChars": 149,
+            "propertiesCount": 3
+          },
+          {
+            "name": "sessions_send",
+            "summaryChars": 84,
+            "schemaChars": 203,
+            "propertiesCount": 5
+          },
+          {
+            "name": "sessions_spawn",
+            "summaryChars": 107,
+            "schemaChars": 312,
+            "propertiesCount": 8
+          },
+          {
+            "name": "session_status",
+            "summaryChars": 159,
+            "schemaChars": 89,
+            "propertiesCount": 2
+          },
+          {
+            "name": "memory_search",
+            "summaryChars": 235,
+            "schemaChars": 139,
+            "propertiesCount": 3
+          },
+          {
+            "name": "memory_get",
+            "summaryChars": 151,
+            "schemaChars": 128,
+            "propertiesCount": 3
+          }
+        ]
+      }
+    },
+    "lastHeartbeatText": "⚠️ 🛠️ exec: cd ~/clawd/sports-betting && python3 -c \"import sqlite3; conn = sqlite3.connect('data/nba_betting.db'); cursor = conn.cursor(); cursor.execute('PRAGMA ta… failed: File \"<string>\", line 1",
+    "lastHeartbeatSentAt": 1769745710514,
+    "lastChannel": "telegram",
+    "lastAccountId": "default"
   },
   "agent:main:subagent:71f11bf8-4fc9-4955-9c80-dbef76aad38c": {
     "sessionId": "04f5b50d-3ecb-4a7f-a9c5-16b919bb943c",
