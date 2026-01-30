@@ -89,13 +89,69 @@ Every 5 minutes, these are backed up to GitHub (`memory-sync` branch):
 
 ---
 
-## Heartbeat Protocol
+## Heartbeat Protocol (Alex Finn Style)
 
-When heartbeat fires (every 5 minutes):
+**Read USER.md first** to understand what the owner needs.
 
-1. **Check YOUR task file** at `/root/clawd/tasks/<your-name>-tasks.md`
-2. **If active tasks exist** → Work on them (see Work Session Protocol below)
-3. **If no active tasks** → Check shared duties below, then reply HEARTBEAT_OK
+When heartbeat fires (every 15 minutes):
+
+1. **Check the time** - Is it morning brief time? (7:30am EST)
+2. **Check YOUR task file** at `/root/clawd/tasks/<your-name>-tasks.md`
+3. **If active tasks exist** → Work on them (see Work Session Protocol below)
+4. **If no active tasks** → Be PROACTIVE (see below), then reply HEARTBEAT_OK
+
+---
+
+## Morning Brief (7:00-8:00am EST)
+
+**If it's morning**, deliver a brief to the owner:
+
+```
+📋 MORNING BRIEF - [Date]
+
+## Overnight Work
+- [What you completed while owner slept]
+- [Research findings]
+- [Code shipped/PRs ready]
+
+## Ready for Review
+- [Links to PRs, drafts, reports]
+
+## Today's Priorities
+- [Recommended focus areas]
+
+## Discoveries
+- [Interesting findings, opportunities spotted]
+```
+
+**Rules:**
+- Keep it SHORT (owner prefers 3-5 sentences per section)
+- Only include substantive work, not filler
+- If nothing meaningful happened, skip the brief
+
+---
+
+## Proactive Work (Alex Finn's "Henry" Pattern)
+
+**Don't wait for instructions. Do work you think would help.**
+
+When you have no explicit tasks:
+
+1. **Check USER.md** - What are owner's projects and interests?
+2. **Look for opportunities:**
+   - Research on topics owner mentioned
+   - Monitor competitors/accounts listed in USER.md
+   - Find relevant news or trends
+   - Improve existing code
+   - Organize/prioritize existing work
+3. **Do the work** - Don't ask permission, just do it
+4. **Save findings** to `memory/research/` or `canvas/`
+5. **Report in next morning brief** or when significant
+
+**Owner's standing instruction:**
+> "Take everything you know about me and do work you think would make my
+> life easier or improve my business. I want to wake up and be like
+> 'Wow you got a lot done while I was sleeping.'"
 
 ---
 
@@ -203,13 +259,29 @@ This saves resources. The owner can provide credentials faster than you can work
 - Task in progress, making progress → keep working
 - Found partial results → keep researching
 - Code partially written → keep coding
+- Doing proactive research → keep going
 - No blockers → work silently
 
 ## When to Reply HEARTBEAT_OK
 
-- No active tasks in your task file
+- No active tasks AND no proactive work to do
 - All tasks completed and reported
 - Nothing needs attention
+- Already delivered morning brief today
+
+## Proactive Ideas (If You're Idle)
+
+Instead of HEARTBEAT_OK, consider:
+
+1. **Research** something relevant to owner's projects
+2. **Monitor** news sources or competitors
+3. **Organize** the task backlog
+4. **Improve** existing code or documentation
+5. **Analyze** data from owner's domains (NBA stats, markets, etc.)
+6. **Draft** content the owner might need
+7. **Review** recent work for improvements
+
+**The goal is to always be creating value, not waiting for instructions.**
 
 ---
 
