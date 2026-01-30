@@ -1,21 +1,21 @@
 {
   "agent:main:main": {
     "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
-    "updatedAt": 1769746887458,
+    "updatedAt": 1769747228457,
     "systemSent": true,
     "abortedLastRun": false,
     "chatType": "direct",
     "deliveryContext": {
       "channel": "telegram",
-      "to": "6632715854",
+      "to": "telegram:6632715854",
       "accountId": "default"
     },
-    "lastTo": "6632715854",
+    "lastTo": "telegram:6632715854",
     "origin": {
-      "label": "6632715854",
-      "provider": "heartbeat",
-      "from": "6632715854",
-      "to": "6632715854",
+      "label": "Anthony F (@IWONTHEMONEY) id:6632715854",
+      "provider": "telegram",
+      "from": "telegram:6632715854",
+      "to": "telegram:6632715854",
       "surface": "telegram",
       "chatType": "direct",
       "accountId": "default"
