@@ -1,21 +1,21 @@
 {
   "agent:main:main": {
     "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
-    "updatedAt": 1769749888952,
+    "updatedAt": 1769750443674,
     "systemSent": true,
     "abortedLastRun": false,
     "chatType": "direct",
     "deliveryContext": {
       "channel": "telegram",
-      "to": "telegram:6632715854",
+      "to": "6632715854",
       "accountId": "default"
     },
-    "lastTo": "telegram:6632715854",
+    "lastTo": "6632715854",
     "origin": {
-      "label": "Anthony F (@IWONTHEMONEY) id:6632715854",
-      "provider": "telegram",
-      "from": "telegram:6632715854",
-      "to": "telegram:6632715854",
+      "label": "6632715854",
+      "provider": "heartbeat",
+      "from": "6632715854",
+      "to": "6632715854",
       "surface": "telegram",
       "chatType": "direct",
       "accountId": "default"
@@ -213,15 +213,15 @@
     "authProfileOverride": "zai:default",
     "authProfileOverrideSource": "auto",
     "authProfileOverrideCompactionCount": 0,
-    "inputTokens": 96246,
-    "outputTokens": 501,
-    "totalTokens": 96289,
+    "inputTokens": 43117,
+    "outputTokens": 159,
+    "totalTokens": 94655,
     "modelProvider": "zai",
     "model": "glm-4.7",
     "contextTokens": 204800,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1769749199207,
+      "generatedAt": 1769750333831,
       "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
       "sessionKey": "agent:main:main",
       "provider": "zai",
