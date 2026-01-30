@@ -1,7 +1,7 @@
 {
   "agent:main:main": {
     "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
-    "updatedAt": 1769783015406,
+    "updatedAt": 1769783615969,
     "systemSent": true,
     "abortedLastRun": false,
     "chatType": "direct",
@@ -214,14 +214,14 @@
     "authProfileOverrideSource": "auto",
     "authProfileOverrideCompactionCount": 0,
     "inputTokens": 137213,
-    "outputTokens": 190,
+    "outputTokens": 85,
     "totalTokens": 137213,
     "modelProvider": "zai",
     "model": "glm-4.7",
     "contextTokens": 204800,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1769782414690,
+      "generatedAt": 1769783015552,
       "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
       "sessionKey": "agent:main:main",
       "provider": "zai",
@@ -233,8 +233,8 @@
         "sandboxed": false
       },
       "systemPrompt": {
-        "chars": 20960,
-        "projectContextChars": 10125,
+        "chars": 21643,
+        "projectContextChars": 10808,
         "nonProjectContextChars": 10835
       },
       "injectedWorkspaceFiles": [
@@ -282,8 +282,8 @@
           "name": "HEARTBEAT.md",
           "path": "/root/clawd/HEARTBEAT.md",
           "missing": false,
-          "rawChars": 7919,
-          "injectedChars": 7919,
+          "rawChars": 8602,
+          "injectedChars": 8602,
           "truncated": false
         },
         {
@@ -457,8 +457,8 @@
         ]
       }
     },
-    "lastHeartbeatText": "⚠️ 🛠️ exec: cd ~/clawd/sports-betting/src && cp nba_points_model.py nba_points_model_backup.py && sed -i '/SELECT/,/SELECT\\ failed: Command exited with code 1",
-    "lastHeartbeatSentAt": 1769782414519,
+    "lastHeartbeatText": "The error shows `opponent_def_rating` column doesn't exist. This is because we simplified the schema earlier. Let me fix the `_load_features()` method to only use columns that actually exist:",
+    "lastHeartbeatSentAt": 1769783015355,
     "lastChannel": "telegram",
     "lastAccountId": "default"
   },
