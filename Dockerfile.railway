@@ -40,27 +40,28 @@ RUN mkdir -p /root/.config/gogcli/keyring
 ENV NODE_ENV=production
 ENV HOME=/root
 ENV CLAWDBOT_DISABLE_BONJOUR=1
-# Store all state in persistent volume to survive restarts
-ENV CLAWDBOT_STATE_DIR=/root/clawd/.clawdbot
 
 # Create startup script that generates config from environment variables
 RUN echo '#!/bin/bash\n\
 set -e\n\
 \n\
-# Create directories in persistent volume (state + workspace)\n\
-mkdir -p /root/clawd/.clawdbot/agents/main/agent /root/.config/gogcli/keyring\n\
-mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
+# Set bot role and workspace path (each bot gets isolated workspace)\n\
+BOT_ROLE="${BOT_ROLE:-general}"\n\
+WORKSPACE="/root/clawd-${BOT_ROLE}"\n\
+export CLAWDBOT_STATE_DIR="${WORKSPACE}/.clawdbot"\n\
+\n\
+# Create directories in persistent volume (role-specific workspace)\n\
+mkdir -p ${WORKSPACE}/.clawdbot/agents/main/agent /root/.config/gogcli/keyring\n\
+mkdir -p ${WORKSPACE}/memory ${WORKSPACE}/canvas ${WORKSPACE}/tasks\n\
 \n\
 # Write bot identity file based on BOT_ROLE env var\n\
-# This tells the bot which task file to use and what its role is\n\
-BOT_ROLE="${BOT_ROLE:-general}"\n\
-cat > /root/clawd/MY_ROLE.md << EOFROLE\n\
+cat > ${WORKSPACE}/MY_ROLE.md << EOFROLE\n\
 # Your Bot Identity\n\
 \n\
 You are the **${BOT_ROLE}** bot.\n\
 \n\
 ## Your Task File\n\
-ONLY read and write to: /root/clawd/tasks/${BOT_ROLE}-tasks.md\n\
+ONLY read and write to: ${WORKSPACE}/tasks/${BOT_ROLE}-tasks.md\n\
 \n\
 ## Rules\n\
 - NEVER touch other bots task files\n\
@@ -71,34 +72,34 @@ echo "Bot identity set: ${BOT_ROLE}"\n\
 \n\
 # Set up workspace from local files (only on first deploy - preserves all customizations)\n\
 # Check if workspace volume is empty (first deploy)\n\
-if [ -z "$(ls -A /root/clawd 2>/dev/null | grep -v lost+found)" ]; then\n\
+if [ -z "$(ls -A ${WORKSPACE} 2>/dev/null | grep -v lost+found)" ]; then\n\
   echo "First deploy - initializing workspace from local files"\n\
-  mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
-  mkdir -p /root/clawd/life/areas/people /root/clawd/life/areas/companies /root/clawd/life/areas/projects\n\
+  mkdir -p ${WORKSPACE}/memory ${WORKSPACE}/canvas ${WORKSPACE}/tasks\n\
+  mkdir -p ${WORKSPACE}/life/areas/people ${WORKSPACE}/life/areas/companies ${WORKSPACE}/life/areas/projects\n\
   # Copy bot-specific AGENTS.md based on BOT_ROLE (Vercel research: 100% reliability)\n\
   if [ -f "/app/AGENTS-${BOT_ROLE}.md" ]; then\n\
-    cp "/app/AGENTS-${BOT_ROLE}.md" "/root/clawd/AGENTS.md"\n\
+    cp "/app/AGENTS-${BOT_ROLE}.md" "${WORKSPACE}/AGENTS.md"\n\
     echo "Using bot-specific AGENTS.md for ${BOT_ROLE}"\n\
   elif [ -f "/app/AGENTS.md" ]; then\n\
-    cp "/app/AGENTS.md" "/root/clawd/AGENTS.md"\n\
+    cp "/app/AGENTS.md" "${WORKSPACE}/AGENTS.md"\n\
     echo "Using default AGENTS.md"\n\
   fi\n\
   for f in BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md SOUL_EVIL.md TOOLS.md USER.md BOOT.md MEMORY.md; do\n\
-    [ -f "/app/$f" ] && cp "/app/$f" "/root/clawd/" 2>/dev/null || true\n\
+    [ -f "/app/$f" ] && cp "/app/$f" "${WORKSPACE}/" 2>/dev/null || true\n\
   done\n\
-  cp -r /app/memory/* /root/clawd/memory/ 2>/dev/null || true\n\
-  cp -r /app/canvas/* /root/clawd/canvas/ 2>/dev/null || true\n\
-  cp -r /app/tasks/* /root/clawd/tasks/ 2>/dev/null || true\n\
-  cp -r /app/life/* /root/clawd/life/ 2>/dev/null || true\n\
+  cp -r /app/memory/* ${WORKSPACE}/memory/ 2>/dev/null || true\n\
+  cp -r /app/canvas/* ${WORKSPACE}/canvas/ 2>/dev/null || true\n\
+  cp -r /app/tasks/* ${WORKSPACE}/tasks/ 2>/dev/null || true\n\
+  cp -r /app/life/* ${WORKSPACE}/life/ 2>/dev/null || true\n\
   echo "Workspace initialized with three-layer memory system"\n\
 else\n\
   echo "Workspace volume exists - preserving all data"\n\
   # Ensure life/areas directories exist for upgrades\n\
-  mkdir -p /root/clawd/life/areas/people /root/clawd/life/areas/companies /root/clawd/life/areas/projects\n\
+  mkdir -p ${WORKSPACE}/life/areas/people ${WORKSPACE}/life/areas/companies ${WORKSPACE}/life/areas/projects\n\
 fi\n\
 \n\
 # Generate clawdbot.json from environment (in persistent volume)\n\
-cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
+cat > ${WORKSPACE}/.clawdbot/clawdbot.json << EOFCONFIG\n\
 {\n\
   "auth": {\n\
     "profiles": {\n\
@@ -122,7 +123,7 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
         "primary": "zai/glm-4.7",\n\
         "fallbacks": []\n\
       },\n\
-      "workspace": "/root/clawd",\n\
+      "workspace": "${WORKSPACE}",\n\
       "maxConcurrent": 1,\n\
       "subagents": {\n\
         "maxConcurrent": 2\n\
@@ -241,9 +242,9 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
 EOFCONFIG\n\
 \n\
 # Generate auth-profiles.json ONLY if it doesnt exist (preserves updates)\n\
-if [ ! -f /root/clawd/.clawdbot/agents/main/agent/auth-profiles.json ]; then\n\
+if [ ! -f ${WORKSPACE}/.clawdbot/agents/main/agent/auth-profiles.json ]; then\n\
   echo "Creating initial auth-profiles.json from environment variables"\n\
-  cat > /root/clawd/.clawdbot/agents/main/agent/auth-profiles.json << EOFAUTH\n\
+  cat > ${WORKSPACE}/.clawdbot/agents/main/agent/auth-profiles.json << EOFAUTH\n\
 {\n\
   "version": 1,\n\
   "profiles": {\n\
@@ -336,7 +337,7 @@ fi\n\
 MEMORY_BRANCH="${MEMORY_BRANCH:-memory-sync}"\n\
 MEMORY_REPO="${MEMORY_REPO:-IWONTHEMONEY-01/clawd-bot.git}"\n\
 if [ -n "$GITHUB_TOKEN" ]; then\n\
-  cd /root/clawd\n\
+  cd ${WORKSPACE}\n\
   # Only init if not already a git repo\n\
   if [ ! -d ".git" ]; then\n\
     git init -b "$MEMORY_BRANCH"\n\
@@ -374,7 +375,7 @@ if [ -n "$GITHUB_TOKEN" ]; then\n\
   (\n\
     while true; do\n\
       sleep 600\n\
-      cd /root/clawd 2>/dev/null || continue\n\
+      cd ${WORKSPACE} 2>/dev/null || continue\n\
       # Add workspace files AND session transcripts\n\
       git add memory/*.md memory/**/*.md 2>/dev/null || true\n\
       git add AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md TOOLS.md USER.md MEMORY.md canvas/ tasks/ 2>/dev/null || true\n\
