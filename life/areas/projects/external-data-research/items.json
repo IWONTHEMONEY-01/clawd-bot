@@ -1,0 +1,49 @@
+{
+  "type": "project",
+  "name": "NBA Props Trading Bot - External Data Research",
+  "items": [
+    {
+      "fact": "External data sources tested: DraftKings, FanDuel, Polymarket",
+      "source": "API Testing 2026-01-30",
+      "date": "2026-01-30",
+      "status": "superseded",
+      "category": "integration",
+      "superseded_by": "Conclusion: External sources not viable for live NBA props"
+    },
+    {
+      "fact": "DraftKings: No accessible JSON API (HTML only)",
+      "source": "API Research 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "integration"
+    },
+    {
+      "fact": "FanDuel: API blocked (403 Forbidden)",
+      "source": "API Research 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "integration"
+    },
+    {
+      "fact": "Polymarket: No active NBA markets (all sports markets closed)",
+      "source": "API Testing 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "integration"
+    },
+    {
+      "fact": "Recommended strategy: Kalshi + Advanced Metrics Bot only (no external sources)",
+      "source": "Architecture Decision 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "strategy"
+    },
+    {
+      "fact": "Fair value calculation: (model_prediction * 0.5) + (kalshi_price * 0.5)",
+      "source": "Architecture 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "algorithm"
+    }
+  ]
+}
