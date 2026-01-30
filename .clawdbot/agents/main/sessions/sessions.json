@@ -1,7 +1,7 @@
 {
   "agent:main:main": {
     "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
-    "updatedAt": 1769801940046,
+    "updatedAt": 1769802602506,
     "systemSent": true,
     "abortedLastRun": false,
     "chatType": "direct",
@@ -214,14 +214,14 @@
     "authProfileOverrideSource": "auto",
     "authProfileOverrideCompactionCount": 0,
     "inputTokens": 137213,
-    "outputTokens": 1072,
+    "outputTokens": 385,
     "totalTokens": 137213,
     "modelProvider": "zai",
     "model": "glm-4.7",
     "contextTokens": 204800,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1769801340326,
+      "generatedAt": 1769802540860,
       "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
       "sessionKey": "agent:main:main",
       "provider": "zai",
@@ -233,8 +233,8 @@
         "sandboxed": false
       },
       "systemPrompt": {
-        "chars": 17652,
-        "projectContextChars": 6817,
+        "chars": 19411,
+        "projectContextChars": 8576,
         "nonProjectContextChars": 10835
       },
       "injectedWorkspaceFiles": [
@@ -282,8 +282,8 @@
           "name": "HEARTBEAT.md",
           "path": "/root/clawd/HEARTBEAT.md",
           "missing": false,
-          "rawChars": 4611,
-          "injectedChars": 4611,
+          "rawChars": 6370,
+          "injectedChars": 6370,
           "truncated": false
         },
         {
@@ -457,8 +457,8 @@
         ]
       }
     },
-    "lastHeartbeatText": "I see the active task is to update the Kalshi market making terminal to use test API keys. Let me check the environment for the test keys and update the terminal accordingly.",
-    "lastHeartbeatSentAt": 1769799838987,
+    "lastHeartbeatText": "⚠️ 🛠️ exec: cd ~/clawd/sports-betting/src && sed -i '/# MARKETS_FIX/,/# MARKETS_END/d\\c\\import threading\\n        self._refresh_markets()\\n        if self.demo_mode:… failed: sed: -e expression #1, char 33: extra characters after command",
+    "lastHeartbeatSentAt": 1769801939977,
     "lastChannel": "telegram",
     "lastAccountId": "default"
   },
