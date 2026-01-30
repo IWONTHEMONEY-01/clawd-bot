@@ -4,6 +4,17 @@
 
 ## CRITICAL RULES - READ THIS FIRST
 
+### Step 0: Know Your Identity
+
+**BEFORE ANYTHING ELSE, read `/root/clawd/MY_ROLE.md`** to know which bot you are.
+
+Your identity determines:
+- Which task file you use
+- What tasks you work on
+- What you should NOT touch
+
+If MY_ROLE.md doesn't exist, you are the **general** bot.
+
 ### File System Rules
 
 **Your workspace is `/root/clawd/`** - All files go here.
@@ -31,11 +42,16 @@
 
 ### Your Task File
 
-**Create your own task file based on your role:**
+**Your task file is determined by MY_ROLE.md.**
 
-- Market Making Bot → `/root/clawd/tasks/market-making-tasks.md`
-- Advanced Metrics Bot → `/root/clawd/tasks/metrics-tasks.md`
-- General Bot → `/root/clawd/tasks/general-tasks.md`
+Read `/root/clawd/MY_ROLE.md` to find YOUR task file path.
+
+Common roles:
+- `market-making` → `/root/clawd/tasks/market-making-tasks.md`
+- `metrics` → `/root/clawd/tasks/metrics-tasks.md`
+- `general` → `/root/clawd/tasks/general-tasks.md`
+
+**ONLY use YOUR task file. NEVER read or modify other bots' task files.**
 
 **Task file format:**
 ```markdown
@@ -134,6 +150,22 @@ Check for alerts needing owner attention:
 - **ONLY MESSAGE** if genuinely stuck or task is complete
 - **SAVE PROGRESS** after each work session
 - **SPAWN SUB-AGENTS** sparingly - only when truly parallel work is needed
+
+### Using External APIs
+
+You have full web access. To call external APIs:
+
+1. **Use web fetch** - You can fetch any URL directly
+2. **Use bash + curl** - For complex requests: `curl -s "https://api.example.com/endpoint"`
+3. **Use bash + Python** - For data processing: `python3 -c "import requests; ..."`
+
+**Common APIs don't need keys:**
+- NBA API (stats.nba.com, nba.com/stats)
+- Public sports data
+- Weather APIs
+- Many public REST APIs
+
+**If an API requires authentication**, message the owner with what key is needed.
 
 ### CRITICAL: Missing Credentials or Config
 

@@ -51,6 +51,24 @@ set -e\n\
 mkdir -p /root/clawd/.clawdbot/agents/main/agent /root/.config/gogcli/keyring\n\
 mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
 \n\
+# Write bot identity file based on BOT_ROLE env var\n\
+# This tells the bot which task file to use and what its role is\n\
+BOT_ROLE="${BOT_ROLE:-general}"\n\
+cat > /root/clawd/MY_ROLE.md << EOFROLE\n\
+# Your Bot Identity\n\
+\n\
+You are the **${BOT_ROLE}** bot.\n\
+\n\
+## Your Task File\n\
+ONLY read and write to: /root/clawd/tasks/${BOT_ROLE}-tasks.md\n\
+\n\
+## Rules\n\
+- NEVER touch other bots task files\n\
+- NEVER work on tasks not in YOUR task file\n\
+- Your identity is: ${BOT_ROLE}\n\
+EOFROLE\n\
+echo "Bot identity set: ${BOT_ROLE}"\n\
+\n\
 # Set up workspace from local files (only on first deploy - preserves all customizations)\n\
 # Check if workspace volume is empty (first deploy)\n\
 if [ -z "$(ls -A /root/clawd 2>/dev/null | grep -v lost+found)" ]; then\n\
@@ -127,6 +145,18 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
   "tools": {\n\
     "profile": "coding",\n\
     "allow": ["group:fs", "group:runtime", "group:sessions", "group:memory", "group:web", "group:ui", "group:messaging", "cron", "sessions_spawn", "bash"],\n\
+    "web": {\n\
+      "search": {\n\
+        "enabled": true,\n\
+        "provider": "brave",\n\
+        "maxResults": 5,\n\
+        "cacheTtlMinutes": 15\n\
+      },\n\
+      "fetch": {\n\
+        "enabled": true,\n\
+        "maxChars": 100000\n\
+      }\n\
+    },\n\
     "media": {\n\
       "audio": {\n\
         "enabled": true,\n\
