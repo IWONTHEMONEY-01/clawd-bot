@@ -26,6 +26,12 @@ export function parseSshTarget(raw: string): SshParsedTarget | null {
   const trimmed = raw.trim().replace(/^ssh\s+/, "");
   if (!trimmed) return null;
 
+  // Security: Reject hostnames starting with hyphen to prevent argument injection (CWE-88)
+  // An attacker could use mDNS poisoning to inject malicious hostnames like "-oProxyCommand=..."
+  if (trimmed.startsWith("-") || trimmed.includes("@-")) {
+    return null;
+  }
+
   const [userPart, hostPart] = trimmed.includes("@")
     ? ((): [string | undefined, string] => {
         const idx = trimmed.indexOf("@");
@@ -134,7 +140,8 @@ export async function startSshPortForward(opts: {
   if (opts.identity?.trim()) {
     args.push("-i", opts.identity.trim());
   }
-  args.push(userHost);
+  // Security: Use "--" to signal end of options, preventing hostname from being parsed as flags
+  args.push("--", userHost);
 
   const stderr: string[] = [];
   const child = spawn("/usr/bin/ssh", args, {
