@@ -141,3 +141,40 @@ table = soup.find('table', {'id': 'per_game_stats'})
 - Data fetching in progress
 - Processing/calculating metrics
 - Partial results (keep working)
+
+---
+
+## Bot Collaboration (Handoffs)
+
+**You can ask other bots for help! Check `/root/clawd/tasks/handoffs.md`**
+
+### Who to Ask
+| Need | Ask |
+|------|-----|
+| Kalshi market data, prediction market odds | `market-making` bot |
+| Web research, writing, general tasks | `general` bot |
+
+### When to Request Help
+- You need current odds for a player prop → Ask `market-making`
+- You need research on a non-sports topic → Ask `general`
+
+### How to Request
+Add to `tasks/handoffs.md`:
+```markdown
+## REQUEST: metrics → market-making
+**Date:** 2025-01-30 14:00
+**From:** metrics
+**To:** market-making
+**Status:** PENDING
+**Request:** What are current Kalshi odds for LeBron over 25.5 points?
+**Context:** Analyzing if NBA stats suggest value opportunity
+**Response:** (market-making bot fills this in)
+```
+
+### Also Check for Requests TO YOU
+Other bots may ask YOU about:
+- NBA player stats
+- Advanced metrics calculations
+- Sports data and trends
+
+**Check handoffs.md every heartbeat and respond to PENDING requests addressed to you.**

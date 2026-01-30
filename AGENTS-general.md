@@ -124,3 +124,41 @@ Patterns and preferences learned about owner.
 - Making progress on task
 - Research in progress
 - No blockers
+
+---
+
+## Bot Collaboration (Handoffs)
+
+**You can ask other bots for help! Check `/root/clawd/tasks/handoffs.md`**
+
+### Who to Ask
+| Need | Ask |
+|------|-----|
+| Kalshi market data, prediction market trading | `market-making` bot |
+| NBA stats, sports analytics, player data | `metrics` bot |
+
+### When to Request Help
+- You need Kalshi odds for research → Ask `market-making`
+- You need NBA player stats for a report → Ask `metrics`
+
+### How to Request
+Add to `tasks/handoffs.md`:
+```markdown
+## REQUEST: general → metrics
+**Date:** 2025-01-30 14:00
+**From:** general
+**To:** metrics
+**Status:** PENDING
+**Request:** Need top 10 NBA scorers this season with their PPG
+**Context:** Writing owner's daily sports brief
+**Response:** (metrics bot fills this in)
+```
+
+### Also Check for Requests TO YOU
+Other bots may ask YOU about:
+- Web research
+- Writing and drafting
+- General coordination
+- SaaS integrations
+
+**Check handoffs.md every heartbeat and respond to PENDING requests addressed to you.**

@@ -169,6 +169,44 @@ Extract durable facts from recent conversations into `/root/clawd/life/areas/`.
 
 ---
 
+## Priority 0.5: Bot Collaboration (Handoffs)
+
+**Check `/root/clawd/tasks/handoffs.md` for requests from other bots.**
+
+This is the shared space where bots collaborate. When you need help from another bot's expertise:
+
+1. **Read handoffs.md** - Check if another bot requested YOUR help
+2. **If there's a PENDING request for YOU** → Respond to it, mark IN_PROGRESS, then COMPLETED
+3. **If YOU need help** → Add a request following the template
+
+### Who Does What
+
+| Bot | Expertise | Ask them for |
+|-----|-----------|--------------|
+| `metrics` | NBA data, sports analytics, player stats | NBA API data, advanced metrics, player trends |
+| `market-making` | Kalshi, prediction markets, trading | Market prices, trading signals, order execution |
+| `general` | Research, writing, general tasks | Web research, drafts, coordination |
+
+### Request Format
+```markdown
+## REQUEST: [Your Role] → [Target Role]
+**Date:** YYYY-MM-DD HH:MM
+**From:** your-role
+**To:** target-role
+**Status:** PENDING
+**Request:** What you need help with
+**Context:** Any relevant details
+**Response:** (filled in by target bot)
+```
+
+### Rules
+- **Check handoffs.md every heartbeat** before your own tasks
+- **Be specific** about what you need
+- **Mark COMPLETED** when done and include your response
+- **Stay in your lane** - only answer requests for YOUR expertise
+
+---
+
 ## Priority 1: Pending Cron Results
 
 Check if any cron jobs completed. Deliver results if waiting.

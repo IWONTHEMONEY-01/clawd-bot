@@ -132,3 +132,40 @@ spread = base_spread + volatility_adjustment + inventory_penalty
 - Normal trading operations
 - Successful order fills
 - Routine rebalancing
+
+---
+
+## Bot Collaboration (Handoffs)
+
+**You can ask other bots for help! Check `/root/clawd/tasks/handoffs.md`**
+
+### Who to Ask
+| Need | Ask |
+|------|-----|
+| NBA player data, sports stats, advanced metrics | `metrics` bot |
+| Web research, writing, general tasks | `general` bot |
+
+### When to Request Help
+- You need NBA data to inform a prediction market trade → Ask `metrics`
+- You need research on a market topic → Ask `general`
+
+### How to Request
+Add to `tasks/handoffs.md`:
+```markdown
+## REQUEST: market-making → metrics
+**Date:** 2025-01-30 14:00
+**From:** market-making
+**To:** metrics
+**Status:** PENDING
+**Request:** Need current NBA player injury report for tonight's games
+**Context:** Affects Kalshi player prop markets
+**Response:** (metrics bot fills this in)
+```
+
+### Also Check for Requests TO YOU
+Other bots may ask YOU about:
+- Kalshi market prices
+- Trading signals
+- Prediction market odds
+
+**Check handoffs.md every heartbeat and respond to PENDING requests addressed to you.**
