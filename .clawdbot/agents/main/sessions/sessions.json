@@ -1,7 +1,7 @@
 {
   "agent:main:main": {
     "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
-    "updatedAt": 1769797438346,
+    "updatedAt": 1769798410981,
     "systemSent": true,
     "abortedLastRun": false,
     "chatType": "direct",
@@ -214,14 +214,14 @@
     "authProfileOverrideSource": "auto",
     "authProfileOverrideCompactionCount": 0,
     "inputTokens": 137213,
-    "outputTokens": 375,
+    "outputTokens": 465,
     "totalTokens": 137213,
     "modelProvider": "zai",
     "model": "glm-4.7",
     "contextTokens": 204800,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1769794138466,
+      "generatedAt": 1769798339172,
       "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
       "sessionKey": "agent:main:main",
       "provider": "zai",
@@ -233,8 +233,8 @@
         "sandboxed": false
       },
       "systemPrompt": {
-        "chars": 13663,
-        "projectContextChars": 2828,
+        "chars": 17652,
+        "projectContextChars": 6817,
         "nonProjectContextChars": 10835
       },
       "injectedWorkspaceFiles": [
@@ -282,8 +282,8 @@
           "name": "HEARTBEAT.md",
           "path": "/root/clawd/HEARTBEAT.md",
           "missing": false,
-          "rawChars": 622,
-          "injectedChars": 622,
+          "rawChars": 4611,
+          "injectedChars": 4611,
           "truncated": false
         },
         {
@@ -457,8 +457,8 @@
         ]
       }
     },
-    "lastHeartbeatText": "The error shows `opponent_def_rating` column doesn't exist. This is because we simplified the schema earlier. Let me fix the `_load_features()` method to only use columns that actually exist:",
-    "lastHeartbeatSentAt": 1769783015355,
+    "lastHeartbeatText": "⚠️ 🛠️ exec: cd ~/clawd/sports-betting && python3 src/market_terminal_test_keys.py 2>&1 << EOF failed: File \"/root/clawd/sports-betting/src/market_terminal_test_keys.py\", line 175",
+    "lastHeartbeatSentAt": 1769797438289,
     "lastChannel": "telegram",
     "lastAccountId": "default"
   },
