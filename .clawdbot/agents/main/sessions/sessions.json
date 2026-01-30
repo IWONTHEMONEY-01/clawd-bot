@@ -1,7 +1,7 @@
 {
   "agent:main:main": {
     "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
-    "updatedAt": 1769786891232,
+    "updatedAt": 1769787491236,
     "systemSent": true,
     "abortedLastRun": false,
     "chatType": "direct",
@@ -214,14 +214,14 @@
     "authProfileOverrideSource": "auto",
     "authProfileOverrideCompactionCount": 0,
     "inputTokens": 137213,
-    "outputTokens": 63,
+    "outputTokens": 225,
     "totalTokens": 137213,
     "modelProvider": "zai",
     "model": "glm-4.7",
     "contextTokens": 204800,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1769785991411,
+      "generatedAt": 1769787191467,
       "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
       "sessionKey": "agent:main:main",
       "provider": "zai",
@@ -233,8 +233,8 @@
         "sandboxed": false
       },
       "systemPrompt": {
-        "chars": 20568,
-        "projectContextChars": 9733,
+        "chars": 13663,
+        "projectContextChars": 2828,
         "nonProjectContextChars": 10835
       },
       "injectedWorkspaceFiles": [
@@ -282,8 +282,8 @@
           "name": "HEARTBEAT.md",
           "path": "/root/clawd/HEARTBEAT.md",
           "missing": false,
-          "rawChars": 7527,
-          "injectedChars": 7527,
+          "rawChars": 622,
+          "injectedChars": 622,
           "truncated": false
         },
         {
