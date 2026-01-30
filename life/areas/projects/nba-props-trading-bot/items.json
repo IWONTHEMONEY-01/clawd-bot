@@ -24,39 +24,71 @@
       "category": "deployment"
     },
     {
-      "fact": "Multi-source fair value aggregator built with DraftKings, FanDuel, Polymarket fetchers",
-      "source": "Development 2026-01-30",
+      "fact": "External data sources tested and concluded NOT VIABLE for live NBA player props",
+      "source": "API Research 2026-01-30",
+      "date": "2026-01-30",
+      "status": "superseded",
+      "category": "integration",
+      "superseded_by": "Conclusion: External sources not viable. Simplified strategy: Kalshi + AMB model only."
+    },
+    {
+      "fact": "DraftKings: No accessible JSON API (HTML only)",
+      "source": "API Research 2026-01-30",
+      "date": "2026-01-30",
+      "status": "superseded",
+      "category": "integration",
+      "superseded_by": "Conclusion: External sources not viable"
+    },
+    {
+      "fact": "FanDuel: API blocked (403 Forbidden)",
+      "source": "API Research 2026-01-30",
+      "date": "2026-01-30",
+      "status": "superseded",
+      "category": "integration",
+      "superseded_by": "Conclusion: External sources not viable"
+    },
+    {
+      "fact": "Polymarket API found (gamma-api.polymarket.com/markets) but no active NBA markets",
+      "source": "API Research 2026-01-30",
+      "date": "2026-01-30",
+      "status": "superseded",
+      "category": "integration",
+      "superseded_by": "Conclusion: External sources not viable"
+    },
+    {
+      "fact": "Simplified fair value aggregator created: Kalshi (50%) + Advanced Metrics Bot (50%)",
+      "source": "Architecture Decision 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "architecture"
+    },
+    {
+      "fact": "Fair value calculation: (kalshi_price + model_prediction) / 2",
+      "source": "Architecture 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "algorithm"
+    },
+    {
+      "fact": "Edge detection tested: Fair value vs Kalshi price comparison working",
+      "source": "Testing 2026-01-30",
       "date": "2026-01-30",
       "status": "active",
       "category": "development"
     },
     {
-      "fact": "External API testing: DraftKings accessible (200), FanDuel blocked (403), Polymarket endpoint wrong (404)",
-      "source": "API Testing 2026-01-30",
-      "date": "2026-01-30",
-      "status": "active",
-      "category": "integration"
-    },
-    {
-      "fact": "1 open position needing attention: LeBron James points 20.5 (test position from E2E testing, game date passed)",
-      "source": "Position Tracker 2026-01-30",
-      "date": "2026-01-30",
-      "status": "attention_needed",
-      "category": "operations"
-    },
-    {
-      "fact": "Signal database: 1 total signal, 0 unprocessed",
-      "source": "Database 2026-01-30",
+      "fact": "Test position with past game date closed and cleaned up",
+      "source": "Operations 2026-01-30",
       "date": "2026-01-30",
       "status": "active",
       "category": "operations"
     },
     {
-      "fact": "Trading bot architecture: Signal DB → Trading Bot → Position DB → Dashboard Backend → Frontend",
-      "source": "Architecture 2026-01-30",
+      "fact": "All databases verified clean and ready for operation",
+      "source": "Operations 2026-01-30",
       "date": "2026-01-30",
       "status": "active",
-      "category": "architecture"
+      "category": "operations"
     }
   ]
 }
