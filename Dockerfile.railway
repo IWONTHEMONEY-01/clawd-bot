@@ -342,8 +342,11 @@ if [ -n "$GITHUB_TOKEN" ]; then\n\
     git init -b "$MEMORY_BRANCH"\n\
     echo "Git initialized with branch: $MEMORY_BRANCH"\n\
   fi\n\
-  # Only add remote if it doesnt exist\n\
-  if ! git remote get-url origin >/dev/null 2>&1; then\n\
+  # Always update remote URL to pick up MEMORY_REPO changes\n\
+  if git remote get-url origin >/dev/null 2>&1; then\n\
+    git remote set-url origin https://${GITHUB_TOKEN}@github.com/${MEMORY_REPO}\n\
+    echo "Git remote updated: $MEMORY_REPO"\n\
+  else\n\
     git remote add origin https://${GITHUB_TOKEN}@github.com/${MEMORY_REPO}\n\
     echo "Git remote added: $MEMORY_REPO"\n\
   fi\n\
