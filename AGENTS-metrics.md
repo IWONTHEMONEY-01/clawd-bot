@@ -19,6 +19,13 @@ Most sports APIs are PUBLIC - no keys needed.
 
 ## NBA API Quick Reference (Compressed)
 
+### ⚠️ CRITICAL: Use Correct URL
+
+**WRONG:** `api.nba.com` → Returns 401 Unauthorized (developer portal)
+**RIGHT:** `stats.nba.com/stats/` → Public API, no auth needed
+
+If you get 401 errors, you're using the WRONG endpoint.
+
 ### Base URL
 `https://stats.nba.com/stats/`
 
