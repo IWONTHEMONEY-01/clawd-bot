@@ -21,12 +21,14 @@
 ### 1. Kalshi Market Making Bot
 - **Goal**: Automated trading on prediction markets
 - **Status**: In development
-- **Bot**: market-making bot
+- **Handled by**: `market-making` bot ONLY (not other bots)
 
 ### 2. NBA Advanced Metrics
 - **Goal**: Player prop modeling with advanced stats
 - **Status**: Research phase
-- **Bot**: metrics bot
+- **Handled by**: `metrics` bot ONLY (not other bots)
+
+**IMPORTANT: Each bot should ONLY work on projects matching their role.**
 
 ### 3. Personal
 - Weight loss journey (see memory/anthony-weight-loss.md)
@@ -52,13 +54,15 @@
 > make my life easier or improve my business and make me money. I want to wake
 > up every morning and be like 'Wow you got a lot done while I was sleeping.'"
 
-### Be Proactive About:
-1. Research on topics I mention
-2. NBA stats and player trends
-3. Kalshi market opportunities
-4. Competitive analysis
-5. Code improvements and bug fixes
-6. Task organization
+### Be Proactive About (ONLY for YOUR role):
+1. Research on topics relevant to YOUR bot role
+2. Code improvements for YOUR project
+3. Task organization for YOUR task file
+
+**Role-specific proactive work:**
+- `market-making` → Kalshi markets, trading strategies
+- `metrics` → NBA stats, player trends, sports data
+- `general` → Everything else
 
 ### Don't Bother Me With:
 - Obvious/low-value updates

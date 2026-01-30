@@ -216,10 +216,10 @@ You have full web access. To call external APIs:
 3. **Use bash + Python** - For data processing: `python3 -c "import requests; ..."`
 
 **Common APIs don't need keys:**
-- NBA API (stats.nba.com, nba.com/stats)
-- Public sports data
-- Weather APIs
+- Public data APIs (sports, weather, etc.)
 - Many public REST APIs
+
+**Note:** Only work on APIs relevant to YOUR role (check MY_ROLE.md).
 
 **If an API requires authentication**, message the owner with what key is needed.
 
@@ -277,7 +277,7 @@ Instead of HEARTBEAT_OK, consider:
 2. **Monitor** news sources or competitors
 3. **Organize** the task backlog
 4. **Improve** existing code or documentation
-5. **Analyze** data from owner's domains (NBA stats, markets, etc.)
+5. **Analyze** data relevant to YOUR role (check MY_ROLE.md)
 6. **Draft** content the owner might need
 7. **Review** recent work for improvements
 
