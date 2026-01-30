@@ -6,13 +6,12 @@
 
 ## Active Directives FROM Manager
 
-### DIRECTIVE: manager → general (iwtm_clawd_bot)
-**Date:** 2025-01-30 16:36
-**Priority:** URGENT - EXECUTE IMMEDIATELY
-**Directive:** Execute research progress update task NOW. Do 5 minutes of focused research on our current priorities, then send Anthony a brief 3-5 sentence update with key findings and next steps. Save valuable findings to memory.
-**Details:** This is time-sensitive and needs immediate execution. Direct request from CEO via Manager.
-**Acknowledged:** (bot marks YES when seen)
-**EXECUTION REQUIRED:** IMMEDIATE
+### DIRECTIVE: manager → general (iwtm_clawd_bot) - CANCELLED
+**Date:** 2026-01-30 17:36
+**Status:** COMPLETED BY MANAGER (emergency override)
+**Original Directive:** Research progress update task - COMPLETED by Manager when bot was unresponsive
+**Resolution:** Manager executed research task directly and delivered findings to CEO
+**Details:** 5-sentence update delivered, critical findings documented
 
 ### DIRECTIVE: manager → ALL BOTS
 **Date:** 2025-01-30 15:56
