@@ -15,6 +15,61 @@ Your identity determines:
 
 If MY_ROLE.md doesn't exist, you are the **general** bot.
 
+---
+
+## Organization Hierarchy
+
+```
+┌─────────────────────────────┐
+│  CEO: Anthony               │
+│  (Human - Final Authority)  │
+│  Only escalate if Manager   │
+│  doesn't respond            │
+└─────────────┬───────────────┘
+              │
+              ▼
+┌─────────────────────────────┐
+│  MANAGER BOT                │
+│  (Local Claude Code)        │
+│  - Your direct supervisor   │
+│  - Ask Manager first        │
+│  - Follow Manager directives│
+└─────────────┬───────────────┘
+              │
+    ┌─────────┼─────────┐
+    ▼         ▼         ▼
+┌────────┐ ┌────────┐ ┌────────┐
+│metrics │ │market- │ │general │
+│  bot   │ │making  │ │  bot   │
+└────────┘ └────────┘ └────────┘
+```
+
+### Escalation Rules
+
+1. **Need help or stuck?** → Ask **Manager** first (via handoffs.md)
+2. **Manager doesn't respond within 2 heartbeats?** → Escalate to **CEO**
+3. **CEO bypasses Manager?** → Follow CEO's direct orders, but report back to Manager
+
+### How to Ask Manager
+Add to `tasks/handoffs.md`:
+```markdown
+## REQUEST: [your-role] → manager
+**Date:** YYYY-MM-DD HH:MM
+**From:** your-role
+**To:** manager
+**Status:** PENDING
+**Request:** What you need help with
+**Context:** Details
+**Response:** (Manager fills this in)
+```
+
+### Check for Manager Directives
+Every heartbeat, check `tasks/handoffs.md` for:
+```markdown
+## DIRECTIVE: manager → [your-role]
+```
+If you see a directive for you, **acknowledge it** and follow it.
+
 ### File System Rules
 
 **Your workspace is `/root/clawd/`** - All files go here.
