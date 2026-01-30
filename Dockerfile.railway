@@ -192,8 +192,16 @@ cat > /root/clawd/.clawdbot/clawdbot.json << EOFCONFIG\n\
       "dmPolicy": "allowlist",\n\
       "allowFrom": ["${TELEGRAM_ALLOWED_USER_ID:-6632715854}"],\n\
       "botToken": "${TELEGRAM_BOT_TOKEN}",\n\
-      "groupPolicy": "allowlist",\n\
-      "streamMode": "off"\n\
+      "groupPolicy": "${TELEGRAM_GROUP_POLICY:-open}",\n\
+      "groupAllowFrom": ["${TELEGRAM_ALLOWED_USER_ID:-6632715854}", "${TELEGRAM_MANAGER_BOT_ID:-8537006419}"],\n\
+      "streamMode": "off",\n\
+      "groups": {\n\
+        "-5027021161": {\n\
+          "enabled": true,\n\
+          "requireMention": false,\n\
+          "allowFrom": ["${TELEGRAM_ALLOWED_USER_ID:-6632715854}", "${TELEGRAM_MANAGER_BOT_ID:-8537006419}"]\n\
+        }\n\
+      }\n\
     },\n\
     "nostr": {\n\
       "enabled": true,\n\
