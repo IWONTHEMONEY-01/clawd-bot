@@ -1,0 +1,69 @@
+{
+  "type": "person",
+  "name": "Anthony F",
+  "items": [
+    {
+      "fact": "GitHub username is IWONTHEMONEY-01",
+      "source": "Telegram 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "identity"
+    },
+    {
+      "fact": "Trading dashboard repository: market-making-bot-repo",
+      "source": "Telegram 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "development"
+    },
+    {
+      "fact": "Vercel project: kalshi-test-suite (https://vercel.com/anthony-fradellas-projects/kalshi-test-suite)",
+      "source": "Telegram 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "deployment"
+    },
+    {
+      "fact": "Wake-up time: 7 AM",
+      "source": "Telegram 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "schedule"
+    },
+    {
+      "fact": "Morning briefing scheduled: 6:30 AM UTC (30 minutes before wake-up)",
+      "source": "Telegram 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "schedule"
+    },
+    {
+      "fact": "Prefers trading dashboard separation: frontend (Vercel) separate from backend (Railway)",
+      "source": "Telegram 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "preference"
+    },
+    {
+      "fact": "Trading strategy: Take 'No' side on Kalshi when fair value from external sources is lower",
+      "source": "Telegram 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "trading"
+    },
+    {
+      "fact": "External data sources needed: DraftKings, FanDuel, Polymarket for fair value comparison",
+      "source": "Telegram 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "trading"
+    },
+    {
+      "fact": "Dashboard features: Dark mode, real-time updates, manual trading panel, P&L tracking",
+      "source": "Telegram 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "preference"
+    }
+  ]
+}

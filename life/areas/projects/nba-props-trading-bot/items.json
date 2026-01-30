@@ -1,0 +1,62 @@
+{
+  "type": "project",
+  "name": "NBA Props Trading Bot",
+  "items": [
+    {
+      "fact": "Complete trading bot built and tested end-to-end",
+      "source": "Development 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "development"
+    },
+    {
+      "fact": "Morning briefing bot implemented and tested",
+      "source": "Development 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "development"
+    },
+    {
+      "fact": "Trading dashboard frontend (Next.js) complete, ready for Vercel deployment",
+      "source": "Development 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "deployment"
+    },
+    {
+      "fact": "Multi-source fair value aggregator built with DraftKings, FanDuel, Polymarket fetchers",
+      "source": "Development 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "development"
+    },
+    {
+      "fact": "External API testing: DraftKings accessible (200), FanDuel blocked (403), Polymarket endpoint wrong (404)",
+      "source": "API Testing 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "integration"
+    },
+    {
+      "fact": "1 open position needing attention: LeBron James points 20.5 (test position from E2E testing, game date passed)",
+      "source": "Position Tracker 2026-01-30",
+      "date": "2026-01-30",
+      "status": "attention_needed",
+      "category": "operations"
+    },
+    {
+      "fact": "Signal database: 1 total signal, 0 unprocessed",
+      "source": "Database 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "operations"
+    },
+    {
+      "fact": "Trading bot architecture: Signal DB → Trading Bot → Position DB → Dashboard Backend → Frontend",
+      "source": "Architecture 2026-01-30",
+      "date": "2026-01-30",
+      "status": "active",
+      "category": "architecture"
+    }
+  ]
+}

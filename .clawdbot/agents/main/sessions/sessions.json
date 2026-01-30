@@ -1,7 +1,7 @@
 {
   "agent:main:main": {
     "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
-    "updatedAt": 1769751021038,
+    "updatedAt": 1769751409181,
     "systemSent": true,
     "abortedLastRun": false,
     "chatType": "direct",
@@ -213,15 +213,15 @@
     "authProfileOverride": "zai:default",
     "authProfileOverrideSource": "auto",
     "authProfileOverrideCompactionCount": 0,
-    "inputTokens": 4710,
-    "outputTokens": 828,
-    "totalTokens": 95373,
+    "inputTokens": 4473,
+    "outputTokens": 645,
+    "totalTokens": 100913,
     "modelProvider": "zai",
     "model": "glm-4.7",
     "contextTokens": 204800,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1769750633824,
+      "generatedAt": 1769751021198,
       "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
       "sessionKey": "agent:main:main",
       "provider": "zai",
