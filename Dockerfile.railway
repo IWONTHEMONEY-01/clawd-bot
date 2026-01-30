@@ -75,7 +75,15 @@ if [ -z "$(ls -A /root/clawd 2>/dev/null | grep -v lost+found)" ]; then\n\
   echo "First deploy - initializing workspace from local files"\n\
   mkdir -p /root/clawd/memory /root/clawd/canvas /root/clawd/tasks\n\
   mkdir -p /root/clawd/life/areas/people /root/clawd/life/areas/companies /root/clawd/life/areas/projects\n\
-  for f in AGENTS.md BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md SOUL_EVIL.md TOOLS.md USER.md BOOT.md MEMORY.md; do\n\
+  # Copy bot-specific AGENTS.md based on BOT_ROLE (Vercel research: 100% reliability)\n\
+  if [ -f "/app/AGENTS-${BOT_ROLE}.md" ]; then\n\
+    cp "/app/AGENTS-${BOT_ROLE}.md" "/root/clawd/AGENTS.md"\n\
+    echo "Using bot-specific AGENTS.md for ${BOT_ROLE}"\n\
+  elif [ -f "/app/AGENTS.md" ]; then\n\
+    cp "/app/AGENTS.md" "/root/clawd/AGENTS.md"\n\
+    echo "Using default AGENTS.md"\n\
+  fi\n\
+  for f in BOOTSTRAP.md HEARTBEAT.md IDENTITY.md SOUL.md SOUL_EVIL.md TOOLS.md USER.md BOOT.md MEMORY.md; do\n\
     [ -f "/app/$f" ] && cp "/app/$f" "/root/clawd/" 2>/dev/null || true\n\
   done\n\
   cp -r /app/memory/* /root/clawd/memory/ 2>/dev/null || true\n\
