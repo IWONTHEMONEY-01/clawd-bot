@@ -1,7 +1,7 @@
 {
   "agent:main:main": {
     "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
-    "updatedAt": 1769803795181,
+    "updatedAt": 1769804400034,
     "systemSent": true,
     "abortedLastRun": false,
     "chatType": "direct",
@@ -214,14 +214,14 @@
     "authProfileOverrideSource": "auto",
     "authProfileOverrideCompactionCount": 0,
     "inputTokens": 137213,
-    "outputTokens": 271,
+    "outputTokens": 1044,
     "totalTokens": 137213,
     "modelProvider": "zai",
     "model": "glm-4.7",
     "contextTokens": 204800,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1769803740831,
+      "generatedAt": 1769804340841,
       "sessionId": "5b1a9552-47f3-4543-9959-47288c1fe8bc",
       "sessionKey": "agent:main:main",
       "provider": "zai",
@@ -457,8 +457,8 @@
         ]
       }
     },
-    "lastHeartbeatText": "⚠️ 🛠️ exec: cd ~/clawd/sports-betting/src && sed -i '/# MARKETS_FIX/,/# MARKETS_END/d\\c\\import threading\\n        self._refresh_markets()\\n        if self.demo_mode:… failed: sed: -e expression #1, char 33: extra characters after command",
-    "lastHeartbeatSentAt": 1769801939977,
+    "lastHeartbeatText": "The file lists Priority 1 as \"WORKING\" with test API keys as next steps. Per protocol, should I proceed with running the terminal and testing commands, or does this need your explicit confirmation to proceed?",
+    "lastHeartbeatSentAt": 1769804340674,
     "lastChannel": "telegram",
     "lastAccountId": "default"
   },
