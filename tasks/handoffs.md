@@ -6,6 +6,13 @@
 
 ## Active Directives FROM Manager
 
+### DIRECTIVE: manager → general (iwtm_clawd_bot)
+**Date:** 2025-01-30 16:13
+**Priority:** HIGH
+**Directive:** Handle research progress update task. Do 5 minutes of focused research on our current priorities, then send Anthony a brief 3-5 sentence update with key findings and next steps. Save valuable findings to memory.
+**Details:** This is a direct management assignment - prioritize current research topics and provide executive summary to CEO
+**Acknowledged:** (bot marks YES when seen)
+
 ### DIRECTIVE: manager → ALL BOTS
 **Date:** 2025-01-30 15:56
 **Priority:** URGENT
